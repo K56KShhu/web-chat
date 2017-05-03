@@ -8,7 +8,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class UserDaoJdbcImpl implements UserDao {
     public static final int UPDATE_SEX = 1;
@@ -20,32 +22,8 @@ public class UserDaoJdbcImpl implements UserDao {
         this.dataSource = dataSource;
     }
 
-    /*
-    public String getPassword(UserPo user) {
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-
-        try {
-            conn = dataSource.getConnection();
-            String sql = "SELECT password FROM user WHERE username = ?";
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, user.getUsername());
-            rs = pstmt.executeQuery();
-            if (rs.next()) {
-                return rs.getString("password");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            DbClose.close(conn, pstmt, rs);
-        }
-        return null;
-    }
-    */
-
     @Override
-    public UserPo selectUser(UserPo userPo) {
+    public UserPo selectUserByUserId(int id) {
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -53,12 +31,12 @@ public class UserDaoJdbcImpl implements UserDao {
 
         try {
             conn = dataSource.getConnection();
-            String sql = "SELECT * FROM user WHERE username = ?";
+            String sql = "SELECT * FROM user WHERE user_id = ?";
             pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, userPo.getUsername());
+            pstmt.setString(1, Integer.toString(id));
             rs = pstmt.executeQuery();
             if (rs.next()) {
-                user = new UserPo(rs.getString("username"), rs.getString("password"), rs.getString("sex"),
+                user = new UserPo(rs.getInt("user_id"), rs.getString("username"), rs.getString("password"), rs.getString("sex"),
                         rs.getString("email"), rs.getInt("status"), rs.getTimestamp("created"));
             }
         } catch (SQLException e) {
@@ -70,7 +48,32 @@ public class UserDaoJdbcImpl implements UserDao {
     }
 
     @Override
-    public Set<String> selectRoles(UserPo userPo) {
+    public UserPo selectUserByUsername(String username) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        UserPo user = null;
+
+        try {
+            conn = dataSource.getConnection();
+            String sql = "SELECT * FROM user WHERE username=?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, username);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                user = new UserPo(rs.getInt("user_id"), rs.getString("username"), rs.getString("password"), rs.getString("sex"),
+                        rs.getString("email"), rs.getInt("status"), rs.getTimestamp("created"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, pstmt, rs);
+        }
+        return user;
+    }
+
+    @Override
+    public Set<String> selectRolesByUserId(int id) {
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -78,9 +81,9 @@ public class UserDaoJdbcImpl implements UserDao {
 
         try {
             conn = dataSource.getConnection();
-            String sql = "SELECT role FROM user_role WHERE user_id = (SELECT user_id FROM user WHERE username = ?)";
+            String sql = "SELECT role FROM user_role WHERE user_id = ?";
             pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, userPo.getUsername());
+            pstmt.setString(1, Integer.toString(id));
             rs = pstmt.executeQuery();
             while (rs.next()) {
                 roles.add(rs.getString("role"));
@@ -94,7 +97,36 @@ public class UserDaoJdbcImpl implements UserDao {
     }
 
     @Override
-    public Set<String> selectGroups(UserPo userPo) {
+    public Set<String> selectRolesByUsername(String username) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        Set<String> roles = new HashSet<>();
+
+        try {
+            conn = dataSource.getConnection();
+            String sql = "SELECT role FROM user_role WHERE user_id = (SELECT user_id FROM user WHERE username = ?)";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, username);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                roles.add(rs.getString("role"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, pstmt, rs);
+        }
+        return roles;
+    }
+
+    @Override
+    public Set<String> selectGroupsByUserId(int id) {
+        return null;
+    }
+
+    @Override
+    public Set<String> selectGroupsByUsername(String username) {
         return null;
     }
 
@@ -131,24 +163,24 @@ public class UserDaoJdbcImpl implements UserDao {
             for (int updatedType : updatedTypes) {
                 switch (updatedType) {
                     case UPDATE_SEX:
-                        sql = "UPDATE user SET sex=? WHERE username=?";
+                        sql = "UPDATE user SET sex=? WHERE user_id=?";
                         pstmt = conn.prepareStatement(sql);
                         pstmt.setString(1, userPo.getSex());
-                        pstmt.setString(2, userPo.getUsername());
+                        pstmt.setInt(2, userPo.getUserId());
                         pstmt.execute();
                         break;
                     case UPDATE_EMAIL:
-                        sql = "UPDATE user SET email=? WHERE username=?";
+                        sql = "UPDATE user SET email=? WHERE user_id=?";
                         pstmt = conn.prepareStatement(sql);
                         pstmt.setString(1, userPo.getEmail());
-                        pstmt.setString(2, userPo.getUsername());
+                        pstmt.setInt(2, userPo.getUserId());
                         pstmt.execute();
                         break;
                     case UPDATE_PASSWORD:
-                        sql = "UPDATE user SET password=? WHERE username=?";
+                        sql = "UPDATE user SET password=? WHERE user_id=?";
                         pstmt = conn.prepareStatement(sql);
                         pstmt.setString(1, userPo.getPassword());
-                        pstmt.setString(2, userPo.getUsername());
+                        pstmt.setInt(2, userPo.getUserId());
                         break;
                     default:
                         break;

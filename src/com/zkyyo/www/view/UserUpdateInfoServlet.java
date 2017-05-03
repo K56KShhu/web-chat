@@ -18,10 +18,10 @@ import java.io.IOException;
 public class UserUpdateInfoServlet extends HttpServlet {
     private void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Access access = (Access) request.getSession().getAttribute("access");
-        String username = access.getUsername();
+        int userId = access.getUserId();
 
         UserService userService = (UserService) getServletContext().getAttribute("userService");
-        UserPo user = userService.getUser(username);
+        UserPo user = userService.getUser(userId);
         request.setAttribute("user", user);
         request.getRequestDispatcher("user_update.jsp").forward(request, response);
     }

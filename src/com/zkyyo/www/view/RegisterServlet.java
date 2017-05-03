@@ -48,7 +48,7 @@ public class RegisterServlet extends HttpServlet {
         } else {
             UserPo user = new UserPo(username, password, sex, email);
             userService.addUser(user);
-            Access access = userService.getAccess(user);
+            Access access = userService.getAccess(username);
             request.getSession().setAttribute("access", access);
             page = "index.jsp";
         }

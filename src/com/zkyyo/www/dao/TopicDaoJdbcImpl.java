@@ -31,11 +31,13 @@ public class TopicDaoJdbcImpl implements TopicDao {
                 int topicId = rs.getInt("topic_id");
                 String title = rs.getString("title");
                 String description = rs.getString("description");
+                int creatorId = rs.getInt("creator_id");
+                int lastModifyId = rs.getInt("last_modify_id");
                 int isPrivate = rs.getInt("is_private");
                 int replyAccount = rs.getInt("reply_account");
                 Timestamp lastTime = rs.getTimestamp("last_time");
                 Timestamp created = rs.getTimestamp("created");
-                topics.add(new TopicPo(topicId, title, description, isPrivate, replyAccount, lastTime, created));
+                topics.add(new TopicPo(topicId, title, description, creatorId, lastModifyId, isPrivate, replyAccount, lastTime, created));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -61,11 +63,13 @@ public class TopicDaoJdbcImpl implements TopicDao {
                 int topicId = rs.getInt("topic_id");
                 String title = rs.getString("title");
                 String description = rs.getString("description");
+                int creatorId = rs.getInt("creator_id");
+                int lastModifyId = rs.getInt("last_modify_id");
                 int isPrivate = rs.getInt("is_private");
                 int replyAccount = rs.getInt("reply_account");
                 Timestamp lastTime = rs.getTimestamp("last_time");
                 Timestamp created = rs.getTimestamp("created");
-                return (new TopicPo(topicId, title, description, isPrivate, replyAccount, lastTime, created));
+                return (new TopicPo(topicId, title, description, creatorId, lastModifyId, isPrivate, replyAccount, lastTime, created));
             }
         } catch (SQLException e) {
             e.printStackTrace();

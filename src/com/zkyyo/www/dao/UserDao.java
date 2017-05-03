@@ -6,9 +6,12 @@ import java.util.List;
 import java.util.Set;
 
 public interface UserDao {
-    UserPo selectUser(UserPo userPo);
-    Set<String> selectRoles(UserPo userPo);
-    Set<String> selectGroups(UserPo userPo);
+    UserPo selectUserByUserId(int id);
+    UserPo selectUserByUsername(String username);
+    Set<String> selectRolesByUserId(int id);
+    Set<String> selectRolesByUsername(String username);
+    Set<String> selectGroupsByUserId(int id);
+    Set<String> selectGroupsByUsername(String username);
     void addUser(UserPo userPo);
     void update(UserPo userPo, List<Integer> updatedTypes);
 }

@@ -56,7 +56,7 @@ public class UserUpdateServlet extends HttpServlet {
             request.setAttribute("user", u);
         } else {
             Access access = (Access) request.getSession().getAttribute("access");
-            updatedUser.setUsername(access.getUsername());
+            updatedUser.setUserId(access.getUserId());
             userService.update(updatedUser);
             request.setAttribute("user", updatedUser);
         }

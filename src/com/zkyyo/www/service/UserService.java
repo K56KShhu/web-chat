@@ -16,53 +16,52 @@ public class UserService {
 
     public boolean checkLogin(UserPo userPo) {
         if (userPo.getUsername() != null && userPo.getPassword() != null) {
-            UserPo user = userDao.selectUser(userPo);
+            UserPo user = getUser(userPo.getUsername());
             return user != null && user.getPassword().equals(userPo.getPassword());
         }
         return false;
     }
 
-    public Set<String> getRoles(UserPo userPo) {
-        return userDao.selectRoles(userPo);
+    public Set<String> getRoles(int userId) {
+        return userDao.selectRolesByUserId(userId);
     }
 
-    public UserPo getUser(UserPo userPo) {
-        return userDao.selectUser(userPo);
+    public Set<String> getRoles(String username) {
+        return userDao.selectRolesByUsername(username);
+    }
+
+    public Set<String> getGroups(int userId) {
+        return userDao.selectGroupsByUserId(userId);
+    }
+
+    public Set<String> getGroups(String username) {
+        return userDao.selectGroupsByUsername(username);
+    }
+
+    public UserPo getUser(int userId) {
+        return userDao.selectUserByUserId(userId);
     }
 
     public UserPo getUser(String username) {
-        UserPo userPo = new UserPo();
-        userPo.setUsername(username);
-        return this.getUser(userPo);
+        return userDao.selectUserByUsername(username);
     }
 
-    /*
-    public Map<String, Set<String>> getAccess(UserPo userPo) {
-        UserPo user = getUser(userPo);
-        Set<String> roles = getRoles(userPo);
-        Map<String, Set<String>> access = new HashMap<>();
-
-        if (user != null && roles != null) {
-            Set<String> username = new HashSet<>();
-            username.add(user.getUsername());
-            access.put("username", username);
-            access.put("roles", roles);
-        }
-        return access;
+    public Access getAccess(int userId) {
+        UserPo user = userDao.selectUserByUserId(userId);
+        Set<String> roles = getRoles(userId);
+        Set<String> groups = new HashSet<>(); //待完善
+        return new Access(userId, user.getUsername(), roles, groups);
     }
-    */
 
-    public Access getAccess(UserPo userPo) {
-        String username = userPo.getUsername();
-        Set<String> roles = getRoles(userPo);
-        //待完善
-        Set<String> groups = new HashSet<>();
-
-        return new Access(username, roles, groups);
+    public Access getAccess(String username) {
+        UserPo user = userDao.selectUserByUsername(username);
+        Set<String> roles = getRoles(username);
+        Set<String> groups = new HashSet<>(); //待完善
+        return new Access(user.getUserId(), username, roles, groups);
     }
 
     public void update(UserPo userPo) {
-        UserPo initialUser = userDao.selectUser(userPo);
+        UserPo initialUser = userDao.selectUserByUserId(userPo.getUserId());
         List<Integer> updatedTypes = new ArrayList<>();
 
         if (userPo.getSex() != null && !userPo.getSex().equals(initialUser.getSex())) {
@@ -75,12 +74,6 @@ public class UserService {
             updatedTypes.add(UserDaoJdbcImpl.UPDATE_PASSWORD);
         }
         userDao.update(userPo, updatedTypes);
-    }
-
-    public Access getAccess(String username) {
-        UserPo userPo = new UserPo();
-        userPo.setUsername(username);;
-        return this.getAccess(userPo);
     }
 
     public boolean isValidUserName(String username) {

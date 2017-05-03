@@ -3,6 +3,7 @@ package com.zkyyo.www.po;
 import java.sql.Timestamp;
 
 public class UserPo {
+    private int userId;
     private String username;
     private String password;
     private String sex;
@@ -28,13 +29,22 @@ public class UserPo {
     }
 
     //获取数据
-    public UserPo(String username, String password, String sex, String email, int status, Timestamp created) {
+    public UserPo(int userId, String username, String password, String sex, String email, int status, Timestamp created) {
+        this.userId = userId;
         this.username = username;
         this.password = password;
         this.sex = sex;
         this.email = email;
         this.status = status;
         this.created = created;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getUsername() {
@@ -88,7 +98,8 @@ public class UserPo {
     @Override
     public String toString() {
         return "UserPo{" +
-                "username='" + username + '\'' +
+                "userId=" + userId +
+                ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", sex='" + sex + '\'' +
                 ", email='" + email + '\'' +

@@ -6,6 +6,8 @@ public class TopicPo {
     private int topicId;
     private String title;
     private String description;
+    private int creatorId;
+    private int lastModifyId;
     private int isPrivate;
     private int replyAccount;
     private Timestamp lastTime;
@@ -15,10 +17,12 @@ public class TopicPo {
 
     }
 
-    public TopicPo(int topicId, String title, String description, int isPrivate, int replyAccount, Timestamp lastTime, Timestamp created) {
+    public TopicPo(int topicId, String title, String description, int creatorId, int lastModifyId, int isPrivate, int replyAccount, Timestamp lastTime, Timestamp created) {
         this.topicId = topicId;
         this.title = title;
         this.description = description;
+        this.creatorId = creatorId;
+        this.lastModifyId = lastModifyId;
         this.isPrivate = isPrivate;
         this.replyAccount = replyAccount;
         this.lastTime = lastTime;
@@ -47,6 +51,22 @@ public class TopicPo {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(int creatorId) {
+        this.creatorId = creatorId;
+    }
+
+    public int getLastModifyId() {
+        return lastModifyId;
+    }
+
+    public void setLastModifyId(int lastModifyId) {
+        this.lastModifyId = lastModifyId;
     }
 
     public int getIsPrivate() {
@@ -79,18 +99,5 @@ public class TopicPo {
 
     public void setCreated(Timestamp created) {
         this.created = created;
-    }
-
-    @Override
-    public String toString() {
-        return "TopicPo{" +
-                "topicId=" + topicId +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", isPrivate=" + isPrivate +
-                ", replyAccount=" + replyAccount +
-                ", lastTime=" + lastTime +
-                ", created=" + created +
-                '}';
     }
 }

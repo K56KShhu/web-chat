@@ -1,9 +1,9 @@
 package com.zkyyo.www.web;
 
-import java.util.HashSet;
 import java.util.Set;
 
 public class Access {
+    private int userId;
     private String username;
     private Set<String> roles;
     private Set<String> groups;
@@ -12,7 +12,8 @@ public class Access {
 
     }
 
-    public Access(String username, Set<String> roles, Set<String> groups) {
+    public Access(int userId, String username, Set<String> roles, Set<String> groups) {
+        this.userId = userId;
         this.username = username;
         this.roles = roles;
         this.groups = groups;
@@ -34,6 +35,14 @@ public class Access {
             }
         }
         return false;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getUsername() {
@@ -63,19 +72,10 @@ public class Access {
     @Override
     public String toString() {
         return "Access{" +
-                "username='" + username + '\'' +
+                "userId=" + userId +
+                ", username='" + username + '\'' +
                 ", roles=" + roles +
                 ", groups=" + groups +
                 '}';
-    }
-
-    public static void main(String[] args) {
-        Set<String> roles = new HashSet<>();
-        roles.add("user");
-        Set<String> groups = new HashSet<>();
-        groups.add("male");
-        Access access = new Access("101", roles, groups);
-        System.out.println(access.isUserInRole("user"));
-        System.out.println(access.isUserInGroups("male"));
     }
 }

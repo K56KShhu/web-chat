@@ -9,22 +9,26 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 @WebServlet(
-        name = "TopicFindServlet",
-        urlPatterns = {"/topic_find.do"}
+        name = "TopicChatInfoServlet",
+        urlPatterns = {"/topic_chat_info.do"}
 )
-public class TopicFindServlet extends HttpServlet {
+public class TopicChatInfoServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
+        String topicId = request.getParameter("topicId");
+
         TopicService topicService = (TopicService) getServletContext().getAttribute("topicService");
-        List<TopicPo> topics = topicService.findTopics();
-        request.setAttribute("topics", topics);
-        request.getRequestDispatcher("index.jsp").forward(request, response);
+        if (topicId != null && topicService.isValidId(topicId)) {
+            TopicPo topic = topicService.findTopic(Integer.valueOf(topicId));
+            request.setAttribute("topic", topic);
+            request.getRequestDispatcher("topic_chat.jsp").forward(request, response);
+        } else {
+            response.sendRedirect("index.jsp");
+        }
     }
 }

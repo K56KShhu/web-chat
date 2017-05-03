@@ -27,9 +27,10 @@ CREATE TABLE topic
 (
     topic_id bigint(15) unsigned not null auto_increment primary key,
     title varchar(50) not null,
-    is_private tinyint(2) not null default '0',
     description varchar(300) not null default '',
-    user_id bigint(15) unsigned not null,
+    is_private tinyint(2) not null default '0',
+    reply_account bigint(15) not null default '0',
+    last_time timestamp not null default current_timestamp,
     created timestamp not null default current_timestamp
 );
 
@@ -69,12 +70,14 @@ CREATE TABLE topic_usergroup
 
 
 INSERT INTO user (username, password, sex, email, status) VALUES ('101', 'abc', 'male', 'zkyyo@outlook.com', 1);
-INSERT INTO user_role (user_id, role) VALUES ('1', 'user');
-
 INSERT INTO user (username, password, sex, email, status) VALUES ('102', 'abc', 'male', 'bingo@outlook.com', 1);
+
+INSERT INTO user_role (user_id, role) VALUES ('1', 'user');
 INSERT INTO user_role (user_id, role) VALUES ('2', 'admin');
 
 INSERT INTO usergroup (name, description) VALUES ('male', 'all man');
 
 INSERT INTO user_usergroup (user_id, usergroup_id) VALUES (1, 1);
+INSERT INTO user_usergroup (user_id, usergroup_id) VALUES (2, 1);
 
+INSERT INTO topic (title, description) VALUES ('请问打码是一种怎样的体验?', '听说现在很多人都在学习编程,大家认为变成是一种怎样的体验');

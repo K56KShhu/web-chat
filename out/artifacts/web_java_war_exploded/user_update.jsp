@@ -13,7 +13,8 @@
     </c:when>
     <c:otherwise>
         <c:forEach var="error" items="${requestScope.errors}">
-            ${error}
+            errors:
+            ${error}<br/>
         </c:forEach>
     </c:otherwise>
 </c:choose>

@@ -1,6 +1,8 @@
 package com.zkyyo.www.web;
 
+import com.zkyyo.www.dao.TopicDaoJdbcImpl;
 import com.zkyyo.www.dao.UserDaoJdbcImpl;
+import com.zkyyo.www.service.TopicService;
 import com.zkyyo.www.service.UserService;
 
 import javax.naming.Context;
@@ -30,6 +32,7 @@ public class ContextListener implements ServletContextListener,
             DataSource dataSource = (DataSource) envContext.lookup("jdbc/temp");
             ServletContext context = sce.getServletContext();
             context.setAttribute("userService", new UserService(new UserDaoJdbcImpl(dataSource)));
+            context.setAttribute("topicService", new TopicService(new TopicDaoJdbcImpl(dataSource)));
         } catch (NamingException e) {
             e.printStackTrace();
         }

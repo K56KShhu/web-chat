@@ -121,7 +121,8 @@ public class FileUploadServlet extends HttpServlet {
     }
 
     private String makeAbsolutePath(String relativePath) {
-        String bathPath = getServletContext().getRealPath("/WEB-INF/topics");
+//        String bathPath = getServletContext().getRealPath("/WEB-INF/topics");
+        String bathPath = getServletContext().getRealPath("/topics");
         String absolutePath = bathPath + relativePath;
 
         File file = new File(absolutePath);

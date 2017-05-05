@@ -37,11 +37,15 @@ public class FileListServlet extends HttpServlet {
         FileService fileService = (FileService) getServletContext().getAttribute("fileService");
         if ("image".equals(shareType)) {
             filesList = fileService.findFiles(Integer.valueOf(topicId), FileService.APPLY_IMAGE);
-            String bathPath = getServletContext().getRealPath("/WEB-INF/topics");
+//            String bathPath = getServletContext().getRealPath("/topics");
             Map<String, FilePo> imageMap = new HashMap<>();
+//            for (FilePo f : filesList) {
+//                String absolutePath = bathPath + f.getPath();
+//                imageMap.put(absolutePath, f);
+//            }
             for (FilePo f : filesList) {
-                String absolutePath = bathPath + f.getPath();
-                imageMap.put(absolutePath, f);
+                String relativePath = f.getPath();
+                imageMap.put(relativePath, f);
             }
             request.setAttribute("images", imageMap);
             request.getRequestDispatcher("image_list.jsp").forward(request, response);

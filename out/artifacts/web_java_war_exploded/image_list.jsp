@@ -23,9 +23,12 @@
         <th>image</th>
     </tr>
     <c:forEach var="image" items="${requestScope.images}">
+        <c:url value="image_show.do" var="imageUrl">
+            <c:param name="relativePath" value="${image.key}"/>
+        </c:url>
         <tr>
             <td>${image.value.userId}</td>
-            <td><img src="${image.key}"></td>
+            <td><img src="${imageUrl}"></td>
         </tr>
     </c:forEach>
 </table>

@@ -19,6 +19,10 @@ public class TopicService {
     public boolean isValidId(String topicId) {
         return true;
     }
+
+    public boolean isExisted(int topicId) {
+        return true;
+    }
     
     public TopicPo findTopic(int id) {
         return topicDao.selectTopicByTopicId(id);

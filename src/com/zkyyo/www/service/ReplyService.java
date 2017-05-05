@@ -3,6 +3,8 @@ package com.zkyyo.www.service;
 import com.zkyyo.www.dao.ReplyDao;
 import com.zkyyo.www.po.ReplyPo;
 
+import java.util.List;
+
 public class ReplyService {
     private ReplyDao replyDao;
 
@@ -23,6 +25,10 @@ public class ReplyService {
     }
 
     public void addReply(ReplyPo replyPo) {
+        replyDao.addReply(replyPo);
+    }
 
+    public List<ReplyPo> findReplys(int topicId) {
+        return replyDao.selectReplys(topicId);
     }
 }

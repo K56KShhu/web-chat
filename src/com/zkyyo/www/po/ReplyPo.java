@@ -1,8 +1,9 @@
 package com.zkyyo.www.po;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class ReplyPo {
+public class ReplyPo implements Serializable {
     private int replyId;
     private int topicId;
     private int userId;

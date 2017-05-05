@@ -1,8 +1,9 @@
 package com.zkyyo.www.po;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class UserPo {
+public class UserPo implements Serializable {
     private int userId;
     private String username;
     private String password;

@@ -8,14 +8,26 @@
 
 <c:choose>
     <c:when test="${requestScope.topic != null}">
-        <h1>${requestScope.topic.title}</h1>
-        <p>${requestScope.topic.description}</p>
-        <form method="post", action="reply_add.do">
+        <c:url value="file_list.jsp" var="filesUrl">
+            <c:param name="topicId" value="${requestScope.topic.topicId}"/>
+        </c:url>
+        <a href="${filesUrl}">文件分享区</a>
+        <%--主题信息--%>
+        <h1><c:out value="${requestScope.topic.title}"/></h1>
+        <p><c:out value="${requestScope.topic.description}"/></p>
+        <%--输入栏--%>
+        <form method="post" action="reply_add.do">
             text:<br/>
             <textarea name="content" rows="5" cols="60"></textarea>
             <input type="hidden" name="topicId" value="${requestScope.topic.topicId}"/>
             <input type="submit" value="reply"/>
         </form>
+        <br/><br/>
+        <%--聊天信息--%>
+        <c:forEach var="reply" items="${requestScope.replys}">
+            ${reply.created}&nbsp;${reply.userId}<br/>
+            <c:out value="${reply.content}"/><br/>
+        </c:forEach>
     </c:when>
     <c:otherwise>
         <c:redirect url="index.jsp"/>

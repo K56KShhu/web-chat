@@ -1,5 +1,7 @@
 package com.zkyyo.www.view;
 
+import com.zkyyo.www.po.FilePo;
+import com.zkyyo.www.service.FileService;
 import com.zkyyo.www.service.TopicService;
 import com.zkyyo.www.web.Access;
 import org.apache.commons.fileupload.FileItem;
@@ -16,7 +18,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -26,6 +27,9 @@ import java.util.UUID;
         urlPatterns = {"/file_upload.do"}
 )
 public class FileUploadServlet extends HttpServlet {
+    private static final int APPLY_IMAGE = 1;
+    private static final int APPLY_FILE = 2;
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String topicId = request.getParameter("topicId");
         String shareType = request.getParameter("shareType");
@@ -38,7 +42,6 @@ public class FileUploadServlet extends HttpServlet {
             return;
         }
 
-        List<String> errors = new ArrayList<>();
         try {
             FileItemFactory factory = new DiskFileItemFactory();
             ServletFileUpload upload = new ServletFileUpload(factory);
@@ -48,6 +51,7 @@ public class FileUploadServlet extends HttpServlet {
             upload.setHeaderEncoding("UTF-8");
 
             if (ServletFileUpload.isMultipartContent(request)) {
+                FileService fileService = (FileService) getServletContext().getAttribute("fileService");
                 List<FileItem> list = upload.parseRequest(request);
                 for (FileItem item : list) {
                     if (item.isFormField()) { //普通表单
@@ -57,39 +61,51 @@ public class FileUploadServlet extends HttpServlet {
                         if (filename.trim().isEmpty()) {
                             continue;
                         }
-                        filename = makeFilename(userId, filename);
-                        String path = makePath(Integer.valueOf(topicId), shareType);
-                        File file = new File(path, filename);
+                        filename = makeFilename(filename);
+                        String relativePath = makeRelativePath(Integer.valueOf(topicId), shareType);
+                        String absolutePath = makeAbsolutePath(relativePath);
+                        File file = new File(absolutePath, filename);
                         item.write(file);
                         item.delete();
+
+                        FilePo filePo = new FilePo();
+                        filePo.setUserId(userId);
+                        filePo.setTopicId(Integer.valueOf(topicId));
+                        filePo.setPath(relativePath + "/" + filename);
+                        if ("image".equals(shareType)) {
+                            filePo.setApply(APPLY_IMAGE);
+                        } else if ("file".equals(shareType)) {
+                            filePo.setApply(APPLY_FILE);
+                        }
+                        fileService.addFile(filePo);
                     }
                 }
             }
         } catch (FileUploadBase.FileSizeLimitExceededException e) {
             //单个文件过大
+            request.setAttribute("message", "单个文件过大");
+            request.getRequestDispatcher("error.jsp").forward(request, response);
             e.printStackTrace();
-            errors.add("one file too large");
-            return;
         } catch (FileUploadBase.SizeLimitExceededException e) {
             //总文件过大
+            request.setAttribute("message", "总文件过大");
+            request.getRequestDispatcher("error.jsp").forward(request, response);
             e.printStackTrace();
-            errors.add("total files too large");
-            return;
         } catch (Exception e) {
+            request.setAttribute("message", "上传失败");
+            request.getRequestDispatcher("error.jsp").forward(request, response);
             e.printStackTrace();
         }
 
-        request.setAttribute("errors", errors);
-
-        response.sendRedirect("file_list.do");
+        response.sendRedirect("file_list.do?topicId=" + topicId + "?&shareType=" + shareType);
     }
 
-    private String makeFilename(int userId, String filename) {
+    private String makeFilename(String filename) {
         String id = UUID.randomUUID().toString();
-        return userId + "#" + id + "_" + filename;
+        return id + "_" + filename;
     }
 
-    private String makePath(int topicId, String shareType) {
+    private String makeRelativePath(int topicId, String shareType) {
         String typePath;
         if ("file".equals(shareType)) {
             typePath = "/file";
@@ -98,16 +114,20 @@ public class FileUploadServlet extends HttpServlet {
         } else {
             typePath = "/others";
         }
-        String bathPath = getServletContext().getRealPath("/WEB-INF/upload/topics");
         String topicPath = "/topic#" + topicId;
-        String datePath = new SimpleDateFormat("yyyyMMdd").format(new Date());
-        String path = bathPath + topicPath + typePath + "/" + datePath;
-        System.out.println(path);
-        File file = new File(path);
+        String datePath = "/" + new SimpleDateFormat("yyyyMMdd").format(new Date());
+        return topicPath + typePath + datePath;
+    }
+
+    private String makeAbsolutePath(String relativePath) {
+        String bathPath = getServletContext().getRealPath("/WEB-INF/topics");
+        String absolutePath = bathPath + relativePath;
+
+        File file = new File(absolutePath);
         if (!file.exists()) {
             file.mkdirs();
         }
-        return path;
+        return absolutePath;
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

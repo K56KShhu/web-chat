@@ -1,36 +1,33 @@
 package com.zkyyo.www.dao;
 
 import com.zkyyo.www.db.DbClose;
-import com.zkyyo.www.po.ReplyPo;
+import com.zkyyo.www.po.FilePo;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReplyDaoJdbcImpl implements ReplyDao{
+public class FileDaoJdbcImpl implements FileDao {
     private DataSource dataSource;
 
-    public ReplyDaoJdbcImpl(DataSource dataSource) {
+    public FileDaoJdbcImpl(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
     @Override
-    public void addReply(ReplyPo replyPo) {
+    public void addFile(FilePo filePo) {
         Connection conn = null;
         PreparedStatement pstmt = null;
 
         try {
             conn = dataSource.getConnection();
-            String sql = "INSERT INTO reply (topic_id, user_id, content) VALUES (?, ?, ?)";
+            String sql = "INSERT INTO upload_file (apply, user_id, topic_id, relative_path) VALUES (?, ?, ?, ?)";
             pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, replyPo.getTopicId());
-            pstmt.setInt(2, replyPo.getUserId());
-            pstmt.setString(3, replyPo.getContent());
+            pstmt.setInt(1, filePo.getApply());
+            pstmt.setInt(2, filePo.getUserId());
+            pstmt.setInt(3, filePo.getTopicId());
+            pstmt.setString(4, filePo.getPath());
             pstmt.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -40,30 +37,31 @@ public class ReplyDaoJdbcImpl implements ReplyDao{
     }
 
     @Override
-    public List<ReplyPo> selectReplys(int topicId) {
+    public List<FilePo> selectFiles(int topicId, int apply) {
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        List<ReplyPo> replys = new ArrayList<>();
+        List<FilePo> files = new ArrayList<>();
 
         try {
             conn = dataSource.getConnection();
-            String sql = "SELECT * FROM reply WHERE topic_id=?";
+            String sql = "SELECT * FROM upload_file WHERE topic_id=? AND apply=?";
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, topicId);
+            pstmt.setInt(2, apply);
             rs = pstmt.executeQuery();
             while (rs.next()) {
-                int replyId = rs.getInt("reply_id");
+                int fileId = rs.getInt("upload_file_id");
                 int userId = rs.getInt("user_id");
-                String content = rs.getString("content");
+                String path = rs.getString("relative_path");
                 Timestamp created = rs.getTimestamp("created");
-                replys.add(new ReplyPo(replyId, topicId, userId, content, created));
+                files.add(new FilePo(fileId, apply, userId, topicId, path, created));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             DbClose.close(conn, pstmt, rs);
         }
-        return replys;
+        return files;
     }
 }

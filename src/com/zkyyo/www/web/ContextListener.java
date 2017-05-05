@@ -1,8 +1,10 @@
 package com.zkyyo.www.web;
 
+import com.zkyyo.www.dao.FileDaoJdbcImpl;
 import com.zkyyo.www.dao.ReplyDaoJdbcImpl;
 import com.zkyyo.www.dao.TopicDaoJdbcImpl;
 import com.zkyyo.www.dao.UserDaoJdbcImpl;
+import com.zkyyo.www.service.FileService;
 import com.zkyyo.www.service.ReplyService;
 import com.zkyyo.www.service.TopicService;
 import com.zkyyo.www.service.UserService;
@@ -36,6 +38,7 @@ public class ContextListener implements ServletContextListener,
             context.setAttribute("userService", new UserService(new UserDaoJdbcImpl(dataSource)));
             context.setAttribute("topicService", new TopicService(new TopicDaoJdbcImpl(dataSource)));
             context.setAttribute("replyService", new ReplyService(new ReplyDaoJdbcImpl(dataSource)));
+            context.setAttribute("fileService", new FileService(new FileDaoJdbcImpl(dataSource)));
         } catch (NamingException e) {
             e.printStackTrace();
         }

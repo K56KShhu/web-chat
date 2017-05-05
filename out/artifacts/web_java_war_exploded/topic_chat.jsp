@@ -8,8 +8,9 @@
 
 <c:choose>
     <c:when test="${requestScope.topic != null}">
-        <c:url value="file_list.jsp" var="filesUrl">
+        <c:url value="file_list.do" var="filesUrl">
             <c:param name="topicId" value="${requestScope.topic.topicId}"/>
+            <c:param name="shareType" value="file"/>
         </c:url>
         <a href="${filesUrl}">文件分享区</a>
         <%--主题信息--%>

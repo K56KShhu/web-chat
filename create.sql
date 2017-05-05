@@ -70,6 +70,16 @@ CREATE TABLE topic_usergroup
     usergroup_id bigint(15) unsigned not null
 );
 
+DROP TABLE IF EXISTS upload_file;
+CREATE TABLE upload_file
+(
+    upload_file_id bigint(15) unsigned not null auto_increment primary key,
+    apply tinyint(2) not null,
+    user_id bigint(15) unsigned not null,
+    topic_id bigint(15) unsigned not null,
+    relative_path varchar(500) not null,
+    created timestamp not null default current_timestamp
+);
 
 INSERT INTO user (username, password, sex, email, status) VALUES ('101', 'abc', 'male', 'zkyyo@outlook.com', 1);
 INSERT INTO user (username, password, sex, email, status) VALUES ('102', 'abc', 'male', 'bingo@outlook.com', 1);

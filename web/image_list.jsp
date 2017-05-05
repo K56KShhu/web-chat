@@ -17,5 +17,18 @@
 </form>
 <br/><br/>
 
+<table border="1">
+    <tr>
+        <th>author</th>
+        <th>image</th>
+    </tr>
+    <c:forEach var="image" items="${requestScope.images}">
+        <tr>
+            <td>${image.value.userId}</td>
+            <td><img src="${image.key}"></td>
+        </tr>
+    </c:forEach>
+</table>
+
 </body>
 </html>

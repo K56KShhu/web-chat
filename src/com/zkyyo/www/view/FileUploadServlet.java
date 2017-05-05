@@ -97,7 +97,8 @@ public class FileUploadServlet extends HttpServlet {
             e.printStackTrace();
         }
 
-        response.sendRedirect("file_list.do?topicId=" + topicId + "?&shareType=" + shareType);
+        String page = "file_list.do?topicId=" + topicId + "&shareType=" + shareType;
+        response.sendRedirect(page);
     }
 
     private String makeFilename(String filename) {

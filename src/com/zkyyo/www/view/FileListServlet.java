@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,22 +33,28 @@ public class FileListServlet extends HttpServlet {
             return;
         }
 
+        List<FilePo> filesList;
         FileService fileService = (FileService) getServletContext().getAttribute("fileService");
-        List<FilePo> filesList = new ArrayList<>();
         if ("image".equals(shareType)) {
             filesList = fileService.findFiles(Integer.valueOf(topicId), FileService.APPLY_IMAGE);
+            String bathPath = getServletContext().getRealPath("/WEB-INF/topics");
+            Map<String, FilePo> imageMap = new HashMap<>();
+            for (FilePo f : filesList) {
+                String absolutePath = bathPath + f.getPath();
+                imageMap.put(absolutePath, f);
+            }
+            request.setAttribute("images", imageMap);
+            request.getRequestDispatcher("image_list.jsp").forward(request, response);
         } else if ("file".equals(shareType)) {
             filesList = fileService.findFiles(Integer.valueOf(topicId), FileService.APPLY_FILE);
+            Map<String, String> fileMap = new HashMap<>();
+            for (FilePo f : filesList) {
+                String relativePath = f.getPath();
+                String shortName = relativePath.substring(relativePath.indexOf("_") + 1);
+                fileMap.put(relativePath, shortName);
+            }
+            request.setAttribute("files", fileMap);
+            request.getRequestDispatcher("file_list.jsp").forward(request, response);
         }
-
-        Map<String, String> filesMap = new HashMap<>();
-        for (FilePo f : filesList) {
-            String path = f.getPath();
-            String shortName = path.substring(path.indexOf("_") + 1);
-            filesMap.put(path, shortName);
-        }
-
-        request.setAttribute("files", filesMap);
-        request.getRequestDispatcher("file_list.jsp").forward(request, response);
     }
 }

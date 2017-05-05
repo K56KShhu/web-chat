@@ -8,11 +8,16 @@
 
 <c:choose>
     <c:when test="${requestScope.topic != null}">
-        <c:url value="file_list.do" var="filesUrl">
+        <c:url value="file_list.do" var="fileUrl">
             <c:param name="topicId" value="${requestScope.topic.topicId}"/>
             <c:param name="shareType" value="file"/>
         </c:url>
-        <a href="${filesUrl}">文件分享区</a>
+        <c:url value="file_list.do" var="imageUrl">
+            <c:param name="topicId" value="${requestScope.topic.topicId}"/>
+            <c:param name="shareType" value="image"/>
+        </c:url>
+        <a href="${imageUrl}">图片分享区</a>
+        <a href="${fileUrl}">文件分享区</a>
         <%--主题信息--%>
         <h1><c:out value="${requestScope.topic.title}"/></h1>
         <p><c:out value="${requestScope.topic.description}"/></p>

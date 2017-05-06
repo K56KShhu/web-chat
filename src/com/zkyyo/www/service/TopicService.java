@@ -18,6 +18,10 @@ public class TopicService {
         return topicDao.selectTopics();
     }
     
+    public void deleteTopic(int topicId) {
+        topicDao.deleteTopicByTopicId(topicId);
+    }
+    
     public boolean isValidId(String topicId) {
         return true;
     }

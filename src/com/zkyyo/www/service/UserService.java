@@ -33,11 +33,11 @@ public class UserService {
         return userDao.selectRolesByUsername(username);
     }
 
-    public Set<String> getGroups(int userId) {
+    public Set<Integer> getGroups(int userId) {
         return userDao.selectGroupsByUserId(userId);
     }
 
-    public Set<String> getGroups(String username) {
+    public Set<Integer> getGroups(String username) {
         return userDao.selectGroupsByUsername(username);
     }
 
@@ -52,14 +52,14 @@ public class UserService {
     public Access getAccess(int userId) {
         UserPo user = userDao.selectUserByUserId(userId);
         Set<String> roles = getRoles(userId);
-        Set<String> groups = new HashSet<>(); //待完善
+        Set<Integer> groups = getGroups(userId);
         return new Access(userId, user.getUsername(), roles, groups);
     }
 
     public Access getAccess(String username) {
         UserPo user = userDao.selectUserByUsername(username);
         Set<String> roles = getRoles(username);
-        Set<String> groups = new HashSet<>(); //待完善
+        Set<Integer> groups = getGroups(username);
         return new Access(user.getUserId(), username, roles, groups);
     }
 

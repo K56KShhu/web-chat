@@ -26,7 +26,7 @@ public class AdminAuditServlet extends HttpServlet {
 
         UserService userService = (UserService) getServletContext().getAttribute("userService");
         List<String> errors = new ArrayList<>();
-        if (!userService.isValidUserId(userId) && !userService.isUserExisted(Integer.valueOf(userId))) {
+        if (!userService.isValidUserId(userId) || !userService.isUserExisted(Integer.valueOf(userId))) {
             errors.add("用户不存在");
         }
         int id = Integer.valueOf(userId);

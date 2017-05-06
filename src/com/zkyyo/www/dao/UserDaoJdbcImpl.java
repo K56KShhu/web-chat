@@ -160,13 +160,51 @@ public class UserDaoJdbcImpl implements UserDao {
     }
 
     @Override
-    public Set<String> selectGroupsByUserId(int id) {
-        return null;
+    public Set<Integer> selectGroupsByUserId(int userId) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        Set<Integer> groups = new HashSet<>();
+
+        try {
+            conn = dataSource.getConnection();
+            String sql = "SELECT usergroup_id FROM user_usergroup WHERE user_id=?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, userId);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                groups.add(rs.getInt("usergroup_id"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, pstmt, rs);
+        }
+        return groups;
     }
 
     @Override
-    public Set<String> selectGroupsByUsername(String username) {
-        return null;
+    public Set<Integer> selectGroupsByUsername(String username) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        Set<Integer> groups = new HashSet<>();
+
+        try {
+            conn = dataSource.getConnection();
+            String sql = "SELECT usergroup_id FROM user_usergroup WHERE user_id = (SELECT user_id FROM user WHERE user_name=?)";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, username);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                groups.add(rs.getInt("usergroup_id"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, pstmt, rs);
+        }
+        return groups;
     }
 
     @Override

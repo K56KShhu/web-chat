@@ -6,13 +6,13 @@ public class Access {
     private int userId;
     private String username;
     private Set<String> roles;
-    private Set<String> groups;
+    private Set<Integer> groups;
 
     public Access() {
 
     }
 
-    public Access(int userId, String username, Set<String> roles, Set<String> groups) {
+    public Access(int userId, String username, Set<String> roles, Set<Integer> groups) {
         this.userId = userId;
         this.username = username;
         this.roles = roles;
@@ -28,9 +28,9 @@ public class Access {
         return false;
     }
 
-    public boolean isUserInGroups(String s) {
-        if (groups != null && !groups.isEmpty()) {
-            if (groups.contains(s)) {
+    public boolean isUserInGroups(int groupId) {
+        if (!groups.isEmpty()) {
+            if (groups.contains(groupId)) {
                 return true;
             }
         }
@@ -61,11 +61,11 @@ public class Access {
         this.roles = roles;
     }
 
-    public Set<String> getGroups() {
+    public Set<Integer> getGroups() {
         return groups;
     }
 
-    public void setGroups(Set<String> groups) {
+    public void setGroups(Set<Integer> groups) {
         this.groups = groups;
     }
 

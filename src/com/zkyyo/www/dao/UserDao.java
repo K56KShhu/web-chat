@@ -11,8 +11,8 @@ public interface UserDao {
     List<UserPo> selectUsersByStatus(int status);
     Set<String> selectRolesByUserId(int id);
     Set<String> selectRolesByUsername(String username);
-    Set<String> selectGroupsByUserId(int id);
-    Set<String> selectGroupsByUsername(String username);
+    Set<Integer> selectGroupsByUserId(int id);
+    Set<Integer> selectGroupsByUsername(String username);
     void addUser(UserPo userPo);
     void update(UserPo userPo, List<Integer> updatedTypes);
 }

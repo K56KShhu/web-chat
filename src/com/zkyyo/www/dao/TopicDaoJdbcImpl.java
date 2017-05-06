@@ -100,4 +100,22 @@ public class TopicDaoJdbcImpl implements TopicDao {
             DbClose.close(conn, pstmt);
         }
     }
+
+    @Override
+    public void deleteTopicByTopicId(int topicId) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            conn = dataSource.getConnection();
+            String sql = "DELETE FROM topic WHERE topic_id=?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, topicId);
+            pstmt.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, pstmt);
+        }
+    }
 }

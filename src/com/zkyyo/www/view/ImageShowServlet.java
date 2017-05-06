@@ -21,17 +21,17 @@ public class ImageShowServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String relativePath = request.getParameter("relativePath");
-        String bathPath = getServletContext().getRealPath("/topics");
+        String bathPath = getServletContext().getRealPath("/WEB-INF/topics");
         String absolutePath = bathPath + relativePath;
         File file = new File(absolutePath);
 
-        OutputStream outputStream = response.getOutputStream();
         FileInputStream fileInputStream = new FileInputStream(file);
 
         byte[] data = new byte[fileInputStream.available()];
-        System.out.println("available: " + fileInputStream.available());
         fileInputStream.read(data);
         fileInputStream.close();
+
+        OutputStream outputStream = response.getOutputStream();
         response.setContentType("image/jpeg");
         outputStream.write(data);
         outputStream.flush();

@@ -27,6 +27,7 @@ import java.util.UUID;
         urlPatterns = {"/file_upload.do"}
 )
 public class FileUploadServlet extends HttpServlet {
+    private static final int APPLY_CHAT = 0;
     private static final int APPLY_IMAGE = 1;
     private static final int APPLY_FILE = 2;
 
@@ -72,7 +73,9 @@ public class FileUploadServlet extends HttpServlet {
                         filePo.setUserId(userId);
                         filePo.setTopicId(Integer.valueOf(topicId));
                         filePo.setPath(relativePath + "/" + filename);
-                        if ("image".equals(shareType)) {
+                        if ("chat".equals(shareType)) {
+                            filePo.setApply(APPLY_CHAT);
+                        } else if ("image".equals(shareType)) {
                             filePo.setApply(APPLY_IMAGE);
                         } else if ("file".equals(shareType)) {
                             filePo.setApply(APPLY_FILE);
@@ -108,10 +111,12 @@ public class FileUploadServlet extends HttpServlet {
 
     private String makeRelativePath(int topicId, String shareType) {
         String typePath;
-        if ("file".equals(shareType)) {
-            typePath = "/file";
+        if ("chat".equals(shareType)) {
+            typePath = "/chat";
         } else if ("image".equals(shareType)) {
             typePath = "/image";
+        } else if ("file".equals(shareType)) {
+            typePath = "/file";
         } else {
             typePath = "/others";
         }
@@ -121,8 +126,8 @@ public class FileUploadServlet extends HttpServlet {
     }
 
     private String makeAbsolutePath(String relativePath) {
-//        String bathPath = getServletContext().getRealPath("/WEB-INF/topics");
-        String bathPath = getServletContext().getRealPath("/topics");
+        String bathPath = getServletContext().getRealPath("/WEB-INF/topics");
+//        String bathPath = getServletContext().getRealPath("/topics");
         String absolutePath = bathPath + relativePath;
 
         File file = new File(absolutePath);

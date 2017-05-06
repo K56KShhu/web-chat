@@ -21,8 +21,8 @@ public class FileDownloadServlet extends HttpServlet {
         String relativePath = request.getParameter("relativePath");
 //        relativePath = new String(relativePath.getBytes("ISO-8859-1"), "UTF-8");
 
-//        String bathPath = getServletContext().getRealPath("/WEB-INF/topics");
-        String bathPath = getServletContext().getRealPath("/topics");
+        String bathPath = getServletContext().getRealPath("/WEB-INF/topics");
+//        String bathPath = getServletContext().getRealPath("/topics");
         String absolutePath = bathPath + relativePath;
         File file = new File(absolutePath);
         if (!file.exists()) {

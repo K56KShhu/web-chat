@@ -33,26 +33,30 @@ public class FileListServlet extends HttpServlet {
             return;
         }
 
-        List<FilePo> filesList;
+        List<FilePo> fileList;
         FileService fileService = (FileService) getServletContext().getAttribute("fileService");
-        if ("image".equals(shareType)) {
-            filesList = fileService.findFiles(Integer.valueOf(topicId), FileService.APPLY_IMAGE);
+        if ("chat".equals(shareType)) {
+            fileList = fileService.findFiles(Integer.valueOf(topicId), FileService.APPLY_CHAT);
+            Map<String, FilePo> imageMap = new HashMap<>();
+            for (FilePo f : fileList) {
+                String relativePath = f.getPath();
+                imageMap.put(relativePath, f);
+            }
+            request.setAttribute("images", imageMap);
+        } else if ("image".equals(shareType)) {
+            fileList = fileService.findFiles(Integer.valueOf(topicId), FileService.APPLY_IMAGE);
 //            String bathPath = getServletContext().getRealPath("/topics");
             Map<String, FilePo> imageMap = new HashMap<>();
-//            for (FilePo f : filesList) {
-//                String absolutePath = bathPath + f.getPath();
-//                imageMap.put(absolutePath, f);
-//            }
-            for (FilePo f : filesList) {
+            for (FilePo f : fileList) {
                 String relativePath = f.getPath();
                 imageMap.put(relativePath, f);
             }
             request.setAttribute("images", imageMap);
             request.getRequestDispatcher("image_list.jsp").forward(request, response);
         } else if ("file".equals(shareType)) {
-            filesList = fileService.findFiles(Integer.valueOf(topicId), FileService.APPLY_FILE);
+            fileList = fileService.findFiles(Integer.valueOf(topicId), FileService.APPLY_FILE);
             Map<String, String> fileMap = new HashMap<>();
-            for (FilePo f : filesList) {
+            for (FilePo f : fileList) {
                 String relativePath = f.getPath();
                 String shortName = relativePath.substring(relativePath.indexOf("_") + 1);
                 fileMap.put(relativePath, shortName);

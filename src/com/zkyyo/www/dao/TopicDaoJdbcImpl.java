@@ -78,4 +78,26 @@ public class TopicDaoJdbcImpl implements TopicDao {
         }
         return null;
     }
+
+    @Override
+    public void addTopic(TopicPo topicPo) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            conn = dataSource.getConnection();
+            String sql = "INSERT INTO topic (title, description, is_private, creator_id, last_modify_id) VALUES (?, ?, ?, ?, ?)" ;
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, topicPo.getTitle());
+            pstmt.setString(2, topicPo.getDescription());
+            pstmt.setInt(3, topicPo.getIsPrivate());
+            pstmt.setInt(4, topicPo.getCreatorId());
+            pstmt.setInt(5, topicPo.getLastModifyId());
+            pstmt.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, pstmt);
+        }
+    }
 }

@@ -7,4 +7,5 @@ import java.util.List;
 public interface TopicDao {
     List<TopicPo> selectTopics();
     TopicPo selectTopicByTopicId(int id);
+    void addTopic(TopicPo topicPo);
 }

@@ -26,8 +26,8 @@ DROP TABLE IF EXISTS topic;
 CREATE TABLE topic
 (
     topic_id bigint(15) unsigned not null auto_increment primary key,
-    title varchar(50) not null,
-    description varchar(300) not null default '',
+    title varchar(100) not null,
+    description varchar(255) not null default '',
     is_private tinyint(2) not null default '0',
     creator_id bigint(15) unsigned not null,
     last_modify_id bigint(15) unsigned not null,
@@ -42,7 +42,7 @@ CREATE TABLE reply
     reply_id bigint(15) unsigned not null auto_increment primary key,
     topic_id bigint(15) unsigned not null,
     user_id bigint(15) unsigned not null,
-    content varchar(300) not null default '',
+    content varchar(255) not null default '',
     content_type tinyint(2) not null,
     created timestamp not null default current_timestamp
 );
@@ -78,7 +78,7 @@ CREATE TABLE upload_file
     apply tinyint(2) not null,
     user_id bigint(15) unsigned not null,
     topic_id bigint(15) unsigned not null,
-    relative_path varchar(500) not null,
+    relative_path varchar(255) not null,
     created timestamp not null default current_timestamp
 );
 

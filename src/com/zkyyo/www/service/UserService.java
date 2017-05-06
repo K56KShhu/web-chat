@@ -8,8 +8,9 @@ import com.zkyyo.www.web.Access;
 import java.util.*;
 
 public class UserService {
+    public static final int STATUS_NOT_APPROVED = -1;
     public static final int STATUS_AUDIT = 0;
-    public static final int STAUTS_NORMAL = 1;
+    public static final int STATUS_APPROVED = 1;
     private UserDao userDao;
 
     public UserService(UserDao userDao) {
@@ -62,6 +63,7 @@ public class UserService {
         return new Access(user.getUserId(), username, roles, groups);
     }
 
+    //用户修改信息
     public void update(UserPo userPo) {
         UserPo initialUser = userDao.selectUserByUserId(userPo.getUserId());
         List<Integer> updatedTypes = new ArrayList<>();
@@ -78,7 +80,40 @@ public class UserService {
         userDao.update(userPo, updatedTypes);
     }
 
-    public boolean isValidUserName(String username) {
+    public List<UserPo> getUsersByStatus(int status) {
+        List<UserPo> users = new ArrayList<>();
+        if (status == STATUS_AUDIT) {
+            users = userDao.selectUsersByStatus(UserDaoJdbcImpl.STATUS_AUDIT);
+        } else if (status == STATUS_APPROVED) {
+            users = userDao.selectUsersByStatus(UserDaoJdbcImpl.STATUS_APPROVED);
+        } else if (status == STATUS_NOT_APPROVED) {
+            users = userDao.selectUsersByStatus(UserDaoJdbcImpl.STATUS_NOT_APPROVED);
+        }
+        return users; //用户输入不存在的status时会返回size为0的列表, 而不是null
+    }
+
+    public void updateStatus(int userId, int status) {
+        UserPo user = new UserPo();
+        user.setUserId(userId);
+        user.setStatus(status);
+        List<Integer> updateTypes = new ArrayList<>();
+        updateTypes.add(UserDaoJdbcImpl.UPDATE_STATUS);
+        userDao.update(user, updateTypes);
+    }
+
+    public boolean isUserExisted(int userId) {
+        return true;
+    }
+
+    public boolean isUserExisted(String username) {
+        return true;
+    }
+
+    public boolean isValidUserId(String userId) {
+        return true;
+    }
+
+    public boolean isValidUsername(String username) {
         return true;
     }
 

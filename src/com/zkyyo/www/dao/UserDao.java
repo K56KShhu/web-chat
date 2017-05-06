@@ -8,6 +8,7 @@ import java.util.Set;
 public interface UserDao {
     UserPo selectUserByUserId(int id);
     UserPo selectUserByUsername(String username);
+    List<UserPo> selectUsersByStatus(int status);
     Set<String> selectRolesByUserId(int id);
     Set<String> selectRolesByUsername(String username);
     Set<String> selectGroupsByUserId(int id);

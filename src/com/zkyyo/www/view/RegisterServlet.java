@@ -2,7 +2,6 @@ package com.zkyyo.www.view;
 
 import com.zkyyo.www.po.UserPo;
 import com.zkyyo.www.service.UserService;
-import com.zkyyo.www.web.Access;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -27,7 +26,7 @@ public class RegisterServlet extends HttpServlet {
 
         UserService userService = (UserService) getServletContext().getAttribute("userService");
         List<String> errors = new ArrayList<>();
-        if (!userService.isValidUserName(username)) {
+        if (!userService.isValidUsername(username)) {
             errors.add("bad username");
         }
         if (!userService.isValidPassword(password, confirmedPsw)) {

@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -16,6 +17,12 @@ public class UserDaoJdbcImpl implements UserDao {
     public static final int UPDATE_SEX = 1;
     public static final int UPDATE_EMAIL = 2;
     public static final int UPDATE_PASSWORD = 3;
+    public static final int UPDATE_STATUS = 4;
+
+    public static final int STATUS_NOT_APPROVED = -1;
+    public static final int STATUS_AUDIT = 0;
+    public static final int STATUS_APPROVED = 1;
+
     private DataSource dataSource;
 
     public UserDaoJdbcImpl(DataSource dataSource) {
@@ -70,6 +77,38 @@ public class UserDaoJdbcImpl implements UserDao {
             DbClose.close(conn, pstmt, rs);
         }
         return user;
+    }
+
+    @Override
+    public List<UserPo> selectUsersByStatus(int status) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        List<UserPo> users = new ArrayList<>();
+
+        try {
+            conn = dataSource.getConnection();
+            String sql = "SELECT * FROM user WHERE status=?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, status);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                UserPo user = new UserPo();
+                user.setUserId(rs.getInt("user_id"));
+                user.setUsername(rs.getString("username"));
+                user.setPassword(rs.getString("password"));
+                user.setSex(rs.getString("sex"));
+                user.setEmail(rs.getString("email"));
+                user.setStatus(status);
+                user.setCreated(rs.getTimestamp("created"));
+                users.add(user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, pstmt, rs);
+        }
+        return users;
     }
 
     @Override
@@ -181,6 +220,14 @@ public class UserDaoJdbcImpl implements UserDao {
                         pstmt = conn.prepareStatement(sql);
                         pstmt.setString(1, userPo.getPassword());
                         pstmt.setInt(2, userPo.getUserId());
+                        pstmt.execute();
+                        break;
+                    case UPDATE_STATUS:
+                        sql = "UPDATE user SET status=? WHERE user_id=?";
+                        pstmt = conn.prepareStatement(sql);
+                        pstmt.setInt(1, userPo.getStatus());
+                        pstmt.setInt(2, userPo.getUserId());
+                        pstmt.execute();
                         break;
                     default:
                         break;

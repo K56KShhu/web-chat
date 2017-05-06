@@ -9,6 +9,7 @@
 <h1>index</h1>
 <a href="logout.do">logout</a><br/>
 <a href="user_update_info.do">user update</a><br/>
+<a href="admin_index.jsp">admin</a><br/>
 <c:choose>
     <c:when test="${requestScope.topics != null}">
         <table border="1">

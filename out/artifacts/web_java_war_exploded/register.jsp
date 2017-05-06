@@ -1,9 +1,22 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>register</title>
 </head>
 <body>
+
+<c:choose>
+    <c:when test="${requestScope.errors != null && !requestScope.errors.isEmpty()}">
+        注册失败<br/>
+        <c:forEach var="error" items="${requestScope.errors}">
+            <c:out value="${error}"/><br/>
+        </c:forEach>
+    </c:when>
+    <c:when test="${requestScope.errors != null && requestScope.errors.isEmpty()}">
+        注册成功, 请等待管理员审核<br/>
+    </c:when>
+</c:choose>
 
 <form method="post" action="register.do">
     username: <input type="text" name="username" value="${requestScope.username != null ? requestScope.username : ""}"/><br/>

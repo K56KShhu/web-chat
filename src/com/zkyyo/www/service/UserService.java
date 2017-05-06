@@ -8,6 +8,8 @@ import com.zkyyo.www.web.Access;
 import java.util.*;
 
 public class UserService {
+    public static final int STATUS_AUDIT = 0;
+    public static final int STAUTS_NORMAL = 1;
     private UserDao userDao;
 
     public UserService(UserDao userDao) {

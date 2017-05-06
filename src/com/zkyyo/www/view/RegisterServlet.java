@@ -40,19 +40,21 @@ public class RegisterServlet extends HttpServlet {
             errors.add("bad email");
         }
 
-        String page = "register.jsp";
         if (!errors.isEmpty()) {
             request.setAttribute("username", username);
             request.setAttribute("sex", sex);
             request.setAttribute("email", email);
         } else {
-            UserPo user = new UserPo(username, password, sex, email);
+            UserPo user = new UserPo();
+            user.setUsername(username);
+            user.setPassword(password);
+            user.setSex(sex);
+            user.setEmail(email);
+            user.setStatus(UserService.STATUS_AUDIT); //待审核状态
             userService.addUser(user);
-            Access access = userService.getAccess(username);
-            request.getSession().setAttribute("access", access);
-            page = "index.jsp";
         }
 
+        String page = "register.jsp";
         request.setAttribute("errors", errors);
         request.getRequestDispatcher(page).forward(request, response);
     }

@@ -10,6 +10,9 @@
     password: <input type="password" name="password"/><br/>
     <input type="submit"/>
 </form>
+<br/>
+
+<a href="register.jsp">注册</a>
 
 </body>
 </html>

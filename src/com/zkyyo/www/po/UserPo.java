@@ -9,7 +9,7 @@ public class UserPo implements Serializable {
     private String password;
     private String sex;
     private String email;
-    private int status;
+    private int status; // 0待审核 1审核通过
     private Timestamp created;
 
     public UserPo() {

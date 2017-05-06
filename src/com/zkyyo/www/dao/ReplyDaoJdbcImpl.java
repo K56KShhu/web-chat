@@ -26,11 +26,12 @@ public class ReplyDaoJdbcImpl implements ReplyDao{
 
         try {
             conn = dataSource.getConnection();
-            String sql = "INSERT INTO reply (topic_id, user_id, content) VALUES (?, ?, ?)";
+            String sql = "INSERT INTO reply (topic_id, user_id, content, content_type) VALUES (?, ?, ?, ?)";
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, replyPo.getTopicId());
             pstmt.setInt(2, replyPo.getUserId());
             pstmt.setString(3, replyPo.getContent());
+            pstmt.setInt(4, replyPo.getContentType());
             pstmt.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -56,8 +57,9 @@ public class ReplyDaoJdbcImpl implements ReplyDao{
                 int replyId = rs.getInt("reply_id");
                 int userId = rs.getInt("user_id");
                 String content = rs.getString("content");
+                int contentType = rs.getInt("content_type");
                 Timestamp created = rs.getTimestamp("created");
-                replys.add(new ReplyPo(replyId, topicId, userId, content, created));
+                replys.add(new ReplyPo(replyId, topicId, userId, content, contentType, created));
             }
         } catch (SQLException e) {
             e.printStackTrace();

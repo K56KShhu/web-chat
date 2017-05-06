@@ -25,7 +25,7 @@
         <p><c:out value="${requestScope.topic.description}"/></p>
 
         <%--输入文本内容--%>
-        <form method="post" action="reply_add.do">
+        <form method="post" action="reply_text_add.do">
             text:<br/>
             <textarea name="content" rows="5" cols="60"></textarea>
             <input type="hidden" name="topicId" value="${requestScope.topic.topicId}"/>
@@ -45,8 +45,20 @@
 
         <%--聊天信息--%>
         <c:forEach var="reply" items="${requestScope.replys}">
-            ${reply.created}&nbsp;${reply.userId}<br/>
-            <c:out value="${reply.content}"/><br/>
+            ${reply.userId}&nbsp;${reply.created}<br/>
+            <c:choose>
+                <%--文本信息--%>
+                <c:when test="${reply.contentType == 1}">
+                    <c:out value="${reply.content}"/><br/>
+                </c:when>
+                <%--图片信息--%>
+                <c:when test="${reply.contentType == 2}">
+                    <c:url value="image_show.do" var="imageUrl">
+                        <c:param name="relativePath" value="${reply.content}"/>
+                    </c:url>
+                    <img src="${imageUrl}"/><br/>
+                </c:when>
+            </c:choose>
         </c:forEach>
     </c:when>
     <c:otherwise>

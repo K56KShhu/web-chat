@@ -35,17 +35,8 @@ public class FileListServlet extends HttpServlet {
 
         List<FilePo> fileList;
         FileService fileService = (FileService) getServletContext().getAttribute("fileService");
-        if ("chat".equals(shareType)) {
-            fileList = fileService.findFiles(Integer.valueOf(topicId), FileService.APPLY_CHAT);
-            Map<String, FilePo> imageMap = new HashMap<>();
-            for (FilePo f : fileList) {
-                String relativePath = f.getPath();
-                imageMap.put(relativePath, f);
-            }
-            request.setAttribute("images", imageMap);
-        } else if ("image".equals(shareType)) {
+        if ("image".equals(shareType)) {
             fileList = fileService.findFiles(Integer.valueOf(topicId), FileService.APPLY_IMAGE);
-//            String bathPath = getServletContext().getRealPath("/topics");
             Map<String, FilePo> imageMap = new HashMap<>();
             for (FilePo f : fileList) {
                 String relativePath = f.getPath();

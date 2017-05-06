@@ -43,6 +43,7 @@ CREATE TABLE reply
     topic_id bigint(15) unsigned not null,
     user_id bigint(15) unsigned not null,
     content varchar(300) not null default '',
+    content_type tinyint(2) not null,
     created timestamp not null default current_timestamp
 );
 

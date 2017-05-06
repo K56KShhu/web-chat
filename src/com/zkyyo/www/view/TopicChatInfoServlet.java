@@ -41,15 +41,5 @@ public class TopicChatInfoServlet extends HttpServlet {
         } else {
             response.sendRedirect("index.jsp");
         }
-
-        /*
-        if (topicId != null && topicService.isValidId(topicId)) {
-            TopicPo topic = topicService.findTopic(Integer.valueOf(topicId));
-            request.setAttribute("topic", topic);
-            request.getRequestDispatcher("topic_chat.jsp").forward(request, response);
-        } else {
-            response.sendRedirect("index.jsp");
-        }
-        */
     }
 }

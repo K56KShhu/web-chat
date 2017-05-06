@@ -8,17 +8,19 @@ public class ReplyPo implements Serializable {
     private int topicId;
     private int userId;
     private String content;
+    private int contentType; // 0文本 1图片
     private Timestamp created;
 
     public ReplyPo() {
 
     }
 
-    public ReplyPo(int replyId, int topicId, int userId, String content, Timestamp created) {
+    public ReplyPo(int replyId, int topicId, int userId, String content, int contentType, Timestamp created) {
         this.replyId = replyId;
         this.topicId = topicId;
         this.userId = userId;
         this.content = content;
+        this.contentType = contentType;
         this.created = created;
     }
 
@@ -54,6 +56,14 @@ public class ReplyPo implements Serializable {
         this.content = content;
     }
 
+    public int getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(int contentType) {
+        this.contentType = contentType;
+    }
+
     public Timestamp getCreated() {
         return created;
     }
@@ -69,6 +79,7 @@ public class ReplyPo implements Serializable {
                 ", topicId=" + topicId +
                 ", userId=" + userId +
                 ", content='" + content + '\'' +
+                ", contentType=" + contentType +
                 ", created=" + created +
                 '}';
     }

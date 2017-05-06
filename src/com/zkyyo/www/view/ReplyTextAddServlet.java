@@ -14,11 +14,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @WebServlet(
-        name = "ReplyAddServlet",
-        urlPatterns = {"/reply_add.do"}
+        name = "ReplyTextAddServlet",
+        urlPatterns = {"/reply_text_add.do"}
 )
-public class ReplyAddServlet extends HttpServlet {
+public class ReplyTextAddServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String topicId = request.getParameter("topicId");
         String content = request.getParameter("content");
@@ -34,7 +35,7 @@ public class ReplyAddServlet extends HttpServlet {
             response.sendRedirect(page);
             return;
         } else { //存在
-            page = "topic_chat_info.do?topicId=" + Integer.valueOf(topicId); // 主题有效
+            page = "topic_chat_info.do?topicId=" + topicId; // 主题有效
         }
         if (!replyService.isValidContent(content)) {
             errors.add("bad content");
@@ -48,6 +49,7 @@ public class ReplyAddServlet extends HttpServlet {
             reply.setUserId(userId);
             reply.setTopicId(Integer.valueOf(topicId));
             reply.setContent(content);
+            reply.setContentType(1);
             replyService.addReply(reply);
             response.sendRedirect(page);
         }

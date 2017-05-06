@@ -34,7 +34,25 @@ public class FileListServlet extends HttpServlet {
         }
 
         List<FilePo> fileList;
+        int tId = Integer.valueOf(topicId);
         FileService fileService = (FileService) getServletContext().getAttribute("fileService");
+        if ("image".equals(shareType)) {
+            fileList = fileService.findFiles(tId, FileService.APPLY_IMAGE);
+            request.setAttribute("images", fileList);
+            request.getRequestDispatcher("image_list.jsp").forward(request, response);
+        } else if ("file".equals(shareType)) {
+            fileList = fileService.findFiles(tId, FileService.APPLY_FILE);
+            Map<FilePo, String> fileMap = new HashMap<>();
+            for (FilePo f : fileList) {
+                String relativePath = f.getPath();
+                String shortName = relativePath.substring(relativePath.indexOf("_") + 1);
+                fileMap.put(f, shortName);
+            }
+            request.setAttribute("files", fileMap);
+            request.getRequestDispatcher("file_list.jsp").forward(request, response);
+        }
+
+        /*
         if ("image".equals(shareType)) {
             fileList = fileService.findFiles(Integer.valueOf(topicId), FileService.APPLY_IMAGE);
             Map<String, FilePo> imageMap = new HashMap<>();
@@ -55,5 +73,6 @@ public class FileListServlet extends HttpServlet {
             request.setAttribute("files", fileMap);
             request.getRequestDispatcher("file_list.jsp").forward(request, response);
         }
+        */
     }
 }

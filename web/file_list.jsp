@@ -16,6 +16,25 @@
 </form>
 <br/><br/>
 
+<table border="1">
+    <tr>
+        <th>filename</th>
+        <th>userId</th>
+        <th>created</th>
+    </tr>
+    <c:forEach var="file" items="${requestScope.files}">
+        <tr>
+            <c:url value="file_download.do" var="downUrl">
+                <c:param name="relativePath" value="${file.key.path}"/>
+            </c:url>
+            <td>${file.value}</td>
+            <td>${file.key.userId}</td>
+            <td>${file.key.created}</td>
+            <td><a href="${downUrl}">下载</a></td>
+        </tr>
+    </c:forEach>
+</table>
+
 <%--
 <table border="1">
     <tr>
@@ -31,6 +50,7 @@
 </table>
 --%>
 
+<%--
 <table border="1">
     <tr>
         <th>filename</th>
@@ -47,6 +67,7 @@
         </tr>
     </c:forEach>
 </table>
+--%>
 
 <%--    *error*
 <c:forEach var="file" items="${requestScope.files}">

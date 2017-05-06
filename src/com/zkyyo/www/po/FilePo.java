@@ -1,6 +1,7 @@
 package com.zkyyo.www.po;
 
 import java.sql.Timestamp;
+import java.util.Objects;
 
 public class FilePo {
     private int fileId;
@@ -81,5 +82,33 @@ public class FilePo {
                 ", path='" + path + '\'' +
                 ", created=" + created +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        if (!(obj instanceof FilePo)) {
+            return false;
+        }
+        FilePo other = (FilePo) obj;
+        return fileId == other.getFileId()
+                && apply == other.getApply()
+                && userId == other.getUserId()
+                && topicId == other.topicId
+                && path.equals(other.getPath())
+                && created.equals(other.getCreated());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(fileId, apply, userId, topicId, path, created);
     }
 }

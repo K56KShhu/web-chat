@@ -6,6 +6,8 @@ import com.zkyyo.www.po.ReplyPo;
 import java.util.List;
 
 public class ReplyService {
+    public static final int CONTENT_TEXT = 1;
+    public static final int CONTENT_IMAGE = 2;
     private ReplyDao replyDao;
 
     public ReplyService(ReplyDao replyDao) {

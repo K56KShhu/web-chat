@@ -49,7 +49,7 @@ public class ReplyTextAddServlet extends HttpServlet {
             reply.setUserId(userId);
             reply.setTopicId(Integer.valueOf(topicId));
             reply.setContent(content);
-            reply.setContentType(1);
+            reply.setContentType(ReplyService.CONTENT_TEXT);
             replyService.addReply(reply);
             response.sendRedirect(page);
         }

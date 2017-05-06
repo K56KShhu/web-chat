@@ -49,7 +49,7 @@ public class ReplyDaoJdbcImpl implements ReplyDao{
 
         try {
             conn = dataSource.getConnection();
-            String sql = "SELECT * FROM reply WHERE topic_id=?";
+            String sql = "SELECT * FROM reply WHERE topic_id=? ORDER BY created";
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, topicId);
             rs = pstmt.executeQuery();

@@ -29,9 +29,6 @@ import java.util.UUID;
         urlPatterns = {"/file_upload.do"}
 )
 public class FileUploadServlet extends HttpServlet {
-    private static final int APPLY_CHAT = 0;
-    private static final int APPLY_IMAGE = 1;
-    private static final int APPLY_FILE = 2;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String topicId = request.getParameter("topicId");
@@ -59,6 +56,7 @@ public class FileUploadServlet extends HttpServlet {
                 for (FileItem item : list) {
                     if (!item.isFormField()) {
                         int tId = Integer.valueOf(topicId);
+                        //处理类型
                         if ("chat".equals(shareType)) {
                             processChatImage(userId, tId, shareType, item);
                             page = "topic_chat_info.do?topicId=" + topicId;
@@ -75,25 +73,6 @@ public class FileUploadServlet extends HttpServlet {
                             response.sendRedirect(page);
                             return;
                         }
-//                        filename = makeFilename(filename);
-//                        String relativePath = makeRelativePath(Integer.valueOf(topicId), shareType);
-//                        String absolutePath = makeAbsolutePath(relativePath);
-//                        File file = new File(absolutePath, filename);
-//                        item.write(file);
-//                        item.delete();
-//
-//                        FilePo filePo = new FilePo();
-//                        filePo.setUserId(userId);
-//                        filePo.setTopicId(Integer.valueOf(topicId));
-//                        filePo.setPath(relativePath + "/" + filename);
-//                        if ("chat".equals(shareType)) {
-//                            filePo.setApply(APPLY_CHAT);
-//                        } else if ("image".equals(shareType)) {
-//                            filePo.setApply(APPLY_IMAGE);
-//                        } else if ("file".equals(shareType)) {
-//                            filePo.setApply(APPLY_FILE);
-//                        }
-//                        fileService.addFile(filePo);
                     }
                 }
             }
@@ -112,7 +91,6 @@ public class FileUploadServlet extends HttpServlet {
             request.getRequestDispatcher("error.jsp").forward(request, response);
             e.printStackTrace();
         }
-
         response.sendRedirect(page);
     }
 
@@ -155,12 +133,10 @@ public class FileUploadServlet extends HttpServlet {
         filePo.setUserId(userId);
         filePo.setTopicId(topicId);
         filePo.setPath(relativePath + "/" + filename);
-        if ("chat".equals(shareType)) {
-            filePo.setApply(APPLY_CHAT);
-        } else if ("image".equals(shareType)) {
-            filePo.setApply(APPLY_IMAGE);
+        if ("image".equals(shareType)) {
+            filePo.setApply(FileService.APPLY_IMAGE);
         } else if ("file".equals(shareType)) {
-            filePo.setApply(APPLY_FILE);
+            filePo.setApply(FileService.APPLY_FILE);
         }
         FileService fileService = (FileService) getServletContext().getAttribute("fileService");
         fileService.addFile(filePo);

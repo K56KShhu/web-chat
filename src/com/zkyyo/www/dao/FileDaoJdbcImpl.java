@@ -45,7 +45,7 @@ public class FileDaoJdbcImpl implements FileDao {
 
         try {
             conn = dataSource.getConnection();
-            String sql = "SELECT * FROM upload_file WHERE topic_id=? AND apply=?";
+            String sql = "SELECT * FROM upload_file WHERE topic_id=? AND apply=? ORDER BY created";
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, topicId);
             pstmt.setInt(2, apply);

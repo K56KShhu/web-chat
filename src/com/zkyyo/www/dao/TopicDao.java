@@ -9,4 +9,5 @@ public interface TopicDao {
     TopicPo selectTopicByTopicId(int id);
     void addTopic(TopicPo topicPo);
     void deleteTopicByTopicId(int topicId);
+    void updateTopic(TopicPo topicPo);
 }

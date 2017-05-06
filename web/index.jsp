@@ -36,7 +36,7 @@
                         <c:url value="topic_delete.do" var="deleteUrl">
                             <c:param name="topicId" value="${topic.topicId}"/>
                         </c:url>
-                        <c:url value="topic_update.jsp" var="updateUrl">
+                        <c:url value="topic_update_info.do" var="updateUrl">
                             <c:param name="topicId" value="${topic.topicId}"/>
                         </c:url>
                         <td><a href="${deleteUrl}">删除</a></td>
@@ -50,7 +50,6 @@
         <c:redirect url="topic_find.do"/>
     </c:otherwise>
 </c:choose>
-
 
 </body>
 </html>

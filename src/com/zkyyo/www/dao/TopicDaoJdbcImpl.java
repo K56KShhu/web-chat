@@ -86,7 +86,7 @@ public class TopicDaoJdbcImpl implements TopicDao {
 
         try {
             conn = dataSource.getConnection();
-            String sql = "INSERT INTO topic (title, description, is_private, creator_id, last_modify_id) VALUES (?, ?, ?, ?, ?)" ;
+            String sql = "INSERT INTO topic (title, description, is_private, creator_id, last_modify_id) VALUES (?, ?, ?, ?, ?)";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, topicPo.getTitle());
             pstmt.setString(2, topicPo.getDescription());
@@ -111,6 +111,27 @@ public class TopicDaoJdbcImpl implements TopicDao {
             String sql = "DELETE FROM topic WHERE topic_id=?";
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, topicId);
+            pstmt.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, pstmt);
+        }
+    }
+
+    @Override
+    public void updateTopic(TopicPo topicPo) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            conn = dataSource.getConnection();
+            String sql = "UPDATE topic SET title=?, description=?, last_modify_id=? WHERE topic_id=?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, topicPo.getTitle());
+            pstmt.setString(2, topicPo.getDescription());
+            pstmt.setInt(3, topicPo.getLastModifyId());
+            pstmt.setInt(4, topicPo.getTopicId());
             pstmt.execute();
         } catch (SQLException e) {
             e.printStackTrace();

@@ -45,4 +45,8 @@ public class TopicService {
     public TopicPo findTopic(int id) {
         return topicDao.selectTopicByTopicId(id);
     }
+
+    public void updateTopic(TopicPo topicPo) {
+        topicDao.updateTopic(topicPo);
+    }
 }

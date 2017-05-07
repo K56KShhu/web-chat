@@ -4,10 +4,7 @@ import com.zkyyo.www.db.DbClose;
 import com.zkyyo.www.po.ReplyPo;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,11 +23,6 @@ public class ReplyDaoJdbcImpl implements ReplyDao {
         try {
             conn = dataSource.getConnection();
             conn.setAutoCommit(false);
-            //讨论区回复数量+1
-            String topicSql = "UPDATE topic SET reply_account = reply_account + 1 WHERE topic_id=?";
-            pstmt = conn.prepareStatement(topicSql);
-            pstmt.setInt(1, replyPo.getTopicId());
-            pstmt.execute();
             //添加回复
             String replySql = "INSERT INTO reply (topic_id, user_id, content, content_type) VALUES (?, ?, ?, ?)";
             pstmt = conn.prepareStatement(replySql);
@@ -39,6 +31,14 @@ public class ReplyDaoJdbcImpl implements ReplyDao {
             pstmt.setString(3, replyPo.getContent());
             pstmt.setInt(4, replyPo.getContentType());
             pstmt.execute();
+            //讨论区回复数量+1, 同时修改最新回复时间, 可能出现不同步问题
+            String topicSql = "UPDATE topic SET reply_account = reply_account + 1, last_time=? WHERE topic_id=?";
+            pstmt = conn.prepareStatement(topicSql);
+            Timestamp now = new Timestamp(System.currentTimeMillis());
+            pstmt.setTimestamp(1, now);
+            pstmt.setInt(2, replyPo.getTopicId());
+            pstmt.execute();
+
             conn.commit();
         } catch (SQLException e) {
             e.printStackTrace();

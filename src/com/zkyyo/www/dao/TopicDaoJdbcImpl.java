@@ -110,10 +110,24 @@ public class TopicDaoJdbcImpl implements TopicDao {
 
         try {
             conn = dataSource.getConnection();
-            String sql = "DELETE FROM topic WHERE topic_id=?";
-            pstmt = conn.prepareStatement(sql);
+            conn.setAutoCommit(false);
+            //删除讨论区信息
+            String topicSql = "DELETE FROM topic WHERE topic_id=?";
+            pstmt = conn.prepareStatement(topicSql);
             pstmt.setInt(1, topicId);
             pstmt.execute();
+            //删除讨论区聊天信息
+            String replySql = "DELETE FROM reply WHERE topic_id=?";
+            pstmt = conn.prepareStatement(replySql);
+            pstmt.setInt(1, topicId);
+            pstmt.execute();
+            //删除讨论区上传文件信息
+            String fileSql = "DELETE FROM upload_file WHERE topic_id=?";
+            pstmt = conn.prepareStatement(fileSql);
+            pstmt.setInt(1, topicId);
+            pstmt.execute();
+
+            conn.commit();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

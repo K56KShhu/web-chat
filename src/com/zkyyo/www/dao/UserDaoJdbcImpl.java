@@ -192,7 +192,7 @@ public class UserDaoJdbcImpl implements UserDao {
 
         try {
             conn = dataSource.getConnection();
-            String sql = "SELECT usergroup_id FROM user_usergroup WHERE user_id = (SELECT user_id FROM user WHERE user_name=?)";
+            String sql = "SELECT usergroup_id FROM user_usergroup WHERE user_id = (SELECT user_id FROM user WHERE username=?)";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, username);
             rs = pstmt.executeQuery();

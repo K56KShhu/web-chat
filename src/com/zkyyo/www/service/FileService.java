@@ -18,7 +18,23 @@ public class FileService {
         fileDao.addFile(filePo);
     }
 
-    public List<FilePo> findFiles(int topicId, int apply) {
-        return fileDao.selectFiles(topicId, apply);
+    public List<FilePo> findFiles(int fileId, int apply) {
+        return fileDao.selectFiles(fileId, apply);
+    }
+
+    public boolean isValidId(String fileId) {
+        return true;
+    }
+
+    public boolean isExisted(int fileId) {
+        return true;
+    }
+
+    public FilePo findFile(int fileId) {
+        return fileDao.selectFileByFileId(fileId);
+    }
+
+    public void deleteFile(int fileId) {
+        fileDao.deleteFile(fileId);
     }
 }

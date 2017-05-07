@@ -4,7 +4,11 @@ import com.zkyyo.www.db.DbClose;
 import com.zkyyo.www.po.FilePo;
 
 import javax.sql.DataSource;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,5 +67,53 @@ public class FileDaoJdbcImpl implements FileDao {
             DbClose.close(conn, pstmt, rs);
         }
         return files;
+    }
+
+    @Override
+    public FilePo selectFileByFileId(int fileId) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = dataSource.getConnection();
+            String sql = "SELECT * FROM upload_file WHERE upload_file_id=?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, fileId);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                FilePo file = new FilePo();
+                file.setFileId(rs.getInt(("upload_file_id")));
+                file.setUserId(rs.getInt("user_id"));
+                file.setApply(rs.getInt("apply"));
+                file.setTopicId(rs.getInt("topic_id"));
+                file.setPath(rs.getString("relative_path"));
+                file.setCreated(rs.getTimestamp("created"));
+                return file;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, pstmt, rs);
+        }
+        return null;
+    }
+
+    @Override
+    public void deleteFile(int fileId) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            conn = dataSource.getConnection();
+            String sql = "DELETE FROM upload_file WHERE upload_file_id=?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, fileId);
+            pstmt.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, pstmt);
+        }
     }
 }

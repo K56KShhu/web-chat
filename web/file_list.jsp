@@ -31,6 +31,12 @@
             <td>${file.key.userId}</td>
             <td>${file.key.created}</td>
             <td><a href="${downUrl}">下载</a></td>
+            <c:if test="${sessionScope.access.isUserInRole('admin')}">
+                <c:url value="file_delete.do" var="deleteUrl">
+                    <c:param name="fileId" value="${file.key.fileId}"/>
+                </c:url>
+                <td><a href="${deleteUrl}">删除</a></td>
+            </c:if>
         </tr>
     </c:forEach>
 </table>

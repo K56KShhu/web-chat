@@ -8,7 +8,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,11 +54,13 @@ public class FileDaoJdbcImpl implements FileDao {
             pstmt.setInt(2, apply);
             rs = pstmt.executeQuery();
             while (rs.next()) {
-                int fileId = rs.getInt("upload_file_id");
-                int userId = rs.getInt("user_id");
-                String path = rs.getString("relative_path");
-                Timestamp created = rs.getTimestamp("created");
-                files.add(new FilePo(fileId, apply, userId, topicId, path, created));
+                FilePo file = new FilePo();
+                file.setFileId(rs.getInt("upload_file_id"));
+                file.setApply(apply);
+                file.setUserId(rs.getInt("user_id"));
+                file.setPath(rs.getString("relative_path"));
+                file.setCreated(rs.getTimestamp("created"));
+                files.add(file);
             }
         } catch (SQLException e) {
             e.printStackTrace();

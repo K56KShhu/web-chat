@@ -8,11 +8,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReplyDaoJdbcImpl implements ReplyDao{
+public class ReplyDaoJdbcImpl implements ReplyDao {
     private DataSource dataSource;
 
     public ReplyDaoJdbcImpl(DataSource dataSource) {
@@ -26,13 +25,21 @@ public class ReplyDaoJdbcImpl implements ReplyDao{
 
         try {
             conn = dataSource.getConnection();
-            String sql = "INSERT INTO reply (topic_id, user_id, content, content_type) VALUES (?, ?, ?, ?)";
-            pstmt = conn.prepareStatement(sql);
+            conn.setAutoCommit(false);
+            //讨论区回复数量+1
+            String topicSql = "UPDATE topic SET reply_account = reply_account + 1 WHERE topic_id=?";
+            pstmt = conn.prepareStatement(topicSql);
+            pstmt.setInt(1, replyPo.getTopicId());
+            pstmt.execute();
+            //添加回复
+            String replySql = "INSERT INTO reply (topic_id, user_id, content, content_type) VALUES (?, ?, ?, ?)";
+            pstmt = conn.prepareStatement(replySql);
             pstmt.setInt(1, replyPo.getTopicId());
             pstmt.setInt(2, replyPo.getUserId());
             pstmt.setString(3, replyPo.getContent());
             pstmt.setInt(4, replyPo.getContentType());
             pstmt.execute();
+            conn.commit();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -54,12 +61,14 @@ public class ReplyDaoJdbcImpl implements ReplyDao{
             pstmt.setInt(1, topicId);
             rs = pstmt.executeQuery();
             while (rs.next()) {
-                int replyId = rs.getInt("reply_id");
-                int userId = rs.getInt("user_id");
-                String content = rs.getString("content");
-                int contentType = rs.getInt("content_type");
-                Timestamp created = rs.getTimestamp("created");
-                replys.add(new ReplyPo(replyId, topicId, userId, content, contentType, created));
+                ReplyPo reply = new ReplyPo();
+                reply.setReplyId(rs.getInt("reply_id"));
+                reply.setTopicId(rs.getInt("topic_id"));
+                reply.setUserId(rs.getInt("user_id"));
+                reply.setContent(rs.getString("content"));
+                reply.setContentType(rs.getInt("content_type"));
+                reply.setCreated(rs.getTimestamp("created"));
+                replys.add(reply);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -106,10 +115,18 @@ public class ReplyDaoJdbcImpl implements ReplyDao{
 
         try {
             conn = dataSource.getConnection();
-            String sql = "DELETE FROM reply WHERE reply_id=?";
-            pstmt = conn.prepareStatement(sql);
+            conn.setAutoCommit(false);
+            //讨论区回复数量-1
+            String topicSql = "UPDATE topic SET reply_account = reply_account - 1 WHERE topic_id = (SELECT topic_id FROM reply WHERE reply_id=?)";
+            pstmt = conn.prepareStatement(topicSql);
             pstmt.setInt(1, replyId);
             pstmt.execute();
+            //删除回复
+            String replySql = "DELETE FROM reply WHERE reply_id=?";
+            pstmt = conn.prepareStatement(replySql);
+            pstmt.setInt(1, replyId);
+            pstmt.execute();
+            conn.commit();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

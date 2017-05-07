@@ -34,7 +34,6 @@ public class UserDaoJdbcImpl implements UserDao {
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        UserPo user = null;
 
         try {
             conn = dataSource.getConnection();
@@ -43,15 +42,22 @@ public class UserDaoJdbcImpl implements UserDao {
             pstmt.setString(1, Integer.toString(id));
             rs = pstmt.executeQuery();
             if (rs.next()) {
-                user = new UserPo(rs.getInt("user_id"), rs.getString("username"), rs.getString("password"), rs.getString("sex"),
-                        rs.getString("email"), rs.getInt("status"), rs.getTimestamp("created"));
+                UserPo user = new UserPo();
+                user.setUserId(id);
+                user.setUsername(rs.getString("username"));
+                user.setPassword(rs.getString("password"));
+                user.setSex(rs.getString("sex"));
+                user.setEmail(rs.getString("email"));
+                user.setStatus(rs.getInt("status"));
+                user.setCreated(rs.getTimestamp("created"));
+                return user;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             DbClose.close(conn, pstmt, rs);
         }
-        return user;
+        return null;
     }
 
     @Override
@@ -59,7 +65,6 @@ public class UserDaoJdbcImpl implements UserDao {
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        UserPo user = null;
 
         try {
             conn = dataSource.getConnection();
@@ -68,15 +73,22 @@ public class UserDaoJdbcImpl implements UserDao {
             pstmt.setString(1, username);
             rs = pstmt.executeQuery();
             if (rs.next()) {
-                user = new UserPo(rs.getInt("user_id"), rs.getString("username"), rs.getString("password"), rs.getString("sex"),
-                        rs.getString("email"), rs.getInt("status"), rs.getTimestamp("created"));
+                UserPo user = new UserPo();
+                user.setUserId(rs.getInt("user_id"));
+                user.setUsername(username);
+                user.setPassword(rs.getString("password"));
+                user.setSex(rs.getString("sex"));
+                user.setEmail(rs.getString("email"));
+                user.setStatus(rs.getInt("status"));
+                user.setCreated(rs.getTimestamp("created"));
+                return user;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             DbClose.close(conn, pstmt, rs);
         }
-        return user;
+        return null;
     }
 
     @Override

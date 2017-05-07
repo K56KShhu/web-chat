@@ -28,16 +28,17 @@ public class TopicDaoJdbcImpl implements TopicDao {
             stmt = conn.createStatement();
             rs = stmt.executeQuery(sql);
             while (rs.next()) {
-                int topicId = rs.getInt("topic_id");
-                String title = rs.getString("title");
-                String description = rs.getString("description");
-                int creatorId = rs.getInt("creator_id");
-                int lastModifyId = rs.getInt("last_modify_id");
-                int isPrivate = rs.getInt("is_private");
-                int replyAccount = rs.getInt("reply_account");
-                Timestamp lastTime = rs.getTimestamp("last_time");
-                Timestamp created = rs.getTimestamp("created");
-                topics.add(new TopicPo(topicId, title, description, creatorId, lastModifyId, isPrivate, replyAccount, lastTime, created));
+                TopicPo topic = new TopicPo();
+                topic.setTopicId(rs.getInt("topic_id"));
+                topic.setTitle(rs.getString("title"));
+                topic.setDescription(rs.getString("description"));
+                topic.setCreatorId(rs.getInt("creator_id"));
+                topic.setLastModifyId(rs.getInt("last_modify_id"));
+                topic.setIsPrivate(rs.getInt("is_private"));
+                topic.setReplyAccount(rs.getInt("reply_account"));
+                topic.setLastTime(rs.getTimestamp("last_time"));
+                topic.setCreated(rs.getTimestamp("created"));
+                topics.add(topic);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -60,16 +61,17 @@ public class TopicDaoJdbcImpl implements TopicDao {
             pstmt.setInt(1, id);
             rs = pstmt.executeQuery();
             if (rs.next()) {
-                int topicId = rs.getInt("topic_id");
-                String title = rs.getString("title");
-                String description = rs.getString("description");
-                int creatorId = rs.getInt("creator_id");
-                int lastModifyId = rs.getInt("last_modify_id");
-                int isPrivate = rs.getInt("is_private");
-                int replyAccount = rs.getInt("reply_account");
-                Timestamp lastTime = rs.getTimestamp("last_time");
-                Timestamp created = rs.getTimestamp("created");
-                return (new TopicPo(topicId, title, description, creatorId, lastModifyId, isPrivate, replyAccount, lastTime, created));
+                TopicPo topic = new TopicPo();
+                topic.setTopicId(id);
+                topic.setTitle(rs.getString("title"));
+                topic.setDescription(rs.getString("description"));
+                topic.setCreatorId(rs.getInt("creator_id"));
+                topic.setLastModifyId(rs.getInt("last_modify_id"));
+                topic.setIsPrivate(rs.getInt("is_private"));
+                topic.setReplyAccount(rs.getInt("reply_account"));
+                topic.setLastTime(rs.getTimestamp("last_time"));
+                topic.setCreated(rs.getTimestamp("created"));
+                return topic;
             }
         } catch (SQLException e) {
             e.printStackTrace();

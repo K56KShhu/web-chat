@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface FileDao {
     void addFile(FilePo filePo);
-    List<FilePo> selectFiles(int fileId, int apply);
+    List<FilePo> selectFilesByTopicId(int topicId, int apply);
     FilePo selectFileByFileId(int fileId);
     void deleteFile(int fileId);
 }

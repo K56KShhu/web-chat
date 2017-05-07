@@ -41,7 +41,7 @@ public class ReplyDaoJdbcImpl implements ReplyDao{
     }
 
     @Override
-    public List<ReplyPo> selectReplys(int topicId) {
+    public List<ReplyPo> selectReplysByTopicId(int topicId) {
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -67,5 +67,53 @@ public class ReplyDaoJdbcImpl implements ReplyDao{
             DbClose.close(conn, pstmt, rs);
         }
         return replys;
+    }
+
+    @Override
+    public ReplyPo selectReplyByReplyId(int replyId) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = dataSource.getConnection();
+            String sql = "SELECT * FROM reply WHERE reply_id=?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, replyId);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                ReplyPo reply = new ReplyPo();
+                reply.setReplyId(replyId);
+                reply.setTopicId(rs.getInt("topic_id"));
+                reply.setUserId(rs.getInt("user_id"));
+                reply.setContent(rs.getString("content"));
+                reply.setContentType(rs.getInt("content_type"));
+                reply.setCreated(rs.getTimestamp("created"));
+                return reply;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, pstmt, rs);
+        }
+        return null;
+    }
+
+    @Override
+    public void deleteReply(int replyId) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            conn = dataSource.getConnection();
+            String sql = "DELETE FROM reply WHERE reply_id=?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, replyId);
+            pstmt.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, pstmt);
+        }
     }
 }

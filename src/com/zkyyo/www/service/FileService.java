@@ -18,8 +18,8 @@ public class FileService {
         fileDao.addFile(filePo);
     }
 
-    public List<FilePo> findFiles(int fileId, int apply) {
-        return fileDao.selectFiles(fileId, apply);
+    public List<FilePo> findFiles(int topicId, int apply) {
+        return fileDao.selectFilesByTopicId(topicId, apply);
     }
 
     public boolean isValidId(String fileId) {

@@ -31,6 +31,12 @@
             <td><img src="${imageUrl}"></td>
             <td>${image.userId}</td>
             <td>${image.created}</td>
+            <c:if test="${sessionScope.access.isUserInRole('admin')}">
+                <c:url value="file_delete.do" var="deleteUrl">
+                    <c:param name="fileId" value="${image.fileId}"/>
+                </c:url>
+                <td><a href="${deleteUrl}">删除</a></td>
+            </c:if>
         </tr>
     </c:forEach>
 </table>

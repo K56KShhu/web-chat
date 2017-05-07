@@ -31,6 +31,14 @@ public class ReplyService {
     }
 
     public List<ReplyPo> findReplys(int topicId) {
-        return replyDao.selectReplys(topicId);
+        return replyDao.selectReplysByTopicId(topicId);
+    }
+
+    public ReplyPo findReply(int replyId) {
+        return replyDao.selectReplyByReplyId(replyId);
+    }
+
+    public void deleteReply(int replyId) {
+        replyDao.deleteReply(replyId);
     }
 }

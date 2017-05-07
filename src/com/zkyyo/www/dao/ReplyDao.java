@@ -6,5 +6,7 @@ import java.util.List;
 
 public interface ReplyDao {
     void addReply(ReplyPo replyPo);
-    List<ReplyPo> selectReplys(int topicId);
+    List<ReplyPo> selectReplysByTopicId(int topicId);
+    ReplyPo selectReplyByReplyId(int replyId);
+    void deleteReply(int replyId);
 }

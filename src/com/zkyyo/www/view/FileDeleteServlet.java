@@ -31,7 +31,6 @@ public class FileDeleteServlet extends HttpServlet {
             int fId = Integer.valueOf(fileId);
             if (fileService.isExisted(fId)) {
                 FilePo file = fileService.findFile(fId);
-                System.out.println(file);
                 String relativePath = file.getPath();
                 String bathPath = getServletContext().getRealPath("/WEB-INF/topics");
                 String absolutePath = bathPath + relativePath;

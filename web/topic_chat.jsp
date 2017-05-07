@@ -46,6 +46,12 @@
         <%--聊天信息--%>
         <c:forEach var="reply" items="${requestScope.replys}">
             ${reply.userId}&nbsp;${reply.created}<br/>
+            <c:if test="${sessionScope.access.isUserInRole('admin')}">
+                <c:url value="reply_delete.do" var="deleteReplyUrl">
+                    <c:param name="replyId" value="${reply.replyId}"/>
+                </c:url>
+                <a href="${deleteReplyUrl}">删除</a><br/>
+            </c:if>
             <c:choose>
                 <%--文本信息--%>
                 <c:when test="${reply.contentType == 1}">

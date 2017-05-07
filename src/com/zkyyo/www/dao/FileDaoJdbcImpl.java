@@ -41,7 +41,7 @@ public class FileDaoJdbcImpl implements FileDao {
     }
 
     @Override
-    public List<FilePo> selectFiles(int topicId, int apply) {
+    public List<FilePo> selectFilesByTopicId(int topicId, int apply) {
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;

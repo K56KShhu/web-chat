@@ -28,7 +28,7 @@ public class Access {
         return false;
     }
 
-    public boolean isUserInGroups(int groupId) {
+    public boolean isUserInGroup(int groupId) {
         if (!groups.isEmpty()) {
             if (groups.contains(groupId)) {
                 return true;

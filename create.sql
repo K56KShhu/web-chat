@@ -52,7 +52,7 @@ CREATE TABLE usergroup
 (
     usergroup_id bigint(15) unsigned not null auto_increment primary key,
     name varchar(50) not null,
-    description varchar(100) not null default ''
+    reason varchar(100) not null default ''
 );
 
 DROP TABLE IF EXISTS user_usergroup;
@@ -82,13 +82,23 @@ CREATE TABLE upload_file
     created timestamp not null default current_timestamp
 );
 
+DROP TABLE IF EXISTS report;
+CREATE TABLE report
+(
+    report_id bigint(15) unsigned not null auto_increment primary key,
+    user_id bigint(15) unsigned not null,
+    content_id bigint(15) unsigned not null,
+    content_type tinyint(2) not null,
+    reason varchar(100) not null default ''
+);
+
 INSERT INTO user (username, password, sex, email, status) VALUES ('101', 'abc', 'male', 'zkyyo@outlook.com', 1);
 INSERT INTO user (username, password, sex, email, status) VALUES ('102', 'abc', 'male', 'bingo@outlook.com', 1);
 
 INSERT INTO user_role (user_id, role) VALUES ('1', 'user');
 INSERT INTO user_role (user_id, role) VALUES ('2', 'admin');
 
-INSERT INTO usergroup (name, description) VALUES ('male', 'all man');
+INSERT INTO usergroup (name, reason) VALUES ('male', 'all man');
 
 INSERT INTO user_usergroup (user_id, usergroup_id) VALUES (1, 1);
 INSERT INTO user_usergroup (user_id, usergroup_id) VALUES (2, 1);

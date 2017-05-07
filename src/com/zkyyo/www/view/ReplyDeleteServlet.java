@@ -33,7 +33,7 @@ public class ReplyDeleteServlet extends HttpServlet {
                 if (contentType == ReplyService.CONTENT_TEXT) {
                     replyService.deleteReply(reply.getReplyId());
                     request.setAttribute("message", "删除讨论区信息成功");
-                    request.getRequestDispatcher("success.jsp").forward(request, response);
+                        request.getRequestDispatcher("success.jsp").forward(request, response);
                 } else if (contentType == ReplyService.CONTENT_IMAGE) {
                     String relativePath = reply.getContent();
                     String bathPath = getServletContext().getRealPath("/WEB-INF/topics");

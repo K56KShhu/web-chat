@@ -1,7 +1,5 @@
 package com.zkyyo.www.view;
 
-import com.zkyyo.www.service.FileService;
-import com.zkyyo.www.service.ReplyService;
 import com.zkyyo.www.service.ReportService;
 
 import javax.servlet.ServletException;

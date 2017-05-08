@@ -1,9 +1,10 @@
 package com.zkyyo.www.po;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
-public class FilePo {
+public class FilePo implements Serializable {
     private int fileId;
     private int apply; // 1图片分享 2文件分享
     private int userId;

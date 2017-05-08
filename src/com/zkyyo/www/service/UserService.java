@@ -1,7 +1,7 @@
 package com.zkyyo.www.service;
 
 import com.zkyyo.www.dao.UserDao;
-import com.zkyyo.www.dao.UserDaoJdbcImpl;
+import com.zkyyo.www.dao.impl.UserDaoJdbcImpl;
 import com.zkyyo.www.po.UserPo;
 import com.zkyyo.www.web.Access;
 

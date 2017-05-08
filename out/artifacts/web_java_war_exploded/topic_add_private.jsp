@@ -7,7 +7,7 @@
 
 <h1>topic private add</h1>
 
-<jsp:include page="errors.jsp">
+<jsp:include page="result.jsp">
     <jsp:param name="success" value="讨论区创建成功"/>
     <jsp:param name="faile" value="讨论区创建失败, 原因如下:"/>
 </jsp:include>

@@ -8,7 +8,7 @@
 
 <h1>topic update</h1>
 
-<jsp:include page="errors.jsp">
+<jsp:include page="result.jsp">
     <jsp:param name="success" value="讨论区更新成功"/>
     <jsp:param name="faile" value="讨论区更新失败, 原因如下:"/>
 </jsp:include>

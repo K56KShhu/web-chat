@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
-    <file url="file://$PROJECT_DIR$/src/com/zkyyo/www/dao/FileDaoJdbcImpl.java" dialect="MySQL" />
-    <file url="file://$PROJECT_DIR$/src/com/zkyyo/www/dao/ReplyDaoJdbcImpl.java" dialect="MySQL" />
-    <file url="file://$PROJECT_DIR$/src/com/zkyyo/www/dao/ReportDaoJdbcImpl.java" dialect="MySQL" />
-    <file url="file://$PROJECT_DIR$/src/com/zkyyo/www/dao/TopicDaoJdbcImpl.java" dialect="MySQL" />
-    <file url="file://$PROJECT_DIR$/src/com/zkyyo/www/dao/UserDaoJdbcImpl.java" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/src/com/zkyyo/www/dao/impl/FileDaoJdbcImpl.java" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/src/com/zkyyo/www/dao/impl/ReplyDaoJdbcImpl.java" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/src/com/zkyyo/www/dao/impl/ReportDaoJdbcImpl.java" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/src/com/zkyyo/www/dao/impl/TopicDaoJdbcImpl.java" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/src/com/zkyyo/www/dao/impl/UserDaoJdbcImpl.java" dialect="MySQL" />
   </component>
 </project>

@@ -1,6 +1,8 @@
 package com.zkyyo.www.po;
 
-public class ReportPo {
+import java.io.Serializable;
+
+public class ReportPo implements Serializable {
     private int reportId;
     private int userId;
     private int contentId;

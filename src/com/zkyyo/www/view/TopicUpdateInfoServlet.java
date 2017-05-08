@@ -30,12 +30,9 @@ public class TopicUpdateInfoServlet extends HttpServlet {
                 TopicPo topic = topicService.findTopic(tId);
                 request.setAttribute("topic", topic);
                 request.getRequestDispatcher("topic_update.jsp").forward(request, response);
-            } else {
-                request.setAttribute("message", "该讨论区不存在");
-                request.getRequestDispatcher("error.jsp").forward(request, response);
+                return;
             }
-        } else {
-            response.sendRedirect("index.jsp");
         }
+        response.sendRedirect("index.jsp");
     }
 }

@@ -25,9 +25,9 @@ public class AdminAuditServlet extends HttpServlet {
         String isApproved = request.getParameter("isApproved");
 
         UserService userService = (UserService) getServletContext().getAttribute("userService");
-        List<String> errors = new ArrayList<>();
         if (!userService.isValidUserId(userId) || !userService.isUserExisted(Integer.valueOf(userId))) {
-            errors.add("用户不存在");
+            response.sendRedirect("admin_index.jsp");
+            return;
         }
         int id = Integer.valueOf(userId);
         if ("true".equals(isApproved)) {
@@ -35,9 +35,9 @@ public class AdminAuditServlet extends HttpServlet {
         } else if ("false".equals(isApproved)) {
             userService.updateStatus(id, UserService.STATUS_NOT_APPROVED);
         } else {
-            errors.add("操作无效");
+            response.sendRedirect("admin_index.jsp");
+            return;
         }
-        request.setAttribute("errors", errors);
         request.getRequestDispatcher("admin_audit_info.do").forward(request, response);
     }
 }

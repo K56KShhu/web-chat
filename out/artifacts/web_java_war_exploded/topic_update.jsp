@@ -8,17 +8,10 @@
 
 <h1>topic update</h1>
 
-<c:choose>
-    <c:when test="${requestScope.errors != null && !requestScope.errors.isEmpty()}">
-        更新失败:<br/>
-        <c:forEach var="error" items="${requestScope.errors}">
-            <c:out value="${error}"/><br/>
-        </c:forEach>
-    </c:when>
-    <c:when test="${requestScope.errors != null && requestScope.errors.isEmpty()}">
-        更新成功
-    </c:when>
-</c:choose>
+<jsp:include page="errors.jsp">
+    <jsp:param name="success" value="讨论区更新成功"/>
+    <jsp:param name="faile" value="讨论区更新失败, 原因如下:"/>
+</jsp:include>
 
 <form method="post" action="topic_update.do">
     标题: <input type="text" name="title" value="${requestScope.topic.title}"/><br/>

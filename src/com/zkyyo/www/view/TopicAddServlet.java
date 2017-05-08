@@ -43,10 +43,8 @@ public class TopicAddServlet extends HttpServlet {
         if (!topicService.isValidDescription(desc)) {
             errors.add("bad description");
         }
-        if (!errors.isEmpty()) {
-            request.setAttribute("title", title);
-            request.setAttribute("desc", desc);
-        } else {
+
+        if (errors.isEmpty()) {
             TopicPo topic = new TopicPo();
             topic.setTitle(title);
             topic.setDescription(desc);
@@ -54,6 +52,9 @@ public class TopicAddServlet extends HttpServlet {
             topic.setLastModifyId(userId);
             topic.setIsPrivate(TopicService.NOT_PRIVATE);
             topicService.addTopic(topic);
+        } else {
+            request.setAttribute("title", title);
+            request.setAttribute("desc", desc);
         }
         request.setAttribute("errors", errors);
         request.getRequestDispatcher("topic_add_public.jsp").forward(request, response);

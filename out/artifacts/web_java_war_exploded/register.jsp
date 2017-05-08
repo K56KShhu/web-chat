@@ -6,24 +6,12 @@
 </head>
 <body>
 
-<%--
-<c:choose>
-    <c:when test="${requestScope.errors != null && !requestScope.errors.isEmpty()}">
-        注册失败<br/>
-        <c:forEach var="error" items="${requestScope.errors}">
-            <c:out value="${error}"/><br/>
-        </c:forEach>
-    </c:when>
-    <c:when test="${requestScope.errors != null && requestScope.errors.isEmpty()}">
-        注册成功, 请等待管理员审核<br/>
-    </c:when>
-</c:choose>
---%>
+<h1>register</h1>
 
-<jsp:include page="errors.jsp"/>
-<c:if test="${requestScope.errors != null && requestScope.errors.isEmpty()}">
-    注册成功, 请等待管理员审核<br/>
-</c:if>
+<jsp:include page="errors.jsp">
+    <jsp:param name="success" value="注册成功, 请等待管理员审核"/>
+    <jsp:param name="faile" value="注册失败, 原因如下:"/>
+</jsp:include>
 
 <form method="post" action="register.do">
     username: <input type="text" name="username" value="${requestScope.username != null ? requestScope.username : ""}"/><br/>

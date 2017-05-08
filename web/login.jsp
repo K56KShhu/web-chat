@@ -5,7 +5,11 @@
 </head>
 <body>
 
-<jsp:include page="errors.jsp"/>
+<h1>login</h1>
+
+<jsp:include page="result.jsp">
+    <jsp:param name="faile" value="登录失败, 原因如下:"/>
+</jsp:include>
 
 <form method="post" action="login.do">
     username: <input type="text" name="username"/><br/>

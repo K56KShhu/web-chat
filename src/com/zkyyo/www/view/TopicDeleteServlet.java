@@ -23,6 +23,7 @@ public class TopicDeleteServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String topicId = request.getParameter("topicId");
 
+        String message = "讨论区不存在";
         TopicService topicService = (TopicService) getServletContext().getAttribute("topicService");
         if (topicService.isValidId(topicId)) {
             int tId = Integer.valueOf(topicId);
@@ -31,14 +32,10 @@ public class TopicDeleteServlet extends HttpServlet {
                 String topicPath = bathPath + "/topic#" + topicId;
                 FileUtils.deleteDirectory(new File(topicPath));
                 topicService.deleteTopic(tId);
-                request.setAttribute("message", "删除讨论区成功");
-                request.getRequestDispatcher("success.jsp").forward(request, response);
-            } else {
-                request.setAttribute("message", "该讨论区不存在");
-                request.getRequestDispatcher("error.jsp").forward(request, response);
+                message = "讨论区删除成功";
             }
-        } else {
-            response.sendRedirect("index.jsp");
         }
+        request.setAttribute("message", message);
+        request.getRequestDispatcher("message.jsp").forward(request, response);
     }
 }

@@ -7,17 +7,12 @@
 <body>
 
 <h1>user update</h1>
-<c:choose>
-    <c:when test="${requestScope.errors != null && requestScope.errors.size() == 0}">
-        success<br/>
-    </c:when>
-    <c:otherwise>
-        <c:forEach var="error" items="${requestScope.errors}">
-            errors:
-            ${error}<br/>
-        </c:forEach>
-    </c:otherwise>
-</c:choose>
+
+<jsp:include page="errors.jsp">
+    <jsp:param name="success" value="信息更新成功"/>
+    <jsp:param name="faile" value="信息更新失败, 原因如下:"/>
+</jsp:include>
+
 <form method="post" action="user_update.do">
     password: <input type="password" name="password"/><br/>
     confirmed password: <input type="password" name="confirmedPsw"/><br/>

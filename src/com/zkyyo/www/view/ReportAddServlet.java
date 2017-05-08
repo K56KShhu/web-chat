@@ -28,30 +28,25 @@ public class ReportAddServlet extends HttpServlet {
         List<String> errors = new ArrayList<>();
         ReportService reportService = (ReportService) getServletContext().getAttribute("reportService");
         //待检查输入的contentId合法性
-//        if (!reportService.isValidId(contentId)) {
-//            response.sendRedirect("index.jsp");
-//            return;
-//        }
-        if (!reportService.isValidContentType(contentType)) {
+        if (!reportService.isValidContentType(contentType) || !reportService.isValidId(contentId)) {
             response.sendRedirect("index.jsp");
             return;
         }
         if (!reportService.isValidReason(reason)) {
             errors.add("bad reason");
         }
-        if (!errors.isEmpty()) {
-            request.setAttribute("reason", reason);
-            request.setAttribute("contentId", contentId);
-            request.setAttribute("contentType", contentType);
-        } else {
+        if (errors.isEmpty()) {
             ReportPo report = new ReportPo();
             report.setContentId(Integer.valueOf(contentId));
             report.setContentType(Integer.valueOf(contentType));
             report.setReason(reason);
             report.setUserId(userId);
             reportService.addReport(report);
+        } else {
+            request.setAttribute("reason", reason);
+            request.setAttribute("contentId", contentId);
+            request.setAttribute("contentType", contentType);
         }
-        //待观察转发是否合适
         request.setAttribute("errors", errors);
         request.getRequestDispatcher("report_add.jsp").forward(request, response);
     }

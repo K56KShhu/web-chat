@@ -21,7 +21,6 @@ public class TopicFindServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
         TopicService topicService = (TopicService) getServletContext().getAttribute("topicService");
         List<TopicPo> topics = topicService.findTopics();
         request.setAttribute("topics", topics);

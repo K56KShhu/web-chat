@@ -16,12 +16,16 @@ public class AdminFilter implements Filter {
 
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest request = (HttpServletRequest) req;
+        HttpServletResponse response = (HttpServletResponse) resp;
         Access access = (Access) request.getSession().getAttribute("access");
-        System.out.println(access);
-        if (access != null && access.isUserInRole("admin")) {
-            chain.doFilter(req, resp);
+        System.out.println("AdminFilter:" + access);
+        if (access != null) {
+            if (access.isUserInRole("admin")) {
+                chain.doFilter(req, resp);
+            } else {
+                response.sendRedirect("index.jsp");
+            }
         } else {
-            HttpServletResponse response = (HttpServletResponse) resp;
             response.sendRedirect("index.jsp");
         }
     }

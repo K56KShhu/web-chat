@@ -22,12 +22,12 @@
             <c:param name="contentId" value="${report.contentId}"/>
             <c:param name="contentType" value="${report.contentType}"/>
         </c:url>
-        <c:url value="report_delete.do" var="deleteReportUrl">
-            <c:param name="reportId" value="${report.reportId}"/>
-        </c:url>
-        <c:url value="report_manage.do" var="manageReportUrl">
+        <c:url value="report_content_delete.do" var="manageReportUrl">
             <c:param name="contentId" value="${report.contentId}"/>
             <c:param name="contentType" value="${report.contentType}"/>
+        </c:url>
+        <c:url value="report_delete.do" var="deleteReportUrl">
+            <c:param name="reportId" value="${report.reportId}"/>
         </c:url>
         <tr>
             <td>${report.userId}</td>

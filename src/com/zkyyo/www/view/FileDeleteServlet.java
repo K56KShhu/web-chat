@@ -1,9 +1,7 @@
 package com.zkyyo.www.view;
 
 import com.zkyyo.www.po.FilePo;
-import com.zkyyo.www.po.TopicPo;
 import com.zkyyo.www.service.FileService;
-import com.zkyyo.www.service.TopicService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -26,6 +24,7 @@ public class FileDeleteServlet extends HttpServlet {
         String fileId = request.getParameter("fileId");
 
         FileService fileService = (FileService) getServletContext().getAttribute("fileService");
+        String message = "文件不存在";
         //检测文件ID是否合法且存在
         if (fileService.isValidId(fileId)) {
             int fId = Integer.valueOf(fileId);
@@ -42,20 +41,14 @@ public class FileDeleteServlet extends HttpServlet {
                     //检测是否删除成功
                     if (isDeleted) {
                         fileService.deleteFile(fId); //在硬盘上删除成功, 则删除数据库中的信息
-                        request.setAttribute("message", "删除文件成功");
-                        request.getRequestDispatcher("success.jsp").forward(request, response);
+                        message = "文件删除成功";
                     } else {
-                        request.setAttribute("message", "删除文件失败");
-                        request.getRequestDispatcher("error.jsp").forward(request, response);
+                        message = "文件删除失败";
                     }
-                } else {
-                    request.setAttribute("message", "该文件不存在");
-                    request.getRequestDispatcher("error.jsp").forward(request, response);
                 }
             }
-        } else {
-            request.setAttribute("message", "该文件不存在");
-            request.getRequestDispatcher("error.jsp").forward(request, response);
         }
+        request.setAttribute("message", message);
+        request.getRequestDispatcher("message.jsp").forward(request, response);
     }
 }

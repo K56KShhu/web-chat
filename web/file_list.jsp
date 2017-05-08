@@ -23,14 +23,22 @@
         <th>created</th>
     </tr>
     <c:forEach var="file" items="${requestScope.files}">
+        <%--举报文件--%>
+        <c:url value="report_add.jsp" var="reportUrl">
+            <c:param name="contentType" value="2"/>
+            <c:param name="contentId" value="${file.key.fileId}"/>
+        </c:url>
+        <%--下载文件--%>
+        <c:url value="file_download.do" var="downUrl">
+            <c:param name="relativePath" value="${file.key.path}"/>
+        </c:url>
         <tr>
-            <c:url value="file_download.do" var="downUrl">
-                <c:param name="relativePath" value="${file.key.path}"/>
-            </c:url>
-            <td>${file.value}</td>
-            <td>${file.key.userId}</td>
-            <td>${file.key.created}</td>
+            <td><c:out value="${file.value}"/></td>
+            <td><c:out value="${file.key.userId}"/></td>
+            <td><c:out value="${file.key.created}"/></td>
             <td><a href="${downUrl}">下载</a></td>
+            <td><a href="${reportUrl}">举报</a></td>
+                <%--[管理员]删除文件--%>
             <c:if test="${sessionScope.access.isUserInRole('admin')}">
                 <c:url value="file_delete.do" var="deleteUrl">
                     <c:param name="fileId" value="${file.key.fileId}"/>

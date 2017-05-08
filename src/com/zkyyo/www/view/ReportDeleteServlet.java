@@ -26,7 +26,7 @@ public class ReportDeleteServlet extends HttpServlet {
             int rId = Integer.valueOf(reportId);
             if (reportService.isExisted(rId)) {
                 reportService.deleteReport(rId);
-                request.getRequestDispatcher("report_manage.do").forward(request, response);
+                request.getRequestDispatcher("report_manage_info.do").forward(request, response);
             } else {
                 request.setAttribute("message", "该举报已不存在");
                 request.getRequestDispatcher("error.jsp").forward(request, response);

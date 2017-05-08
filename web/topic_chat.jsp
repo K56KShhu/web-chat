@@ -45,11 +45,13 @@
 
         <%--聊天信息--%>
         <c:forEach var="reply" items="${requestScope.replys}">
+            <%--举报--%>
             <c:url value="report_add.jsp" var="reportUrl">
                 <c:param name="contentType" value="0"/>
                 <c:param name="contentId" value="${reply.replyId}"/>
             </c:url>
             ${reply.userId}&nbsp;${reply.created}&nbsp;<a href="${reportUrl}">举报</a><br/>
+            <%--[管理员]删除讨论区信息--%>
             <c:if test="${sessionScope.access.isUserInRole('admin')}">
                 <c:url value="reply_delete.do" var="deleteReplyUrl">
                     <c:param name="replyId" value="${reply.replyId}"/>

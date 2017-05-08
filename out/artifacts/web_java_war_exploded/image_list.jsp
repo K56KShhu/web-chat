@@ -24,13 +24,21 @@
         <th>created</th>
     </tr>
     <c:forEach var="image" items="${requestScope.images}">
+        <%--显示图片--%>
         <c:url value="image_show.do" var="imageUrl">
             <c:param name="relativePath" value="${image.path}"/>
         </c:url>
+        <%--举报--%>
+        <c:url value="report_add.jsp" var="reportUrl">
+            <c:param name="contentType" value="1"/>
+            <c:param name="contentId" value="${image.fileId}"/>
+        </c:url>
         <tr>
             <td><img src="${imageUrl}"></td>
-            <td>${image.userId}</td>
-            <td>${image.created}</td>
+            <td><c:out value="${image.userId}"/></td>
+            <td><c:out value="${image.created}"/></td>
+            <td><a href="${reportUrl}">举报</a></td>
+                <%--[管理员]删除图片--%>
             <c:if test="${sessionScope.access.isUserInRole('admin')}">
                 <c:url value="file_delete.do" var="deleteUrl">
                     <c:param name="fileId" value="${image.fileId}"/>

@@ -6,6 +6,7 @@
 </head>
 <body>
 
+<%--
 <c:choose>
     <c:when test="${requestScope.errors != null && !requestScope.errors.isEmpty()}">
         注册失败<br/>
@@ -17,6 +18,12 @@
         注册成功, 请等待管理员审核<br/>
     </c:when>
 </c:choose>
+--%>
+
+<jsp:include page="errors.jsp"/>
+<c:if test="${requestScope.errors != null && requestScope.errors.isEmpty()}">
+    注册成功, 请等待管理员审核<br/>
+</c:if>
 
 <form method="post" action="register.do">
     username: <input type="text" name="username" value="${requestScope.username != null ? requestScope.username : ""}"/><br/>

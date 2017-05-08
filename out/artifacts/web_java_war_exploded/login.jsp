@@ -5,6 +5,8 @@
 </head>
 <body>
 
+<jsp:include page="errors.jsp"/>
+
 <form method="post" action="login.do">
     username: <input type="text" name="username"/><br/>
     password: <input type="password" name="password"/><br/>

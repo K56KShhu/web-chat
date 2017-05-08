@@ -121,6 +121,10 @@ public class UserService {
         return true;
     }
 
+    public boolean isValidPassword(String pwd) {
+        return true;
+    }
+
     public boolean isValidEmail(String email) {
         return true;
     }

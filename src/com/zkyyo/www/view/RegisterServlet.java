@@ -39,11 +39,7 @@ public class RegisterServlet extends HttpServlet {
             errors.add("bad email");
         }
 
-        if (!errors.isEmpty()) {
-            request.setAttribute("username", username);
-            request.setAttribute("sex", sex);
-            request.setAttribute("email", email);
-        } else {
+        if (errors.isEmpty()) {
             UserPo user = new UserPo();
             user.setUsername(username);
             user.setPassword(password);
@@ -51,11 +47,14 @@ public class RegisterServlet extends HttpServlet {
             user.setEmail(email);
             user.setStatus(UserService.STATUS_AUDIT); //待审核状态
             userService.addUser(user);
+        } else {
+            request.setAttribute("username", username);
+            request.setAttribute("sex", sex);
+            request.setAttribute("email", email);
         }
 
-        String page = "register.jsp";
         request.setAttribute("errors", errors);
-        request.getRequestDispatcher(page).forward(request, response);
+        request.getRequestDispatcher("register.jsp").forward(request, response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

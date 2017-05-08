@@ -29,6 +29,9 @@ import java.util.UUID;
         urlPatterns = {"/file_upload.do"}
 )
 public class FileUploadServlet extends HttpServlet {
+    private static final String CHAT_IMAGE = "chat";
+    private static final String SHARE_IMAGE = "image";
+    private static final String SHARE_FILE = "file";
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String topicId = request.getParameter("topicId");
@@ -57,17 +60,17 @@ public class FileUploadServlet extends HttpServlet {
                     if (!item.isFormField()) {
                         int tId = Integer.valueOf(topicId);
                         //处理类型
-                        if ("chat".equals(shareType)) {
+                        if (CHAT_IMAGE.equals(shareType)) {
                             processChatImage(userId, tId, shareType, item);
                             page = "topic_chat_info.do?topicId=" + topicId;
                             response.sendRedirect(page);
                             return;
-                        } else if ("image".equals(shareType)) {
+                        } else if (SHARE_IMAGE.equals(shareType)) {
                             processShareFile(userId, tId, shareType, item);
                             page = "file_list.do?topicId=" + topicId + "&shareType=" + shareType;
                             response.sendRedirect(page);
                             return;
-                        } else if ("file".equals(shareType)) {
+                        } else if (SHARE_FILE.equals(shareType)) {
                             processShareFile(userId, tId, shareType, item);
                             page = "file_list.do?topicId=" + topicId + "&shareType=" + shareType;
                             response.sendRedirect(page);
@@ -133,9 +136,9 @@ public class FileUploadServlet extends HttpServlet {
         filePo.setUserId(userId);
         filePo.setTopicId(topicId);
         filePo.setPath(relativePath + "/" + filename);
-        if ("image".equals(shareType)) {
+        if (SHARE_IMAGE.equals(shareType)) {
             filePo.setApply(FileService.APPLY_IMAGE);
-        } else if ("file".equals(shareType)) {
+        } else if (SHARE_FILE.equals(shareType)) {
             filePo.setApply(FileService.APPLY_FILE);
         }
         FileService fileService = (FileService) getServletContext().getAttribute("fileService");
@@ -149,11 +152,11 @@ public class FileUploadServlet extends HttpServlet {
 
     private String makeRelativePath(int topicId, String shareType) {
         String typePath;
-        if ("chat".equals(shareType)) {
+        if (CHAT_IMAGE.equals(shareType)) {
             typePath = "/chat";
-        } else if ("image".equals(shareType)) {
+        } else if (SHARE_IMAGE.equals(shareType)) {
             typePath = "/image";
-        } else if ("file".equals(shareType)) {
+        } else if (SHARE_FILE.equals(shareType)) {
             typePath = "/file";
         } else {
             typePath = "/others";

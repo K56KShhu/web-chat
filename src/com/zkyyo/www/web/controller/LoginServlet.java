@@ -39,6 +39,7 @@ public class LoginServlet extends HttpServlet {
             if (access.getStatus() == UserService.STATUS_APPROVED) {
                 request.getSession().setAttribute("access", access);
                 response.sendRedirect("index.jsp");
+                return;
             } else if (access.getStatus() == UserService.STATUS_AUDIT) {
                 errors.add("该账号正在审核中");
             } else if (access.getStatus() == UserService.STATUS_NOT_APPROVED) {

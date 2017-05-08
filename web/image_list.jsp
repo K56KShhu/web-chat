@@ -20,11 +20,11 @@
 <table border="1">
     <tr>
         <th>image</th>
-        <th>userId</th>
+        <th>username</th>
         <th>created</th>
     </tr>
     <c:forEach var="image" items="${requestScope.images}">
-        <%--显示图片--%>
+        <%--显示图片URL--%>
         <c:url value="image_show.do" var="imageUrl">
             <c:param name="relativePath" value="${image.path}"/>
         </c:url>
@@ -35,7 +35,7 @@
         </c:url>
         <tr>
             <td><img src="${imageUrl}"></td>
-            <td><c:out value="${image.userId}"/></td>
+            <td><c:out value="${image.username}"/></td>
             <td><c:out value="${image.created}"/></td>
             <td><a href="${reportUrl}">举报</a></td>
                 <%--[管理员]删除图片--%>

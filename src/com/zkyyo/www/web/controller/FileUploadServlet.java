@@ -84,15 +84,18 @@ public class FileUploadServlet extends HttpServlet {
             request.setAttribute("message", "单个文件过大");
             request.getRequestDispatcher("message.jsp").forward(request, response);
             e.printStackTrace();
+            return;
         } catch (FileUploadBase.SizeLimitExceededException e) {
             //总文件过大
             request.setAttribute("message", "总文件过大");
             request.getRequestDispatcher("message.jsp").forward(request, response);
             e.printStackTrace();
+            return;
         } catch (Exception e) {
             request.setAttribute("message", "上传失败");
             request.getRequestDispatcher("message.jsp").forward(request, response);
             e.printStackTrace();
+            return;
         }
         response.sendRedirect(page);
     }

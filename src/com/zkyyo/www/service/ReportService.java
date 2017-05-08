@@ -6,6 +6,10 @@ import com.zkyyo.www.po.ReportPo;
 import java.util.List;
 
 public class ReportService {
+    public static final int CONTENT_TYPE_CHAT = 0;
+    public static final int CONTENT_TYPE_SHARE_IMAGE = 1;
+    public static final int CONTENT_TYPE_SHARE_FILE = 2;
+
     private ReportDao reportDao;
 
     public ReportService(ReportDao reportDao) {

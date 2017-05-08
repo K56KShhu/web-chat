@@ -18,30 +18,30 @@
 
 <table border="1">
     <tr>
-        <th>filename</th>
-        <th>userId</th>
+        <th>short name</th>
+        <th>username</th>
         <th>created</th>
     </tr>
     <c:forEach var="file" items="${requestScope.files}">
-        <%--举报文件--%>
+        <%--举报文件URL--%>
         <c:url value="report_add.jsp" var="reportUrl">
             <c:param name="contentType" value="2"/>
-            <c:param name="contentId" value="${file.key.fileId}"/>
+            <c:param name="contentId" value="${file.fileId}"/>
         </c:url>
-        <%--下载文件--%>
+        <%--下载文件URL--%>
         <c:url value="file_download.do" var="downUrl">
-            <c:param name="relativePath" value="${file.key.path}"/>
+            <c:param name="relativePath" value="${file.path}"/>
         </c:url>
         <tr>
-            <td><c:out value="${file.value}"/></td>
-            <td><c:out value="${file.key.userId}"/></td>
-            <td><c:out value="${file.key.created}"/></td>
+            <td><c:out value="${file.shortName}"/></td>
+            <td><c:out value="${file.username}"/></td>
+            <td><c:out value="${file.created}"/></td>
             <td><a href="${downUrl}">下载</a></td>
             <td><a href="${reportUrl}">举报</a></td>
                 <%--[管理员]删除文件--%>
             <c:if test="${sessionScope.access.isUserInRole('admin')}">
                 <c:url value="file_delete.do" var="deleteUrl">
-                    <c:param name="fileId" value="${file.key.fileId}"/>
+                    <c:param name="fileId" value="${file.fileId}"/>
                 </c:url>
                 <td><a href="${deleteUrl}">删除</a></td>
             </c:if>

@@ -1,8 +1,12 @@
 package com.zkyyo.www.web.controller;
 
 import com.zkyyo.www.po.FilePo;
+import com.zkyyo.www.po.UserPo;
 import com.zkyyo.www.service.FileService;
 import com.zkyyo.www.service.TopicService;
+import com.zkyyo.www.service.UserService;
+import com.zkyyo.www.util.BeanUtil;
+import com.zkyyo.www.vo.FileVo;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,23 +41,35 @@ public class FileListServlet extends HttpServlet {
             return;
         }
 
-        List<FilePo> fileList;
         int tId = Integer.valueOf(topicId);
         FileService fileService = (FileService) getServletContext().getAttribute("fileService");
-        if (SHARE_IMAGE.equals(shareType)) {
-            fileList = fileService.findFiles(tId, FileService.APPLY_IMAGE);
-            request.setAttribute("images", fileList);
-            request.getRequestDispatcher("image_list.jsp").forward(request, response);
-        } else if (SHARE_FILE.equals(shareType)) {
-            fileList = fileService.findFiles(tId, FileService.APPLY_FILE);
-            Map<FilePo, String> fileMap = new HashMap<>();
-            for (FilePo f : fileList) {
-                String relativePath = f.getPath();
-                String shortName = relativePath.substring(relativePath.indexOf("_") + 1);
-                fileMap.put(f, shortName);
-            }
-            request.setAttribute("files", fileMap);
-            request.getRequestDispatcher("file_list.jsp").forward(request, response);
+        UserService userService = (UserService) getServletContext().getAttribute("userService");
+        List<FilePo> filePos;
+        List<FileVo> fileVos;
+        switch (shareType) {
+            case SHARE_IMAGE:
+                filePos = fileService.findFiles(tId, FileService.APPLY_IMAGE);
+                fileVos = new ArrayList<>();
+                for (FilePo filePo : filePos) {
+                    UserPo userPo = userService.getUser(filePo.getUserId());
+                    fileVos.add(BeanUtil.FilePoToVo(filePo, userPo));
+                }
+                request.setAttribute("images", fileVos);
+                request.getRequestDispatcher("image_list.jsp").forward(request, response);
+                break;
+            case SHARE_FILE:
+                filePos = fileService.findFiles(tId, FileService.APPLY_FILE);
+                fileVos = new ArrayList<>();
+                for (FilePo filePo : filePos) {
+                    UserPo userPo = userService.getUser(filePo.getUserId());
+                    fileVos.add(BeanUtil.FilePoToVo(filePo, userPo));
+                }
+                request.setAttribute("files", fileVos);
+                request.getRequestDispatcher("file_list.jsp").forward(request, response);
+                break;
+            default:
+                response.sendRedirect("index.jsp");
+                break;
         }
     }
 }

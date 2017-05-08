@@ -10,12 +10,11 @@
 
 <table border="1">
     <tr>
-        <th>user_id</th>
-        <th>content_id</th>
-        <th>content_type</th>
-        <th>reason</th>
-        <th>operation</th>
-        <th>result</th>
+        <th>举报者用户名</th>
+        <th>举报类型</th>
+        <th>原因</th>
+        <th>处理</th>
+        <th>处理结果</th>
     </tr>
     <c:forEach var="report" items="${requestScope.reports}">
         <c:url value="report_detail.do" var="detailReportUrl">
@@ -30,9 +29,8 @@
             <c:param name="reportId" value="${report.reportId}"/>
         </c:url>
         <tr>
-            <td>${report.userId}</td>
-            <td>${report.contentId}</td>
-            <td>${report.contentType}</td>
+            <td>${report.username}</td>
+            <td>${report.contentTypeStr}</td>
             <td>${report.reason}</td>
             <td><a href="${detailReportUrl}">查看详情</a>&nbsp;<a href="${manageReportUrl}">删除对应内容</a></td>
             <td><a href="${deleteReportUrl}">操作完毕</a></td>

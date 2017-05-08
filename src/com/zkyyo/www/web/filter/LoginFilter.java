@@ -1,4 +1,4 @@
-package com.zkyyo.www.web.listener;
+package com.zkyyo.www.web.filter;
 
 import com.zkyyo.www.web.Access;
 
@@ -24,7 +24,7 @@ public class LoginFilter implements Filter {
         Access access = (Access) request.getSession().getAttribute("access");
         System.out.println("LoginFilter: " + access);
 
-        if (access != null) {
+        if (access != null && access.isNormal()) {
             if (access.isUserInRole("user")) {
                 chain.doFilter(req, resp);
             } else if (access.isUserInRole("admin")) {

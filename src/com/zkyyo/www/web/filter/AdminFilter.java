@@ -21,7 +21,7 @@ public class AdminFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) resp;
         Access access = (Access) request.getSession().getAttribute("access");
         System.out.println("AdminFilter:" + access);
-        if (access != null) {
+        if (access != null && access.isNormal()) {
             if (access.isUserInRole("admin")) {
                 chain.doFilter(req, resp);
             } else {

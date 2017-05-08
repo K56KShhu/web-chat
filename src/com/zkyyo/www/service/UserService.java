@@ -5,7 +5,9 @@ import com.zkyyo.www.dao.impl.UserDaoJdbcImpl;
 import com.zkyyo.www.po.UserPo;
 import com.zkyyo.www.web.Access;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 public class UserService {
     public static final int STATUS_NOT_APPROVED = -1;
@@ -53,14 +55,14 @@ public class UserService {
         UserPo user = userDao.selectUserByUserId(userId);
         Set<String> roles = getRoles(userId);
         Set<Integer> groups = getGroups(userId);
-        return new Access(userId, user.getUsername(), roles, groups);
+        return new Access(userId, user.getUsername(), user.getStatus(), roles, groups);
     }
 
     public Access getAccess(String username) {
         UserPo user = userDao.selectUserByUsername(username);
         Set<String> roles = getRoles(username);
         Set<Integer> groups = getGroups(username);
-        return new Access(user.getUserId(), username, roles, groups);
+        return new Access(user.getUserId(), username, user.getStatus(), roles, groups);
     }
 
     //用户修改信息

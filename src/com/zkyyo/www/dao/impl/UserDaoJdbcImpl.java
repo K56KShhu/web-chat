@@ -24,6 +24,9 @@ public class UserDaoJdbcImpl implements UserDao {
     public static final int STATUS_AUDIT = 0;
     public static final int STATUS_APPROVED = 1;
 
+    public static final String ROLE_USER = "user";
+    public static final String ROLE_ADMIN = "admin";
+
     private DataSource dataSource;
 
     public UserDaoJdbcImpl(DataSource dataSource) {
@@ -224,16 +227,35 @@ public class UserDaoJdbcImpl implements UserDao {
     public void addUser(UserPo userPo) {
         Connection conn = null;
         PreparedStatement pstmt = null;
+        ResultSet rs = null;
 
         try {
             conn = dataSource.getConnection();
-            String sql = "INSERT INTO user (username, password, sex, email) VALUES (?, ?, ?, ?)";
-            pstmt = conn.prepareStatement(sql);
+            conn.setAutoCommit(false);
+            //添加用户信息
+            String userSql = "INSERT INTO user (username, password, sex, email) VALUES (?, ?, ?, ?)";
+            pstmt = conn.prepareStatement(userSql);
             pstmt.setString(1, userPo.getUsername());
             pstmt.setString(2, userPo.getPassword());
             pstmt.setString(3, userPo.getSex());
             pstmt.setString(4, userPo.getEmail());
             pstmt.execute();
+            //获取user_id
+            String idSql = "SELECT user_id FROM user WHERE username=?";
+            pstmt = conn.prepareStatement(idSql);
+            pstmt.setString(1, userPo.getUsername());
+            rs = pstmt.executeQuery();
+            int user_id;
+            if (rs.next()) {
+                user_id = rs.getInt("user_id");
+                //设置角色
+                String roleSql = "INSERT INTO user_role (user_id, role) VALUES (?, ?)";
+                pstmt = conn.prepareStatement(roleSql);
+                pstmt.setInt(1, user_id);
+                pstmt.setString(2, ROLE_USER); //默认为user
+                pstmt.execute();
+            }
+            conn.commit();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

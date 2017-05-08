@@ -1,10 +1,13 @@
 package com.zkyyo.www.web;
 
+import com.zkyyo.www.service.UserService;
+
 import java.util.Set;
 
 public class Access {
     private int userId;
     private String username;
+    private int status;
     private Set<String> roles;
     private Set<Integer> groups;
 
@@ -12,9 +15,10 @@ public class Access {
 
     }
 
-    public Access(int userId, String username, Set<String> roles, Set<Integer> groups) {
+    public Access(int userId, String username, int status, Set<String> roles, Set<Integer> groups) {
         this.userId = userId;
         this.username = username;
+        this.status = status;
         this.roles = roles;
         this.groups = groups;
     }
@@ -37,6 +41,10 @@ public class Access {
         return false;
     }
 
+    public boolean isNormal() {
+        return status == UserService.STATUS_APPROVED;
+    }
+
     public int getUserId() {
         return userId;
     }
@@ -51,6 +59,14 @@ public class Access {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public Set<String> getRoles() {
@@ -74,6 +90,7 @@ public class Access {
         return "Access{" +
                 "userId=" + userId +
                 ", username='" + username + '\'' +
+                ", status=" + status +
                 ", roles=" + roles +
                 ", groups=" + groups +
                 '}';

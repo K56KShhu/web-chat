@@ -36,7 +36,7 @@ public class LoginServlet extends HttpServlet {
         UserPo user = new UserPo(username, password);
         if (userService.checkLogin(user)) {
             Access access = userService.getAccess(username);
-            if (access.getStatus() == UserService.STATUS_APPROVED) {
+            if (access.getStatus() == UserService.STATUS_NORMAL) {
                 request.getSession().setAttribute("access", access);
                 response.sendRedirect("index.jsp");
                 return;

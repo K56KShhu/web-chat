@@ -8,8 +8,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 @WebServlet(
         name = "AdminAuditServlet",
@@ -31,7 +29,7 @@ public class AdminAuditServlet extends HttpServlet {
         }
         int id = Integer.valueOf(userId);
         if ("true".equals(isApproved)) {
-            userService.updateStatus(id, UserService.STATUS_APPROVED);
+            userService.updateStatus(id, UserService.STATUS_NORMAL);
         } else if ("false".equals(isApproved)) {
             userService.updateStatus(id, UserService.STATUS_NOT_APPROVED);
         } else {

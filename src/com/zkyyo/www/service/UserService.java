@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.Set;
 
 public class UserService {
-    public static final int STATUS_NOT_APPROVED = -1;
+    public static final int STATUS_NORMAL = 1;
     public static final int STATUS_AUDIT = 0;
-    public static final int STATUS_APPROVED = 1;
+    public static final int STATUS_NOT_APPROVED = -1;
+    public static final int STATUS_FORBIDDEN = -2;
+
     private UserDao userDao;
 
     public UserService(UserDao userDao) {
@@ -86,7 +88,7 @@ public class UserService {
         List<UserPo> users = new ArrayList<>();
         if (status == STATUS_AUDIT) {
             users = userDao.selectUsersByStatus(UserDaoJdbcImpl.STATUS_AUDIT);
-        } else if (status == STATUS_APPROVED) {
+        } else if (status == STATUS_NORMAL) {
             users = userDao.selectUsersByStatus(UserDaoJdbcImpl.STATUS_APPROVED);
         } else if (status == STATUS_NOT_APPROVED) {
             users = userDao.selectUsersByStatus(UserDaoJdbcImpl.STATUS_NOT_APPROVED);
@@ -101,6 +103,10 @@ public class UserService {
         List<Integer> updateTypes = new ArrayList<>();
         updateTypes.add(UserDaoJdbcImpl.UPDATE_STATUS);
         userDao.update(user, updateTypes);
+    }
+
+    public List<UserPo> getUsers() {
+        return userDao.selectUsers();
     }
 
     public boolean isUserExisted(int userId) {
@@ -132,6 +138,10 @@ public class UserService {
     }
 
     public boolean isValidSex(String sex) {
+        return true;
+    }
+
+    public boolean isValidStatus(String status) {
         return true;
     }
 

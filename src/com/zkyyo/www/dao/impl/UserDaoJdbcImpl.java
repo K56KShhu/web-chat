@@ -5,10 +5,7 @@ import com.zkyyo.www.db.DbClose;
 import com.zkyyo.www.po.UserPo;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -20,9 +17,10 @@ public class UserDaoJdbcImpl implements UserDao {
     public static final int UPDATE_PASSWORD = 3;
     public static final int UPDATE_STATUS = 4;
 
-    public static final int STATUS_NOT_APPROVED = -1;
-    public static final int STATUS_AUDIT = 0;
     public static final int STATUS_APPROVED = 1;
+    public static final int STATUS_AUDIT = 0;
+    public static final int STATUS_NOT_APPROVED = -1;
+    public static final int STATUS_FORBIDDEN = -2;
 
     public static final String ROLE_USER = "user";
     public static final String ROLE_ADMIN = "admin";
@@ -93,6 +91,37 @@ public class UserDaoJdbcImpl implements UserDao {
             DbClose.close(conn, pstmt, rs);
         }
         return null;
+    }
+
+    @Override
+    public List<UserPo> selectUsers() {
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+        List<UserPo> users = new ArrayList<>();
+
+        try {
+            conn = dataSource.getConnection();
+            String sql = "SELECT * FROM user";
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                UserPo user = new UserPo();
+                user.setUserId(rs.getInt("user_id"));
+                user.setUsername(rs.getString("username"));
+                user.setPassword(rs.getString("password"));
+                user.setSex(rs.getString("sex"));
+                user.setEmail(rs.getString("email"));
+                user.setStatus(rs.getInt("status"));
+                user.setCreated(rs.getTimestamp("created"));
+                users.add(user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, stmt, rs);
+        }
+        return users;
     }
 
     @Override

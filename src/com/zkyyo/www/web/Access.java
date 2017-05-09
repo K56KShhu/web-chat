@@ -42,7 +42,7 @@ public class Access {
     }
 
     public boolean isNormal() {
-        return status == UserService.STATUS_APPROVED;
+        return status == UserService.STATUS_NORMAL;
     }
 
     public int getUserId() {

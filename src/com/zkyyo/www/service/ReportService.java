@@ -1,7 +1,7 @@
 package com.zkyyo.www.service;
 
 import com.zkyyo.www.dao.ReportDao;
-import com.zkyyo.www.po.ReportPo;
+import com.zkyyo.www.bean.po.ReportPo;
 
 import java.util.List;
 

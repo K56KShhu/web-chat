@@ -1,11 +1,11 @@
 package com.zkyyo.www.web.controller;
 
-import com.zkyyo.www.po.ReportPo;
-import com.zkyyo.www.po.UserPo;
+import com.zkyyo.www.bean.po.ReportPo;
+import com.zkyyo.www.bean.po.UserPo;
 import com.zkyyo.www.service.ReportService;
 import com.zkyyo.www.service.UserService;
 import com.zkyyo.www.util.BeanUtil;
-import com.zkyyo.www.vo.ReportVo;
+import com.zkyyo.www.bean.vo.ReportVo;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

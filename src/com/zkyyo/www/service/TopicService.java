@@ -1,7 +1,7 @@
 package com.zkyyo.www.service;
 
 import com.zkyyo.www.dao.TopicDao;
-import com.zkyyo.www.po.TopicPo;
+import com.zkyyo.www.bean.po.TopicPo;
 
 import java.util.List;
 

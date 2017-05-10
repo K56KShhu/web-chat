@@ -1,12 +1,12 @@
 package com.zkyyo.www.web.controller;
 
-import com.zkyyo.www.po.FilePo;
-import com.zkyyo.www.po.UserPo;
+import com.zkyyo.www.bean.po.FilePo;
+import com.zkyyo.www.bean.po.UserPo;
 import com.zkyyo.www.service.FileService;
 import com.zkyyo.www.service.TopicService;
 import com.zkyyo.www.service.UserService;
 import com.zkyyo.www.util.BeanUtil;
-import com.zkyyo.www.vo.FileVo;
+import com.zkyyo.www.bean.vo.FileVo;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,9 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @WebServlet(
         name = "FileListServlet",

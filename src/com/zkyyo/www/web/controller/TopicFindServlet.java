@@ -1,6 +1,6 @@
 package com.zkyyo.www.web.controller;
 
-import com.zkyyo.www.po.TopicPo;
+import com.zkyyo.www.bean.po.TopicPo;
 import com.zkyyo.www.service.TopicService;
 
 import javax.servlet.ServletException;

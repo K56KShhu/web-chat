@@ -1,15 +1,15 @@
 package com.zkyyo.www.util;
 
-import com.zkyyo.www.po.FilePo;
-import com.zkyyo.www.po.ReplyPo;
-import com.zkyyo.www.po.ReportPo;
-import com.zkyyo.www.po.UserPo;
+import com.zkyyo.www.bean.po.FilePo;
+import com.zkyyo.www.bean.po.ReplyPo;
+import com.zkyyo.www.bean.po.ReportPo;
+import com.zkyyo.www.bean.po.UserPo;
 import com.zkyyo.www.service.FileService;
 import com.zkyyo.www.service.ReplyService;
 import com.zkyyo.www.service.ReportService;
-import com.zkyyo.www.vo.FileVo;
-import com.zkyyo.www.vo.ReplyVo;
-import com.zkyyo.www.vo.ReportVo;
+import com.zkyyo.www.bean.vo.FileVo;
+import com.zkyyo.www.bean.vo.ReplyVo;
+import com.zkyyo.www.bean.vo.ReportVo;
 
 import java.sql.Timestamp;
 

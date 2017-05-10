@@ -1,6 +1,6 @@
 package com.zkyyo.www.web.controller;
 
-import com.zkyyo.www.po.ReportPo;
+import com.zkyyo.www.bean.po.ReportPo;
 import com.zkyyo.www.service.ReportService;
 import com.zkyyo.www.web.Access;
 

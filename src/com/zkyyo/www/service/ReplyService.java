@@ -1,7 +1,7 @@
 package com.zkyyo.www.service;
 
 import com.zkyyo.www.dao.ReplyDao;
-import com.zkyyo.www.po.ReplyPo;
+import com.zkyyo.www.bean.po.ReplyPo;
 
 import java.util.List;
 

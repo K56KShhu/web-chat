@@ -1,7 +1,7 @@
 package com.zkyyo.www.service;
 
 import com.zkyyo.www.dao.FileDao;
-import com.zkyyo.www.po.FilePo;
+import com.zkyyo.www.bean.po.FilePo;
 
 import java.util.List;
 

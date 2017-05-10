@@ -1,6 +1,6 @@
 package com.zkyyo.www.dao;
 
-import com.zkyyo.www.po.ReplyPo;
+import com.zkyyo.www.bean.po.ReplyPo;
 
 import java.util.List;
 

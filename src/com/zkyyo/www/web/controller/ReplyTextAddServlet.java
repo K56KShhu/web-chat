@@ -1,6 +1,6 @@
 package com.zkyyo.www.web.controller;
 
-import com.zkyyo.www.po.ReplyPo;
+import com.zkyyo.www.bean.po.ReplyPo;
 import com.zkyyo.www.service.ReplyService;
 import com.zkyyo.www.service.TopicService;
 import com.zkyyo.www.web.Access;

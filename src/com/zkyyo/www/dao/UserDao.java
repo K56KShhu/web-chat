@@ -1,6 +1,6 @@
 package com.zkyyo.www.dao;
 
-import com.zkyyo.www.po.UserPo;
+import com.zkyyo.www.bean.po.UserPo;
 
 import java.util.List;
 import java.util.Set;

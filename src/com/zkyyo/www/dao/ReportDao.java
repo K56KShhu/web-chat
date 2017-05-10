@@ -1,6 +1,6 @@
 package com.zkyyo.www.dao;
 
-import com.zkyyo.www.po.ReportPo;
+import com.zkyyo.www.bean.po.ReportPo;
 
 import java.util.List;
 

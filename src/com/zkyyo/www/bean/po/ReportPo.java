@@ -1,4 +1,4 @@
-package com.zkyyo.www.po;
+package com.zkyyo.www.bean.po;
 
 import java.io.Serializable;
 

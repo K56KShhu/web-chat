@@ -1,6 +1,6 @@
 package com.zkyyo.www.dao;
 
-import com.zkyyo.www.po.FilePo;
+import com.zkyyo.www.bean.po.FilePo;
 
 import java.util.List;
 

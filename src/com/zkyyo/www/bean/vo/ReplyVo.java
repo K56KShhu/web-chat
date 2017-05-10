@@ -1,26 +1,29 @@
-package com.zkyyo.www.po;
+package com.zkyyo.www.bean.vo;
 
-import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class ReplyPo implements Serializable {
+public class ReplyVo {
     private int replyId;
     private int topicId;
     private int userId;
+    private String username; //vo
     private String content;
     private int contentType; // 0文本 1图片
+    private String contentTypeStr; // 0文本 1图片
     private Timestamp created;
 
-    public ReplyPo() {
+    public ReplyVo() {
 
     }
 
-    public ReplyPo(int replyId, int topicId, int userId, String content, int contentType, Timestamp created) {
+    public ReplyVo(int replyId, int topicId, int userId, String username, String content, int contentType, String contentTypeStr, Timestamp created) {
         this.replyId = replyId;
         this.topicId = topicId;
         this.userId = userId;
+        this.username = username;
         this.content = content;
         this.contentType = contentType;
+        this.contentTypeStr = contentTypeStr;
         this.created = created;
     }
 
@@ -48,6 +51,14 @@ public class ReplyPo implements Serializable {
         this.userId = userId;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public String getContent() {
         return content;
     }
@@ -64,6 +75,14 @@ public class ReplyPo implements Serializable {
         this.contentType = contentType;
     }
 
+    public String getContentTypeStr() {
+        return contentTypeStr;
+    }
+
+    public void setContentTypeStr(String contentTypeStr) {
+        this.contentTypeStr = contentTypeStr;
+    }
+
     public Timestamp getCreated() {
         return created;
     }
@@ -74,14 +93,15 @@ public class ReplyPo implements Serializable {
 
     @Override
     public String toString() {
-        return "ReplyPo{" +
+        return "ReplyVo{" +
                 "replyId=" + replyId +
                 ", topicId=" + topicId +
                 ", userId=" + userId +
+                ", username='" + username + '\'' +
                 ", content='" + content + '\'' +
                 ", contentType=" + contentType +
+                ", contentTypeStr='" + contentTypeStr + '\'' +
                 ", created=" + created +
                 '}';
     }
-
 }

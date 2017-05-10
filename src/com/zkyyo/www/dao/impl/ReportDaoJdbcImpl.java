@@ -2,7 +2,7 @@ package com.zkyyo.www.dao.impl;
 
 import com.zkyyo.www.dao.ReportDao;
 import com.zkyyo.www.db.DbClose;
-import com.zkyyo.www.po.ReportPo;
+import com.zkyyo.www.bean.po.ReportPo;
 
 import javax.sql.DataSource;
 import java.sql.*;

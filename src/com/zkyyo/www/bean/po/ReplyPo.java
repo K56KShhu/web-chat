@@ -1,29 +1,26 @@
-package com.zkyyo.www.vo;
+package com.zkyyo.www.bean.po;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class ReplyVo {
+public class ReplyPo implements Serializable {
     private int replyId;
     private int topicId;
     private int userId;
-    private String username; //vo
     private String content;
     private int contentType; // 0文本 1图片
-    private String contentTypeStr; // 0文本 1图片
     private Timestamp created;
 
-    public ReplyVo() {
+    public ReplyPo() {
 
     }
 
-    public ReplyVo(int replyId, int topicId, int userId, String username, String content, int contentType, String contentTypeStr, Timestamp created) {
+    public ReplyPo(int replyId, int topicId, int userId, String content, int contentType, Timestamp created) {
         this.replyId = replyId;
         this.topicId = topicId;
         this.userId = userId;
-        this.username = username;
         this.content = content;
         this.contentType = contentType;
-        this.contentTypeStr = contentTypeStr;
         this.created = created;
     }
 
@@ -51,14 +48,6 @@ public class ReplyVo {
         this.userId = userId;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public String getContent() {
         return content;
     }
@@ -75,14 +64,6 @@ public class ReplyVo {
         this.contentType = contentType;
     }
 
-    public String getContentTypeStr() {
-        return contentTypeStr;
-    }
-
-    public void setContentTypeStr(String contentTypeStr) {
-        this.contentTypeStr = contentTypeStr;
-    }
-
     public Timestamp getCreated() {
         return created;
     }
@@ -93,15 +74,14 @@ public class ReplyVo {
 
     @Override
     public String toString() {
-        return "ReplyVo{" +
+        return "ReplyPo{" +
                 "replyId=" + replyId +
                 ", topicId=" + topicId +
                 ", userId=" + userId +
-                ", username='" + username + '\'' +
                 ", content='" + content + '\'' +
                 ", contentType=" + contentType +
-                ", contentTypeStr='" + contentTypeStr + '\'' +
                 ", created=" + created +
                 '}';
     }
+
 }

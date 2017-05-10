@@ -1,4 +1,4 @@
-package com.zkyyo.www.vo;
+package com.zkyyo.www.bean.vo;
 
 import java.sql.Timestamp;
 

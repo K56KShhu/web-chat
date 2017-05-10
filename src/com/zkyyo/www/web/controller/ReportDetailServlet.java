@@ -1,18 +1,16 @@
 package com.zkyyo.www.web.controller;
 
-import com.zkyyo.www.po.FilePo;
-import com.zkyyo.www.po.ReplyPo;
+import com.zkyyo.www.bean.po.FilePo;
+import com.zkyyo.www.bean.po.ReplyPo;
 import com.zkyyo.www.service.FileService;
 import com.zkyyo.www.service.ReplyService;
 import com.zkyyo.www.service.ReportService;
-import com.zkyyo.www.service.TopicService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
 
 @WebServlet(

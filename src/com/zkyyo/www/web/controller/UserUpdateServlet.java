@@ -1,6 +1,6 @@
 package com.zkyyo.www.web.controller;
 
-import com.zkyyo.www.po.UserPo;
+import com.zkyyo.www.bean.po.UserPo;
 import com.zkyyo.www.service.UserService;
 import com.zkyyo.www.web.Access;
 

@@ -1,6 +1,6 @@
 package com.zkyyo.www.web.controller;
 
-import com.zkyyo.www.po.FilePo;
+import com.zkyyo.www.bean.po.FilePo;
 import com.zkyyo.www.service.FileService;
 
 import javax.servlet.ServletException;

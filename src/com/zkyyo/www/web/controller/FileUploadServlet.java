@@ -1,7 +1,7 @@
 package com.zkyyo.www.web.controller;
 
-import com.zkyyo.www.po.FilePo;
-import com.zkyyo.www.po.ReplyPo;
+import com.zkyyo.www.bean.po.FilePo;
+import com.zkyyo.www.bean.po.ReplyPo;
 import com.zkyyo.www.service.FileService;
 import com.zkyyo.www.service.ReplyService;
 import com.zkyyo.www.service.TopicService;

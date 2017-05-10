@@ -1,13 +1,13 @@
 package com.zkyyo.www.web.controller;
 
-import com.zkyyo.www.po.ReplyPo;
-import com.zkyyo.www.po.TopicPo;
-import com.zkyyo.www.po.UserPo;
+import com.zkyyo.www.bean.po.ReplyPo;
+import com.zkyyo.www.bean.po.TopicPo;
+import com.zkyyo.www.bean.po.UserPo;
 import com.zkyyo.www.service.ReplyService;
 import com.zkyyo.www.service.TopicService;
 import com.zkyyo.www.service.UserService;
 import com.zkyyo.www.util.BeanUtil;
-import com.zkyyo.www.vo.ReplyVo;
+import com.zkyyo.www.bean.vo.ReplyVo;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

@@ -1,4 +1,4 @@
-package com.zkyyo.www.vo;
+package com.zkyyo.www.bean.vo;
 
 public class ReportVo {
     private int reportId;

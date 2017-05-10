@@ -2,7 +2,7 @@ package com.zkyyo.www.dao.impl;
 
 import com.zkyyo.www.dao.FileDao;
 import com.zkyyo.www.db.DbClose;
-import com.zkyyo.www.po.FilePo;
+import com.zkyyo.www.bean.po.FilePo;
 
 import javax.sql.DataSource;
 import java.sql.Connection;

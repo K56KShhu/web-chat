@@ -19,7 +19,8 @@ public class EncodingFilter implements Filter {
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest request = (HttpServletRequest) req;
         if ("GET".equals(request.getMethod())) {
-            request = new EncodingWrapper(request, "UTF-8");
+//            chrome浏览器下默认按UTF-8编码
+//            request = new EncodingWrapper(request, "UTF-8");
         } else {
             request.setCharacterEncoding("UTF-8");
         }

@@ -6,10 +6,20 @@
 </head>
 <body>
 
+<div style="text-align: right">
+    <a href="topic_find.do">首页</a>&nbsp;
+    <a href="user_update_info.do">个人</a>&nbsp;
+    <a href="logout.do">注销</a>&nbsp;
+    <a href="admin_index.jsp">管理</a>&nbsp;
+</div>
+
 <h1>index</h1>
-<a href="logout.do">logout</a><br/>
-<a href="user_update_info.do">user update</a><br/>
-<a href="admin_index.jsp">admin</a><br/>
+
+<form method="get" action="topic_find.do">
+    搜索讨论区: <input type="text" name="search"/>
+    <input type="submit"/>
+</form>
+
 <c:choose>
     <c:when test="${requestScope.topics != null}">
         <table border="1">

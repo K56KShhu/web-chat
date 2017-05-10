@@ -21,8 +21,14 @@ public class TopicFindServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String search = request.getParameter("search");
         TopicService topicService = (TopicService) getServletContext().getAttribute("topicService");
-        List<TopicPo> topics = topicService.findTopics();
+        List<TopicPo> topics;
+        if (search != null) {
+            topics = topicService.findTopicsByKeys(search);
+        } else {
+            topics = topicService.findTopics();
+        }
         request.setAttribute("topics", topics);
         request.getRequestDispatcher("index.jsp").forward(request, response);
     }

@@ -92,14 +92,7 @@ public class ReplyDaoJdbcImpl implements ReplyDao {
             pstmt.setInt(1, replyId);
             rs = pstmt.executeQuery();
             if (rs.next()) {
-                ReplyPo reply = new ReplyPo();
-                reply.setReplyId(replyId);
-                reply.setTopicId(rs.getInt("topic_id"));
-                reply.setUserId(rs.getInt("user_id"));
-                reply.setContent(rs.getString("content"));
-                reply.setContentType(rs.getInt("content_type"));
-                reply.setCreated(rs.getTimestamp("created"));
-                return reply;
+                return getReply(rs);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -133,5 +126,16 @@ public class ReplyDaoJdbcImpl implements ReplyDao {
         } finally {
             DbClose.close(conn, pstmt);
         }
+    }
+
+    private ReplyPo getReply(ResultSet rs) throws SQLException {
+        ReplyPo reply = new ReplyPo();
+        reply.setReplyId(rs.getInt("reply_id"));
+        reply.setTopicId(rs.getInt("topic_id"));
+        reply.setUserId(rs.getInt("user_id"));
+        reply.setContent(rs.getString("content"));
+        reply.setContentType(rs.getInt("content_type"));
+        reply.setCreated(rs.getTimestamp("created"));
+        return reply;
     }
 }

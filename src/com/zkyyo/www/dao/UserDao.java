@@ -10,6 +10,7 @@ public interface UserDao {
     UserPo selectUserByUsername(String username);
     List<UserPo> selectUsers();
     List<UserPo> selectUsersByStatus(int status);
+    List<UserPo> selectPossibleUsersByUsername(String username);
     Set<String> selectRolesByUserId(int id);
     Set<String> selectRolesByUsername(String username);
     Set<Integer> selectGroupsByUserId(int id);

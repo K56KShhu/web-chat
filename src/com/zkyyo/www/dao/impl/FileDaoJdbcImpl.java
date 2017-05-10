@@ -84,14 +84,7 @@ public class FileDaoJdbcImpl implements FileDao {
             pstmt.setInt(1, fileId);
             rs = pstmt.executeQuery();
             if (rs.next()) {
-                FilePo file = new FilePo();
-                file.setFileId(rs.getInt(("upload_file_id")));
-                file.setUserId(rs.getInt("user_id"));
-                file.setApply(rs.getInt("apply"));
-                file.setTopicId(rs.getInt("topic_id"));
-                file.setPath(rs.getString("relative_path"));
-                file.setCreated(rs.getTimestamp("created"));
-                return file;
+                return getFile(rs);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -117,5 +110,16 @@ public class FileDaoJdbcImpl implements FileDao {
         } finally {
             DbClose.close(conn, pstmt);
         }
+    }
+
+    private FilePo getFile(ResultSet rs) throws SQLException {
+        FilePo file = new FilePo();
+        file.setFileId(rs.getInt(("upload_file_id")));
+        file.setUserId(rs.getInt("user_id"));
+        file.setApply(rs.getInt("apply"));
+        file.setTopicId(rs.getInt("topic_id"));
+        file.setPath(rs.getString("relative_path"));
+        file.setCreated(rs.getTimestamp("created"));
+        return file;
     }
 }

@@ -6,6 +6,7 @@
 <body>
 
 <a href="admin_audit_info.do">audit</a><br/>
+<a href="topic_manage_info.do">topic manage</a><br/>
 <a href="topic_add_public.jsp">add public topic</a><br/>
 <a href="topic_add_private.jsp">add private topic</a><br/>
 <a href="report_manage_info.do">report manage</a><br/>

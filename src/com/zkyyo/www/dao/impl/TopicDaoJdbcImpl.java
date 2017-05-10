@@ -8,6 +8,7 @@ import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class TopicDaoJdbcImpl implements TopicDao {
     private DataSource dataSource;
@@ -29,22 +30,41 @@ public class TopicDaoJdbcImpl implements TopicDao {
             stmt = conn.createStatement();
             rs = stmt.executeQuery(sql);
             while (rs.next()) {
-                TopicPo topic = new TopicPo();
-                topic.setTopicId(rs.getInt("topic_id"));
-                topic.setTitle(rs.getString("title"));
-                topic.setDescription(rs.getString("description"));
-                topic.setCreatorId(rs.getInt("creator_id"));
-                topic.setLastModifyId(rs.getInt("last_modify_id"));
-                topic.setIsPrivate(rs.getInt("is_private"));
-                topic.setReplyAccount(rs.getInt("reply_account"));
-                topic.setLastTime(rs.getTimestamp("last_time"));
-                topic.setCreated(rs.getTimestamp("created"));
-                topics.add(topic);
+                topics.add(getTopic(rs));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             DbClose.close(conn, stmt, rs);
+        }
+        return topics;
+    }
+
+    @Override
+    public List<TopicPo> selectPossibleTopicsByTitle(Set<String> keys) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        List<TopicPo> topics = new ArrayList<>();
+
+        try {
+            conn = dataSource.getConnection();
+            conn.setAutoCommit(false);
+            for (String key : keys) {
+                String sql = "SELECT * FROM topic WHERE title LIKE ?";
+                pstmt = conn.prepareStatement(sql);
+                pstmt.setString(1, "%" + key + "%");
+                rs = pstmt.executeQuery();
+                while (rs.next()) {
+                    topics.add(getTopic(rs));
+                }
+            }
+
+            conn.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, pstmt, rs);
         }
         return topics;
     }
@@ -62,17 +82,7 @@ public class TopicDaoJdbcImpl implements TopicDao {
             pstmt.setInt(1, id);
             rs = pstmt.executeQuery();
             if (rs.next()) {
-                TopicPo topic = new TopicPo();
-                topic.setTopicId(id);
-                topic.setTitle(rs.getString("title"));
-                topic.setDescription(rs.getString("description"));
-                topic.setCreatorId(rs.getInt("creator_id"));
-                topic.setLastModifyId(rs.getInt("last_modify_id"));
-                topic.setIsPrivate(rs.getInt("is_private"));
-                topic.setReplyAccount(rs.getInt("reply_account"));
-                topic.setLastTime(rs.getTimestamp("last_time"));
-                topic.setCreated(rs.getTimestamp("created"));
-                return topic;
+                return getTopic(rs);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -155,5 +165,19 @@ public class TopicDaoJdbcImpl implements TopicDao {
         } finally {
             DbClose.close(conn, pstmt);
         }
+    }
+
+    private TopicPo getTopic(ResultSet rs) throws SQLException {
+        TopicPo topic = new TopicPo();
+        topic.setTopicId(rs.getInt("topic_id"));
+        topic.setTitle(rs.getString("title"));
+        topic.setDescription(rs.getString("description"));
+        topic.setCreatorId(rs.getInt("creator_id"));
+        topic.setLastModifyId(rs.getInt("last_modify_id"));
+        topic.setIsPrivate(rs.getInt("is_private"));
+        topic.setReplyAccount(rs.getInt("reply_account"));
+        topic.setLastTime(rs.getTimestamp("last_time"));
+        topic.setCreated(rs.getTimestamp("created"));
+        return topic;
     }
 }

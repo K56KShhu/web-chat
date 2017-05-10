@@ -44,15 +44,7 @@ public class UserDaoJdbcImpl implements UserDao {
             pstmt.setString(1, Integer.toString(id));
             rs = pstmt.executeQuery();
             if (rs.next()) {
-                UserPo user = new UserPo();
-                user.setUserId(id);
-                user.setUsername(rs.getString("username"));
-                user.setPassword(rs.getString("password"));
-                user.setSex(rs.getString("sex"));
-                user.setEmail(rs.getString("email"));
-                user.setStatus(rs.getInt("status"));
-                user.setCreated(rs.getTimestamp("created"));
-                return user;
+                return getUser(rs);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -75,15 +67,7 @@ public class UserDaoJdbcImpl implements UserDao {
             pstmt.setString(1, username);
             rs = pstmt.executeQuery();
             if (rs.next()) {
-                UserPo user = new UserPo();
-                user.setUserId(rs.getInt("user_id"));
-                user.setUsername(username);
-                user.setPassword(rs.getString("password"));
-                user.setSex(rs.getString("sex"));
-                user.setEmail(rs.getString("email"));
-                user.setStatus(rs.getInt("status"));
-                user.setCreated(rs.getTimestamp("created"));
-                return user;
+                return getUser(rs);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -106,15 +90,7 @@ public class UserDaoJdbcImpl implements UserDao {
             stmt = conn.createStatement();
             rs = stmt.executeQuery(sql);
             while (rs.next()) {
-                UserPo user = new UserPo();
-                user.setUserId(rs.getInt("user_id"));
-                user.setUsername(rs.getString("username"));
-                user.setPassword(rs.getString("password"));
-                user.setSex(rs.getString("sex"));
-                user.setEmail(rs.getString("email"));
-                user.setStatus(rs.getInt("status"));
-                user.setCreated(rs.getTimestamp("created"));
-                users.add(user);
+                users.add(getUser(rs));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -138,15 +114,31 @@ public class UserDaoJdbcImpl implements UserDao {
             pstmt.setInt(1, status);
             rs = pstmt.executeQuery();
             while (rs.next()) {
-                UserPo user = new UserPo();
-                user.setUserId(rs.getInt("user_id"));
-                user.setUsername(rs.getString("username"));
-                user.setPassword(rs.getString("password"));
-                user.setSex(rs.getString("sex"));
-                user.setEmail(rs.getString("email"));
-                user.setStatus(status);
-                user.setCreated(rs.getTimestamp("created"));
-                users.add(user);
+                users.add(getUser(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, pstmt, rs);
+        }
+        return users;
+    }
+
+    @Override
+    public List<UserPo> selectPossibleUsersByUsername(String username) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        List<UserPo> users = new ArrayList<>();
+
+        try {
+            conn = dataSource.getConnection();
+            String sql = "SELECT * FROM user WHERE username LIKE ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, "%" + username + "%");
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                users.add(getUser(rs));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -341,5 +333,17 @@ public class UserDaoJdbcImpl implements UserDao {
         } finally {
             DbClose.close(conn, pstmt);
         }
+    }
+
+    private UserPo getUser(ResultSet rs) throws SQLException {
+        UserPo user = new UserPo();
+        user.setUserId(rs.getInt("user_id"));
+        user.setUsername(rs.getString("username"));
+        user.setPassword(rs.getString("password"));
+        user.setSex(rs.getString("sex"));
+        user.setEmail(rs.getString("email"));
+        user.setStatus(rs.getInt("status"));
+        user.setCreated(rs.getTimestamp("created"));
+        return user;
     }
 }

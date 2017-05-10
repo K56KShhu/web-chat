@@ -50,13 +50,7 @@ public class ReportDaoJdbcImpl implements ReportDao {
             stmt = conn.createStatement();
             rs = stmt.executeQuery(sql);
             while (rs.next()) {
-                ReportPo report = new ReportPo();
-                report.setReportId(rs.getInt("report_id"));
-                report.setUserId(rs.getInt("user_id"));
-                report.setContentId(rs.getInt("content_id"));
-                report.setContentType(rs.getInt("content_type"));
-                report.setReason(rs.getString("reason"));
-                reports.add(report);
+                reports.add(getReport(rs));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -82,5 +76,15 @@ public class ReportDaoJdbcImpl implements ReportDao {
         } finally {
             DbClose.close(conn, pstmt);
         }
+    }
+
+    private ReportPo getReport(ResultSet rs) throws SQLException {
+        ReportPo report = new ReportPo();
+        report.setReportId(rs.getInt("report_id"));
+        report.setUserId(rs.getInt("user_id"));
+        report.setContentId(rs.getInt("content_id"));
+        report.setContentType(rs.getInt("content_type"));
+        report.setReason(rs.getString("reason"));
+        return report;
     }
 }

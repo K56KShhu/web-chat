@@ -21,8 +21,14 @@ public class UserManageInfoServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String search = request.getParameter("search");
         UserService userService = (UserService) getServletContext().getAttribute("userService");
-        List<UserPo> users = userService.getUsers();
+        List<UserPo> users;
+        if (search == null) {
+            users = userService.getUsers();
+        } else {
+            users = userService.fuzzySearchUsers(search);
+        }
         request.setAttribute("users", users);
         request.getRequestDispatcher("user_manage.jsp").forward(request, response);
     }

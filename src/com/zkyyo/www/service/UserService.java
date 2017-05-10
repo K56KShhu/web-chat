@@ -148,5 +148,10 @@ public class UserService {
     public void addUser(UserPo userPo) {
         userDao.addUser(userPo);
     }
+
+    public List<UserPo> fuzzySearchUsers(String search) {
+        return userDao.selectPossibleUsersByUsername(search.trim());
+    }
+
 }
 

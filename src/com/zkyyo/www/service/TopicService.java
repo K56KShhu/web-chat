@@ -3,7 +3,7 @@ package com.zkyyo.www.service;
 import com.zkyyo.www.dao.TopicDao;
 import com.zkyyo.www.bean.po.TopicPo;
 
-import java.util.List;
+import java.util.*;
 
 public class TopicService {
     public static final int NOT_PRIVATE = 0;
@@ -17,11 +17,11 @@ public class TopicService {
     public List<TopicPo> findTopics() {
         return topicDao.selectTopics();
     }
-    
+
     public void deleteTopic(int topicId) {
         topicDao.deleteTopicByTopicId(topicId);
     }
-    
+
     public boolean isValidId(String topicId) {
         return true;
     }
@@ -48,5 +48,12 @@ public class TopicService {
 
     public void updateTopic(TopicPo topicPo) {
         topicDao.updateTopic(topicPo);
+    }
+
+    public List<TopicPo> findTopicsByKeys(String keys) {
+        String regex = "\\s+";
+        Set<String> keySet = new HashSet<>(); //避免关键字重复
+        Collections.addAll(keySet, keys.trim().split(regex)); //将字符串拆分为关键字
+        return topicDao.selectPossibleTopicsByTitle(keySet);
     }
 }

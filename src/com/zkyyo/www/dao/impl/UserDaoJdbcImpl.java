@@ -17,10 +17,14 @@ public class UserDaoJdbcImpl implements UserDao {
     public static final int UPDATE_PASSWORD = 3;
     public static final int UPDATE_STATUS = 4;
 
-    public static final int STATUS_APPROVED = 1;
+    public static final int STATUS_NORMAL = 1;
     public static final int STATUS_AUDIT = 0;
     public static final int STATUS_NOT_APPROVED = -1;
     public static final int STATUS_FORBIDDEN = -2;
+
+    public static final int ORDER_BY_SEX = 0;
+    public static final int ORDER_BY_CREATED = 1;
+    public static final int ORDER_BY_STATUS = 2;
 
     public static final String ROLE_USER = "user";
     public static final String ROLE_ADMIN = "admin";
@@ -149,6 +153,57 @@ public class UserDaoJdbcImpl implements UserDao {
     }
 
     @Override
+    public List<UserPo> selectUsersByUsername(int startIndex, int rowsOnePage, String username) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        List<UserPo> users = new ArrayList<>();
+
+        try {
+            conn = dataSource.getConnection();
+            String sql = "SELECT * FROM user WHERE username LIKE ? LIMIT ?, ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, "%" + username + "%");
+            pstmt.setInt(2, startIndex);
+            pstmt.setInt(3, rowsOnePage);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                users.add(getUser(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, pstmt, rs);
+        }
+        return users;
+    }
+
+    @Override
+    public List<UserPo> selectUsers(int startIndex, int rowsOnePage, int order, boolean isReverse) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        List<UserPo> users = new ArrayList<>();
+
+        try {
+            conn = dataSource.getConnection();
+            String sql = makeQuerySql(order, isReverse);
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, startIndex);
+            pstmt.setInt(2, rowsOnePage);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                users.add(getUser(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, pstmt, rs);
+        }
+        return users;
+    }
+
+    @Override
     public Set<String> selectRolesByUserId(int id) {
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -245,6 +300,53 @@ public class UserDaoJdbcImpl implements UserDao {
     }
 
     @Override
+    public int getTotalRow(String username) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        int rows = 0;
+
+        try {
+            conn = dataSource.getConnection();
+            String sql = "SELECT COUNT(*) FROM user WHERE username LIKE ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, "%" + username + "%");
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                rows = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, pstmt, rs);
+        }
+        return rows;
+    }
+
+    @Override
+    public int getTotalRow() {
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+        int rows = 0;
+
+        try {
+            conn = dataSource.getConnection();
+            String sql = "SELECT COUNT(*) FROM user";
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+                rows = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, stmt, rs);
+        }
+        return rows;
+    }
+
+    @Override
     public void addUser(UserPo userPo) {
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -333,6 +435,23 @@ public class UserDaoJdbcImpl implements UserDao {
         } finally {
             DbClose.close(conn, pstmt);
         }
+    }
+
+    private String makeQuerySql(int order, boolean isReverse) {
+        String sql = "SELECT * FROM user";
+        if (ORDER_BY_SEX == order) {
+            sql += " ORDER BY sex";
+        } else if (ORDER_BY_CREATED == order) {
+            sql += " ORDER BY created";
+        } else if (ORDER_BY_STATUS == order) {
+            sql += " ORDER BY status";
+        } else {
+            sql += " ORDER BY created";
+        }
+        if (isReverse) {
+            sql += " DESC";
+        }
+        return sql + " LIMIT ?, ?";
     }
 
     private UserPo getUser(ResultSet rs) throws SQLException {

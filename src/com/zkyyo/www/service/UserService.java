@@ -1,5 +1,6 @@
 package com.zkyyo.www.service;
 
+import com.zkyyo.www.bean.PageBean;
 import com.zkyyo.www.dao.UserDao;
 import com.zkyyo.www.dao.impl.UserDaoJdbcImpl;
 import com.zkyyo.www.bean.po.UserPo;
@@ -14,6 +15,12 @@ public class UserService {
     public static final int STATUS_AUDIT = 0;
     public static final int STATUS_NOT_APPROVED = -1;
     public static final int STATUS_FORBIDDEN = -2;
+
+    public static final int ORDER_BY_SEX = 0;
+    public static final int ORDER_BY_CREATED = 1;
+    public static final int ORDER_BY_STATUS = 2;
+
+    private static final int ROWS_ONE_PAGE = 15;
 
     private UserDao userDao;
 
@@ -86,11 +93,11 @@ public class UserService {
 
     public List<UserPo> getUsersByStatus(int status) {
         List<UserPo> users = new ArrayList<>();
-        if (status == STATUS_AUDIT) {
+        if (STATUS_AUDIT == status) {
             users = userDao.selectUsersByStatus(UserDaoJdbcImpl.STATUS_AUDIT);
-        } else if (status == STATUS_NORMAL) {
-            users = userDao.selectUsersByStatus(UserDaoJdbcImpl.STATUS_APPROVED);
-        } else if (status == STATUS_NOT_APPROVED) {
+        } else if (STATUS_NORMAL == status) {
+            users = userDao.selectUsersByStatus(UserDaoJdbcImpl.STATUS_NORMAL);
+        } else if (STATUS_NOT_APPROVED == status) {
             users = userDao.selectUsersByStatus(UserDaoJdbcImpl.STATUS_NOT_APPROVED);
         }
         return users; //用户输入不存在的status时会返回size为0的列表, 而不是null
@@ -99,10 +106,48 @@ public class UserService {
     public void updateStatus(int userId, int status) {
         UserPo user = new UserPo();
         user.setUserId(userId);
-        user.setStatus(status);
+
+        if (STATUS_NORMAL == status) {
+            user.setStatus(UserDaoJdbcImpl.STATUS_NORMAL);
+        } else if (STATUS_AUDIT == status) {
+            user.setStatus(UserDaoJdbcImpl.STATUS_AUDIT);
+        } else if (STATUS_NOT_APPROVED == status) {
+            user.setStatus(UserDaoJdbcImpl.STATUS_NOT_APPROVED);
+        } else if (STATUS_FORBIDDEN == status) {
+            user.setStatus(UserDaoJdbcImpl.STATUS_FORBIDDEN);
+        } else {
+            return;
+        }
         List<Integer> updateTypes = new ArrayList<>();
         updateTypes.add(UserDaoJdbcImpl.UPDATE_STATUS);
         userDao.update(user, updateTypes);
+    }
+
+    public PageBean<UserPo> queryUsers(int currentPage, String username) {
+        PageBean<UserPo> pageBean = new PageBean<>(currentPage, userDao.getTotalRow(username), ROWS_ONE_PAGE);
+        int startIndex = (pageBean.getCurrentPage() - 1) * ROWS_ONE_PAGE;
+
+        List<UserPo> users = userDao.selectUsersByUsername(startIndex, ROWS_ONE_PAGE, username);
+        pageBean.setList(users);
+        return pageBean;
+    }
+
+    public PageBean<UserPo> queryUsers(int currentPage, int order, boolean isReverse) {
+        PageBean<UserPo> pageBean = new PageBean<>(currentPage, userDao.getTotalRow(), ROWS_ONE_PAGE);
+        int startIndex = (pageBean.getCurrentPage() - 1) * ROWS_ONE_PAGE;
+
+        List<UserPo> users;
+        if (ORDER_BY_SEX == order) {
+            users = userDao.selectUsers(startIndex, ROWS_ONE_PAGE, UserDaoJdbcImpl.ORDER_BY_SEX, isReverse);
+        } else if (ORDER_BY_CREATED == order) {
+            users = userDao.selectUsers(startIndex, ROWS_ONE_PAGE, UserDaoJdbcImpl.ORDER_BY_CREATED, isReverse);
+        } else if (ORDER_BY_STATUS == order) {
+            users = userDao.selectUsers(startIndex, ROWS_ONE_PAGE, UserDaoJdbcImpl.ORDER_BY_STATUS, isReverse);
+        } else {
+            return null;
+        }
+        pageBean.setList(users);
+        return pageBean;
     }
 
     public List<UserPo> getUsers() {
@@ -146,6 +191,16 @@ public class UserService {
     }
 
     public void addUser(UserPo userPo) {
+//        for (int i = 0; i < 200; i++) {
+//            if (Math.random() > 0.5) {
+//                userPo.setSex("male");
+//            } else {
+//                userPo.setSex("female");
+//            }
+//            userPo.setUserId(1234 + i);
+//            userDao.addUser(userPo);
+//            System.out.println("done");
+//        }
         userDao.addUser(userPo);
     }
 

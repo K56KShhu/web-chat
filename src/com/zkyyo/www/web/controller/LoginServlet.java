@@ -44,6 +44,8 @@ public class LoginServlet extends HttpServlet {
                 errors.add("该账号正在审核中");
             } else if (access.getStatus() == UserService.STATUS_NOT_APPROVED) {
                 errors.add("该账号审核不通过");
+            } else if (access.getStatus() == UserService.STATUS_FORBIDDEN) {
+                errors.add("该账号已被封印");
             }
         } else {
             errors.add("用户名或密码输入有误");

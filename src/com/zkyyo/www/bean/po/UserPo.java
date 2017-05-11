@@ -2,6 +2,7 @@ package com.zkyyo.www.bean.po;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Objects;
 
 public class UserPo implements Serializable {
     private int userId;
@@ -94,6 +95,29 @@ public class UserPo implements Serializable {
 
     public void setCreated(Timestamp created) {
         this.created = created;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        if (!(obj instanceof UserPo)) {
+            return false;
+        }
+        UserPo other = (UserPo) obj;
+        return userId == other.getUserId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId);
     }
 
     @Override

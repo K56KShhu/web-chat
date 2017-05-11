@@ -22,36 +22,36 @@ public class TopicFindServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        String search = request.getParameter("search");
-//        TopicService topicService = (TopicService) getServletContext().getAttribute("topicService");
-//        List<TopicPo> topics;
-//        if (search != null) {
-//            topics = topicService.findTopicsByKeys(search);
-//        } else {
-//            topics = topicService.findTopics();
-//        }
+        String search = request.getParameter("search");
+        System.out.println("search: " + search);
         String page = request.getParameter("page");
         String order = request.getParameter("order");
         String isReverseStr = request.getParameter("isReverse");
+        boolean isReverse = "true".equals(isReverseStr);
         int currentPage = 1;
         if (page != null) {
             currentPage = Integer.valueOf(page);
         }
 
-        boolean isReverse = "true".equals(isReverseStr);
         TopicService topicService = (TopicService) getServletContext().getAttribute("topicService");
         PageBean<TopicPo> pageBean;
-        if ("replyAccount".equals(order)) {
-            pageBean = topicService.queryTopics(currentPage, TopicService.ORDER_BY_REPLY_ACCOUNT, isReverse);
-        } else if ("lastTime".equals(order)) {
-            pageBean = topicService.queryTopics(currentPage, TopicService.ORDER_BY_LAST_TIME, isReverse);
-        } else if ("created".equals(order)) {
-            pageBean = topicService.queryTopics(currentPage, TopicService.ORDER_BY_CREATED, isReverse);
+        if (search != null && search.trim().length() > 0) {
+            pageBean = topicService.queryTopics(currentPage, search);
         } else {
-            //默认按照最后回复时间的倒序进行排序
-            pageBean = topicService.queryTopics(currentPage, TopicService.ORDER_BY_LAST_TIME, true);
+            if ("replyAccount".equals(order)) {
+                pageBean = topicService.queryTopics(currentPage, TopicService.ORDER_BY_REPLY_ACCOUNT, isReverse);
+            } else if ("lastTime".equals(order)) {
+                pageBean = topicService.queryTopics(currentPage, TopicService.ORDER_BY_LAST_TIME, isReverse);
+            } else if ("created".equals(order)) {
+                pageBean = topicService.queryTopics(currentPage, TopicService.ORDER_BY_CREATED, isReverse);
+            } else {
+                //默认按照最后回复时间的倒序进行排序
+                pageBean = topicService.queryTopics(currentPage, TopicService.ORDER_BY_LAST_TIME, true);
+            }
         }
+        request.setAttribute("search", search);
         request.setAttribute("pageBean", pageBean);
+        request.setAttribute("isReverse", isReverse);
         request.getRequestDispatcher("index.jsp").forward(request, response);
     }
 }

@@ -1,6 +1,7 @@
 package com.zkyyo.www.bean.po;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class ReportPo implements Serializable {
     private int reportId;
@@ -59,6 +60,29 @@ public class ReportPo implements Serializable {
 
     public void setReason(String reason) {
         this.reason = reason;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        if (!(obj instanceof ReportPo)) {
+            return false;
+        }
+        ReportPo other = (ReportPo) obj;
+        return reportId == other.getReportId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(reportId);
     }
 
     @Override

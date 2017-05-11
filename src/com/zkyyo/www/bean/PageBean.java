@@ -22,10 +22,15 @@ public class PageBean<T> {
 
     private void makePage() {
         totalPage = totalRow / rowsOnePage + ((totalRow % rowsOnePage == 0) ? 0 : 1);
-        if (currentPage < 1) {
+
+        if (totalPage != 0) {
+            if (currentPage < 1) {
+                currentPage = 1;
+            } else if (currentPage > totalPage) {
+                currentPage = totalPage;
+            }
+        } else {
             currentPage = 1;
-        } else if (currentPage > totalPage) {
-            currentPage = totalPage;
         }
     }
 

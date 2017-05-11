@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<%@ include file="/WEB-INF/header.jsp"%>
+<%@ include file="/WEB-INF/header.jsp" %>
 
 <h1>index</h1>
 
@@ -63,13 +63,15 @@
     </c:forEach>
 </table>
 
-<%--封装--%>
-<c:set var="page" value="${requestScope.pageBean}" scope="request"/>
-<jsp:include page="WEB-INF/paging.jsp">
-    <jsp:param name="queryUrl" value="topic_find.do"/>
-    <jsp:param name="totalIndex" value="11"/>
-    <jsp:param name="isReverse" value="${requestScope.isReverse}"/>
-</jsp:include>
+<%--分页封装--%>
+<c:set var="myPage" value="${requestScope.pageBean}" scope="request"/>
+<c:set var="myQueryUrl" value="topic_find.do" scope="request"/>
+<c:set var="myTotalIndex" value="11" scope="request"/>
+<c:set var="myIsReverse" value="${requestScope.isReverse}" scope="request"/>
+<%--用param传递会有乱码问题, 原因是使用param的话是通过URL传递, 而URL采用ISO-8859-1编码--%>
+<c:set var="mySearch" value="${requestScope.search}" scope="request"/>
+<jsp:include page="WEB-INF/paging.jsp"/>
+<%--分页封装--%>
 
 <%--
 <c:choose>

@@ -2,6 +2,7 @@ package com.zkyyo.www.bean.po;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Objects;
 
 public class TopicPo implements Serializable {
     private int topicId;
@@ -100,5 +101,43 @@ public class TopicPo implements Serializable {
 
     public void setCreated(Timestamp created) {
         this.created = created;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        if (!(obj instanceof TopicPo)) {
+            return false;
+        }
+        TopicPo other = (TopicPo) obj;
+        return topicId == other.getTopicId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(topicId);
+    }
+
+    @Override
+    public String toString() {
+        return "TopicPo{" +
+                "topicId=" + topicId +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", creatorId=" + creatorId +
+                ", lastModifyId=" + lastModifyId +
+                ", isPrivate=" + isPrivate +
+                ", replyAccount=" + replyAccount +
+                ", lastTime=" + lastTime +
+                ", created=" + created +
+                '}';
     }
 }

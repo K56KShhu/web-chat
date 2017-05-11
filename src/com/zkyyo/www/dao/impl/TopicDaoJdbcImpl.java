@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -26,7 +27,7 @@ public class TopicDaoJdbcImpl implements TopicDao {
     }
 
     @Override
-    public List<TopicPo> selectTopics() {
+    public List<TopicPo> selectTopicsByOrder() {
         Connection conn = null;
         Statement stmt = null;
         ResultSet rs = null;
@@ -49,7 +50,7 @@ public class TopicDaoJdbcImpl implements TopicDao {
     }
 
     @Override
-    public List<TopicPo> selectTopics(int startIndex, int ROWS_ONE_PAGE, int order, boolean isReverse) {
+    public List<TopicPo> selectTopicsByOrder(int startIndex, int ROWS_ONE_PAGE, int order, boolean isReverse) {
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -93,6 +94,34 @@ public class TopicDaoJdbcImpl implements TopicDao {
                 }
             }
             conn.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, pstmt, rs);
+        }
+        return topics;
+    }
+
+    @Override
+    public Set<TopicPo> selectTopicsByTitle(int startIndex, int ROWS_ONE_PAGE, Set<String> keys) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        Set<TopicPo> topics = new HashSet<>();
+
+        try {
+            conn = dataSource.getConnection();
+            String sql = "SELECT * FROM topic WHERE title LIKE ? ORDER BY reply_account DESC LIMIT ?, ?";
+            pstmt = conn.prepareStatement(sql);
+            for (String key : keys) {
+                pstmt.setString(1, "%" + key + "%");
+                pstmt.setInt(2, startIndex);
+                pstmt.setInt(3, ROWS_ONE_PAGE);
+                rs = pstmt.executeQuery();
+                while (rs.next()) {
+                    topics.add(getTopic(rs));
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -220,6 +249,32 @@ public class TopicDaoJdbcImpl implements TopicDao {
             DbClose.close(conn, stmt, rs);
         }
         return rows;
+    }
+
+    @Override
+    public int getTotalRowByTitle(Set<String> keys) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        Set<Integer> topics = new HashSet<>();
+
+        try {
+            conn = dataSource.getConnection();
+            String sql = "SELECT topic_id FROM topic WHERE title LIKE ?";
+            pstmt = conn.prepareStatement(sql);
+            for (String key : keys) {
+                pstmt.setString(1, "%" + key + "%");
+                rs = pstmt.executeQuery();
+                while (rs.next()) {
+                    topics.add(rs.getInt("topic_id"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, pstmt, rs);
+        }
+        return topics.size();
     }
 
     private TopicPo getTopic(ResultSet rs) throws SQLException {

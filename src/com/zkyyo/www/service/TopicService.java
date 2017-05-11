@@ -24,7 +24,7 @@ public class TopicService {
     }
 
     public List<TopicPo> findTopics() {
-        return topicDao.selectTopics();
+        return topicDao.selectTopicsByOrder();
     }
 
     public void deleteTopic(int topicId) {
@@ -66,17 +66,29 @@ public class TopicService {
         return topicDao.selectPossibleTopicsByTitle(keySet);
     }
 
+    public PageBean<TopicPo> queryTopics(int currentPage, String keys) {
+        String regex = "\\s+";
+        Set<String> keySet = new HashSet<>(); //避免关键字重复
+        Collections.addAll(keySet, keys.trim().split(regex)); //将字符串拆分为关键字
+
+        PageBean<TopicPo> pageBean = new PageBean<>(currentPage, topicDao.getTotalRowByTitle(keySet), ROWS_ONE_PAGE);
+        int startIndex = (pageBean.getCurrentPage() - 1) * ROWS_ONE_PAGE;
+        Set<TopicPo> topicSet =  topicDao.selectTopicsByTitle(startIndex, ROWS_ONE_PAGE, keySet);
+        List<TopicPo> topicList = new ArrayList<>(topicSet);
+        pageBean.setList(topicList);
+        return pageBean;
+    }
+
     public PageBean<TopicPo> queryTopics(int currentPage, int order, boolean isReverse) {
         PageBean<TopicPo> pageBean = new PageBean<>(currentPage, topicDao.getTotalRow(), ROWS_ONE_PAGE);
-
         List<TopicPo> topics;
         int startIndex = (pageBean.getCurrentPage() - 1) * ROWS_ONE_PAGE;
         if (ORDER_BY_REPLY_ACCOUNT == order) {
-            topics = topicDao.selectTopics(startIndex, ROWS_ONE_PAGE, TopicDaoJdbcImpl.ORDER_BY_REPLY_ACCOUNT, isReverse);
+            topics = topicDao.selectTopicsByOrder(startIndex, ROWS_ONE_PAGE, TopicDaoJdbcImpl.ORDER_BY_REPLY_ACCOUNT, isReverse);
         } else if (ORDER_BY_LAST_TIME == order) {
-            topics = topicDao.selectTopics(startIndex, ROWS_ONE_PAGE, TopicDaoJdbcImpl.ORDER_BY_LAST_TIME, isReverse);
+            topics = topicDao.selectTopicsByOrder(startIndex, ROWS_ONE_PAGE, TopicDaoJdbcImpl.ORDER_BY_LAST_TIME, isReverse);
         } else if (ORDER_BY_CREATED == order) {
-            topics = topicDao.selectTopics(startIndex, ROWS_ONE_PAGE, TopicDaoJdbcImpl.ORDER_BY_CREATED, isReverse);
+            topics = topicDao.selectTopicsByOrder(startIndex, ROWS_ONE_PAGE, TopicDaoJdbcImpl.ORDER_BY_CREATED, isReverse);
         } else {
             return null;
         }

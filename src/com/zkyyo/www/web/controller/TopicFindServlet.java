@@ -23,7 +23,6 @@ public class TopicFindServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String search = request.getParameter("search");
-        System.out.println("search: " + search);
         String page = request.getParameter("page");
         String order = request.getParameter("order");
         String isReverseStr = request.getParameter("isReverse");

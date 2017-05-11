@@ -50,7 +50,7 @@ public class FileListServlet extends HttpServlet {
                 fileVos = new ArrayList<>();
                 for (FilePo filePo : filePos) {
                     UserPo userPo = userService.getUser(filePo.getUserId());
-                    fileVos.add(BeanUtil.FilePoToVo(filePo, userPo));
+                    fileVos.add(BeanUtil.filePoToVo(filePo, userPo));
                 }
                 request.setAttribute("images", fileVos);
                 request.getRequestDispatcher("image_list.jsp").forward(request, response);
@@ -60,7 +60,7 @@ public class FileListServlet extends HttpServlet {
                 fileVos = new ArrayList<>();
                 for (FilePo filePo : filePos) {
                     UserPo userPo = userService.getUser(filePo.getUserId());
-                    fileVos.add(BeanUtil.FilePoToVo(filePo, userPo));
+                    fileVos.add(BeanUtil.filePoToVo(filePo, userPo));
                 }
                 request.setAttribute("files", fileVos);
                 request.getRequestDispatcher("file_list.jsp").forward(request, response);

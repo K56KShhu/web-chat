@@ -31,7 +31,7 @@ public class ReportManageInfoServlet extends HttpServlet {
         List<ReportVo> reportVos = new ArrayList<>();
         for (ReportPo reportPo : reportPos) {
             UserPo userPo = userService.getUser(reportPo.getUserId());
-            reportVos.add(BeanUtil.ReportPoToVo(reportPo, userPo));
+            reportVos.add(BeanUtil.reportPoToVo(reportPo, userPo));
         }
         request.setAttribute("reports", reportVos);
         request.getRequestDispatcher("report_manage.jsp").forward(request, response);

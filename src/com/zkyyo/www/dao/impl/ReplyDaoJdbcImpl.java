@@ -80,6 +80,32 @@ public class ReplyDaoJdbcImpl implements ReplyDao {
     }
 
     @Override
+    public List<ReplyPo> selectReplysByTopicId(int startIndex, int rowsOnePage, int topicId) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        List<ReplyPo> replys = new ArrayList<>();
+
+        try {
+            conn = dataSource.getConnection();
+            String sql = "SELECT * FROM reply WHERE topic_id=? ORDER BY created DESC LIMIT ?, ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, topicId);
+            pstmt.setInt(2, startIndex);
+            pstmt.setInt(3, rowsOnePage);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                replys.add(getReply(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, pstmt, rs);
+        }
+        return replys;
+    }
+
+    @Override
     public ReplyPo selectReplyByReplyId(int replyId) {
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -126,6 +152,30 @@ public class ReplyDaoJdbcImpl implements ReplyDao {
         } finally {
             DbClose.close(conn, pstmt);
         }
+    }
+
+    @Override
+    public int getTotalRow(int topicId) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        int rows = 0;
+
+        try {
+            conn = dataSource.getConnection();
+            String sql = "SELECT COUNT(*) FROM reply WHERE topic_id=?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, topicId);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                rows = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn ,pstmt, rs);
+        }
+        return rows;
     }
 
     private ReplyPo getReply(ResultSet rs) throws SQLException {

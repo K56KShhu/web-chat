@@ -1,6 +1,7 @@
 package com.zkyyo.www.bean.po;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 public class ReportPo implements Serializable {
@@ -9,17 +10,19 @@ public class ReportPo implements Serializable {
     private int contentId;
     private int contentType; // 0举报发言, 1举报分享图片, 3举报分享文件
     private String reason;
+    private Timestamp created;
 
     public ReportPo() {
 
     }
 
-    public ReportPo(int reportId, int userId, int contentId, int contentType, String reason) {
+    public ReportPo(int reportId, int userId, int contentId, int contentType, String reason, Timestamp created) {
         this.reportId = reportId;
         this.userId = userId;
         this.contentId = contentId;
         this.contentType = contentType;
         this.reason = reason;
+        this.created = created;
     }
 
     public int getReportId() {
@@ -62,6 +65,14 @@ public class ReportPo implements Serializable {
         this.reason = reason;
     }
 
+    public Timestamp getCreated() {
+        return created;
+    }
+
+    public void setCreated(Timestamp created) {
+        this.created = created;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -93,6 +104,7 @@ public class ReportPo implements Serializable {
                 ", contentId=" + contentId +
                 ", contentType=" + contentType +
                 ", reason='" + reason + '\'' +
+                ", created=" + created +
                 '}';
     }
 }

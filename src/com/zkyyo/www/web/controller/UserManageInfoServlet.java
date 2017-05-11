@@ -41,7 +41,7 @@ public class UserManageInfoServlet extends HttpServlet {
             currentPage = Integer.valueOf(page);
         }
         UserService userService = (UserService) getServletContext().getAttribute("userService");
-        Boolean isReverse = "true".equals(isReverseStr);
+        boolean isReverse = "true".equals(isReverseStr);
         PageBean<UserPo> pageBean;
         if (search != null && search.trim().length() > 0) {
             pageBean = userService.queryUsers(currentPage, search);

@@ -1,5 +1,7 @@
 package com.zkyyo.www.bean.vo;
 
+import java.sql.Timestamp;
+
 public class ReportVo {
     private int reportId;
     private int userId;
@@ -8,12 +10,13 @@ public class ReportVo {
     private int contentType; // 0举报发言, 1举报分享图片, 3举报分享文件
     private String contentTypeStr; //vo
     private String reason;
+    private Timestamp created;
 
     public ReportVo() {
 
     }
 
-    public ReportVo(int reportId, int userId, String username, int contentId, int contentType, String contentTypeStr, String reason) {
+    public ReportVo(int reportId, int userId, String username, int contentId, int contentType, String contentTypeStr, String reason, Timestamp created) {
         this.reportId = reportId;
         this.userId = userId;
         this.username = username;
@@ -21,6 +24,7 @@ public class ReportVo {
         this.contentType = contentType;
         this.contentTypeStr = contentTypeStr;
         this.reason = reason;
+        this.created = created;
     }
 
     public int getReportId() {
@@ -79,6 +83,14 @@ public class ReportVo {
         this.reason = reason;
     }
 
+    public Timestamp getCreated() {
+        return created;
+    }
+
+    public void setCreated(Timestamp created) {
+        this.created = created;
+    }
+
     @Override
     public String toString() {
         return "ReportVo{" +
@@ -89,6 +101,7 @@ public class ReportVo {
                 ", contentType=" + contentType +
                 ", contentTypeStr='" + contentTypeStr + '\'' +
                 ", reason='" + reason + '\'' +
+                ", created=" + created +
                 '}';
     }
 }

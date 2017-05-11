@@ -60,6 +60,7 @@ public class BeanUtil {
         int contentId = reportPo.getContentId();
         int contentType = reportPo.getContentType(); // 0举报发言, 1举报分享图片, 3举报分享文件
         String reason = reportPo.getReason();
+        Timestamp created = reportPo.getCreated();
         String contentTypeStr;
         if (contentType == ReportService.CONTENT_TYPE_CHAT) {
             contentTypeStr = "发言";
@@ -70,7 +71,7 @@ public class BeanUtil {
         } else {
             contentTypeStr = "unknown";
         }
-        return new ReportVo(reportId, userId, username, contentId, contentType, contentTypeStr, reason);
+        return new ReportVo(reportId, userId, username, contentId, contentType, contentTypeStr, reason, created);
     }
 
     public static <T, V> PageBean<V> pageBeanListTranslate(PageBean<T> initPage, List<V> newList) {

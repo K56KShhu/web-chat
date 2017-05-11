@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ReportDaoJdbcImpl implements ReportDao {
+    public static final int ORDER_BY_CONTENT_TYPE = 0;
+    public static final int ORDER_BY_CREATED = 1;
+
     private DataSource dataSource;
 
     public ReportDaoJdbcImpl(DataSource dataSource) {
@@ -61,6 +64,29 @@ public class ReportDaoJdbcImpl implements ReportDao {
     }
 
     @Override
+    public List<ReportPo> selectReports(int startIndex, int rowsOnePage, int order, boolean isReverse) {
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+        List<ReportPo> reports = new ArrayList<>();
+
+        try {
+            conn = dataSource.getConnection();
+            String sql = makeQuerySql(startIndex, rowsOnePage, order, isReverse);
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                reports.add(getReport(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, stmt, rs);
+        }
+        return reports;
+    }
+
+    @Override
     public void deleteReport(int reportId) {
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -78,6 +104,29 @@ public class ReportDaoJdbcImpl implements ReportDao {
         }
     }
 
+    @Override
+    public int getTotalRow() {
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+        int rows = 0;
+
+        try {
+            conn = dataSource.getConnection();
+            String sql = "SELECT COUNT(*) FROM report";
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+                rows = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, stmt, rs);
+        }
+        return rows;
+    }
+
     private ReportPo getReport(ResultSet rs) throws SQLException {
         ReportPo report = new ReportPo();
         report.setReportId(rs.getInt("report_id"));
@@ -85,6 +134,22 @@ public class ReportDaoJdbcImpl implements ReportDao {
         report.setContentId(rs.getInt("content_id"));
         report.setContentType(rs.getInt("content_type"));
         report.setReason(rs.getString("reason"));
+        report.setCreated(rs.getTimestamp("created"));
         return report;
+    }
+
+    private String makeQuerySql(int startIndex, int rowsOnePage, int order, boolean isReverse) {
+        String sql = "SELECT * FROM report ORDER BY";
+        if (ORDER_BY_CONTENT_TYPE == order) {
+            sql += " content_type";
+        } else if (ORDER_BY_CREATED == order) {
+            sql += " created";
+        } else {
+            sql += " created";
+        }
+        if (isReverse) {
+            sql += " DESC";
+        }
+        return sql + " LIMIT " + startIndex + "," + rowsOnePage;
     }
 }

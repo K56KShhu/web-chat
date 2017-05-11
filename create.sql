@@ -89,7 +89,8 @@ CREATE TABLE report
     user_id bigint(15) unsigned not null,
     content_id bigint(15) unsigned not null,
     content_type tinyint(2) not null,
-    reason varchar(100) not null default ''
+    reason varchar(100) not null default '',
+    created timestamp not null default current_timestamp
 );
 
 INSERT INTO user (username, password, sex, email, status) VALUES ('101', 'abc', 'male', 'zkyyo@outlook.com', 1);

@@ -1,5 +1,6 @@
 package com.zkyyo.www.web.controller;
 
+import com.zkyyo.www.bean.PageBean;
 import com.zkyyo.www.bean.po.FilePo;
 import com.zkyyo.www.bean.po.UserPo;
 import com.zkyyo.www.service.FileService;
@@ -32,6 +33,9 @@ public class FileListServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String topicId = request.getParameter("topicId");
         String shareType = request.getParameter("shareType");
+        String page = request.getParameter("page");
+        String order = request.getParameter("order");
+        String isReverseStr = request.getParameter("isReverse");
 
         TopicService topicService = (TopicService) getServletContext().getAttribute("topicService");
         if (!topicService.isValidId(topicId) && !topicService.isExisted(Integer.valueOf(topicId))) {
@@ -40,34 +44,44 @@ public class FileListServlet extends HttpServlet {
         }
 
         int tId = Integer.valueOf(topicId);
+        int currentPage = 1;
+        if (page != null) {
+            currentPage = Integer.valueOf(page);
+        }
+
+        boolean isReverse = "true".equals(isReverseStr);
+
         FileService fileService = (FileService) getServletContext().getAttribute("fileService");
-        UserService userService = (UserService) getServletContext().getAttribute("userService");
-        List<FilePo> filePos;
-        List<FileVo> fileVos;
+        PageBean<FilePo> pageBeanPo;
+        String url;
         switch (shareType) {
             case SHARE_IMAGE:
-                filePos = fileService.findFiles(tId, FileService.APPLY_IMAGE);
-                fileVos = new ArrayList<>();
-                for (FilePo filePo : filePos) {
-                    UserPo userPo = userService.getUser(filePo.getUserId());
-                    fileVos.add(BeanUtil.filePoToVo(filePo, userPo));
-                }
-                request.setAttribute("images", fileVos);
-                request.getRequestDispatcher("image_list.jsp").forward(request, response);
+                pageBeanPo = fileService.queryFiles(currentPage, FileService.ORDER_BY_CREATED, true, tId, FileService.APPLY_IMAGE);
+                url = "image_list.jsp";
                 break;
             case SHARE_FILE:
-                filePos = fileService.findFiles(tId, FileService.APPLY_FILE);
-                fileVos = new ArrayList<>();
-                for (FilePo filePo : filePos) {
-                    UserPo userPo = userService.getUser(filePo.getUserId());
-                    fileVos.add(BeanUtil.filePoToVo(filePo, userPo));
-                }
-                request.setAttribute("files", fileVos);
-                request.getRequestDispatcher("file_list.jsp").forward(request, response);
+                pageBeanPo = fileService.queryFiles(currentPage, FileService.ORDER_BY_CREATED, true, tId, FileService.APPLY_FILE);
+                url = "file_list.jsp";
                 break;
             default:
                 response.sendRedirect("index.jsp");
-                break;
+                return;
         }
+
+        UserService userService = (UserService) getServletContext().getAttribute("userService");
+        List<FilePo> filePos = pageBeanPo.getList();
+        List<FileVo> fileVos = new ArrayList<>();
+        for (FilePo filePo : filePos) {
+            UserPo userPo = userService.getUser(filePo.getUserId());
+            fileVos.add(BeanUtil.filePoToVo(filePo, userPo));
+        }
+        PageBean<FileVo> pageBeanVo = BeanUtil.pageBeanListTranslate(pageBeanPo, fileVos);
+
+        request.setAttribute("topicId", topicId);
+        request.setAttribute("pageBean", pageBeanVo);
+        request.setAttribute("shareType", shareType);
+        request.setAttribute("order", order);
+        request.setAttribute("isReverse", isReverse);
+        request.getRequestDispatcher(url).forward(request, response);
     }
 }

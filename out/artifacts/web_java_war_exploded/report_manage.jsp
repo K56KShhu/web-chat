@@ -8,12 +8,21 @@
 
 <h1>report manage</h1>
 
+<c:url value="report_manage_info.do" var="contentTypeOrderUrl">
+    <c:param name="order" value="contentType"/>
+    <c:param name="isReverse" value="${requestScope.isReverse == true ? 'false' : 'true'}"/>
+</c:url>
+<c:url value="report_manage_info.do" var="createdOrderUrl">
+    <c:param name="order" value="created"/>
+    <c:param name="isReverse" value="${requestScope.isReverse == true ? 'false' : 'true'}"/>
+</c:url>
+
 <table border="1">
     <tr>
         <th>举报者用户名</th>
-        <th>举报类型</th>
+        <th><a href="${contentTypeOrderUrl}">举报类型</a></th>
         <th>原因</th>
-        <th>时间</th>
+        <th><a href="${createdOrderUrl}">时间</a></th>
         <th>处理</th>
         <th>处理结果</th>
     </tr>

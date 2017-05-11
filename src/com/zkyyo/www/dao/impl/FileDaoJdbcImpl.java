@@ -5,14 +5,16 @@ import com.zkyyo.www.db.DbClose;
 import com.zkyyo.www.bean.po.FilePo;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FileDaoJdbcImpl implements FileDao {
+    public static final int APPLY_IMAGE = 0;
+    public static final int APPLY_FILE = 1;
+
+    public static final int ORDER_BY_CREATED = 0;
+
     private DataSource dataSource;
 
     public FileDaoJdbcImpl(DataSource dataSource) {
@@ -72,6 +74,29 @@ public class FileDaoJdbcImpl implements FileDao {
     }
 
     @Override
+    public List<FilePo> selectFilesByTopicId(int currentPage, int rowsOnePage, int order, boolean isReverse, int topicId, int apply) {
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+        List<FilePo> files = new ArrayList<>();
+
+        try {
+            conn = dataSource.getConnection();
+            String sql = makeQuerySql(currentPage, rowsOnePage, order, isReverse, topicId, apply);
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                files.add(getFile(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, stmt, rs);
+        }
+        return files;
+    }
+
+    @Override
     public FilePo selectFileByFileId(int fileId) {
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -112,6 +137,30 @@ public class FileDaoJdbcImpl implements FileDao {
         }
     }
 
+    @Override
+    public int getTotalRow(int topicId) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        int rows = 0;
+
+        try {
+            conn = dataSource.getConnection();
+            String sql = "SELECT COUNT(*) FROM upload_file WHERE topic_id = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, topicId);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                rows = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, pstmt, rs);
+        }
+        return rows;
+    }
+
     private FilePo getFile(ResultSet rs) throws SQLException {
         FilePo file = new FilePo();
         file.setFileId(rs.getInt(("upload_file_id")));
@@ -121,5 +170,23 @@ public class FileDaoJdbcImpl implements FileDao {
         file.setPath(rs.getString("relative_path"));
         file.setCreated(rs.getTimestamp("created"));
         return file;
+    }
+
+    private String makeQuerySql(int currentPage, int rowsOnePage, int order, boolean isReverse, int topicId, int apply) {
+        String sql = "SELECT * FROM upload_file WHERE topic_id = " + topicId;
+        if (APPLY_IMAGE == apply) {
+            sql += " AND apply = 1";
+        } else if (APPLY_FILE == apply) {
+            sql += " AND apply = 2";
+        }
+        if (ORDER_BY_CREATED == order) {
+            sql += " ORDER BY created";
+        } else {
+            sql += " ORDER BY created";
+        }
+        if (isReverse) {
+            sql += " DESC";
+        }
+        return sql + " LIMIT " + currentPage + "," + rowsOnePage;
     }
 }

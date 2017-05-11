@@ -52,7 +52,7 @@ public class ReportManageInfoServlet extends HttpServlet {
         } else if ("created".equals(order)) {
             pageBeanPo = reportService.queryReports(currentPage, ReportService.ORDER_BY_CREATED, isReverse);
         } else {
-            pageBeanPo = reportService.queryReports(currentPage, ReportService.ORDER_BY_CREATED, isReverse);
+            pageBeanPo = reportService.queryReports(currentPage, ReportService.ORDER_BY_CREATED, true);
         }
 
         UserService userService = (UserService) getServletContext().getAttribute("userService");

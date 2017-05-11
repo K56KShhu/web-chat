@@ -6,12 +6,7 @@
 </head>
 <body>
 
-<div style="text-align: right">
-    <a href="topic_find.do">首页</a>&nbsp;
-    <a href="user_update_info.do">个人</a>&nbsp;
-    <a href="logout.do">注销</a>&nbsp;
-    <a href="admin_index.jsp">管理</a>&nbsp;
-</div>
+<%@ include file="/WEB-INF/header.jsp"%>
 
 <h1>index</h1>
 
@@ -20,6 +15,63 @@
     <input type="submit"/>
 </form>
 
+<c:if test="${requestScope.pageBean == null}">
+    <c:redirect url="topic_find.do"/>
+</c:if>
+
+<c:url value="topic_find.do" var="replyAccountOderUrl">
+    <c:param name="order" value="replyAccount"/>
+    <c:param name="isReverse" value="${requestScope.isReverse == true ? 'false' : 'true'}"/>
+</c:url>
+<c:url value="topic_find.do" var="lastTimeOrderUrl">
+    <c:param name="order" value="lastTime"/>
+    <c:param name="isReverse" value="${requestScope.isReverse == true ? 'false' : 'true'}"/>
+</c:url>
+<c:url value="topic_find.do" var="createdOrderUrl">
+    <c:param name="order" value="created"/>
+    <c:param name="isReverse" value="${requestScope.isReverse == true ? 'false' : 'true'}"/>
+</c:url>
+
+<table border="1">
+    <tr>
+        <th>title</th>
+        <th>isPrivate</th>
+        <th><a href="${replyAccountOderUrl}">reply</a></th>
+        <th><a href="${lastTimeOrderUrl}">last</a></th>
+        <th><a href="${createdOrderUrl}">created</a></th>
+    </tr>
+    <c:forEach var="topic" items="${requestScope.pageBean.list}">
+        <c:url value="topic_chat_info.do" var="topicUrl">
+            <c:param name="topicId" value="${topic.topicId}"/>
+        </c:url>
+        <tr>
+            <td>
+                <table>
+                    <tr>
+                        <td><a href="${topicUrl}">${topic.title}</a></td>
+                    </tr>
+                    <tr>
+                        <td>${topic.description}</td>
+                    </tr>
+                </table>
+            </td>
+            <td>${topic.isPrivate}</td>
+            <td>${topic.replyAccount}</td>
+            <td>${topic.lastTime}</td>
+            <td>${topic.created}</td>
+        </tr>
+    </c:forEach>
+</table>
+
+<%--封装--%>
+<c:set var="page" value="${requestScope.pageBean}" scope="request"/>
+<jsp:include page="WEB-INF/paging.jsp">
+    <jsp:param name="queryUrl" value="topic_find.do"/>
+    <jsp:param name="totalIndex" value="11"/>
+    <jsp:param name="isReverse" value="${requestScope.isReverse}"/>
+</jsp:include>
+
+<%--
 <c:choose>
     <c:when test="${requestScope.topics != null}">
         <table border="1">
@@ -60,6 +112,7 @@
         <c:redirect url="topic_find.do"/>
     </c:otherwise>
 </c:choose>
+--%>
 
 </body>
 </html>

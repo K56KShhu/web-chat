@@ -104,3 +104,9 @@ INSERT INTO user_usergroup (user_id, usergroup_id) VALUES (1, 1);
 INSERT INTO user_usergroup (user_id, usergroup_id) VALUES (2, 1);
 
 INSERT INTO topic (title, description, creator_id, last_modify_id) VALUES ('请问打码是一种怎样的体验?', '听说现在很多人都在学习编程,大家认为变成是一种怎样的体验', '2', '2');
+INSERT INTO topic (title, description, creator_id, last_modify_id) VALUES ('人外有人, 天外有天, 愿永怀敬畏之心学习', '怎样的体验', '2', '2');
+INSERT INTO topic (title, description, creator_id, last_modify_id) VALUES ('我要去故宫, 我要第一个进去', '怎样的体验', '2', '2');
+INSERT INTO topic (title, description, creator_id, last_modify_id) VALUES ('我要进腾讯, 我要去硅谷', '怎样的体验', '2', '2');
+INSERT INTO topic (title, description, creator_id, last_modify_id) VALUES ('我要去硅谷, 我要环游世界', '怎样的体验', '2', '2');
+INSERT INTO topic (title, description, creator_id, last_modify_id) VALUES ('我还要去大沙漠', '怎样的体验', '2', '2');
+INSERT INTO topic (title, description, creator_id, last_modify_id) VALUES ('我还要看好多好多书, 认识不同的世界', '怎样的体验', '2', '2');

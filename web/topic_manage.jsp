@@ -8,6 +8,9 @@
 
 <h1>topic manage</h1>
 
+<a href="topic_add_public.jsp">add public topic</a><br/>
+<a href="topic_add_private.jsp">add private topic</a><br/>
+
 <table border="1">
     <tr>
         <th>title</th>

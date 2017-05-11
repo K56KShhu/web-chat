@@ -5,12 +5,20 @@ import com.zkyyo.www.db.DbClose;
 import com.zkyyo.www.bean.po.TopicPo;
 
 import javax.sql.DataSource;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 public class TopicDaoJdbcImpl implements TopicDao {
+    public static final int ORDER_BY_REPLY_ACCOUNT = 0;
+    public static final int ORDER_BY_LAST_TIME = 1;
+    public static final int ORDER_BY_CREATED = 2;
+
     private DataSource dataSource;
 
     public TopicDaoJdbcImpl(DataSource dataSource) {
@@ -41,6 +49,31 @@ public class TopicDaoJdbcImpl implements TopicDao {
     }
 
     @Override
+    public List<TopicPo> selectTopics(int startIndex, int ROWS_ONE_PAGE, int order, boolean isReverse) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        List<TopicPo> topics = new ArrayList<>();
+
+        try {
+            conn = dataSource.getConnection();
+            String sql = makeQuerySql(order, isReverse);
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, startIndex);
+            pstmt.setInt(2, ROWS_ONE_PAGE);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                topics.add(getTopic(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, pstmt, rs);
+        }
+        return topics;
+    }
+
+    @Override
     public List<TopicPo> selectPossibleTopicsByTitle(Set<String> keys) {
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -59,7 +92,6 @@ public class TopicDaoJdbcImpl implements TopicDao {
                     topics.add(getTopic(rs));
                 }
             }
-
             conn.commit();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -167,6 +199,29 @@ public class TopicDaoJdbcImpl implements TopicDao {
         }
     }
 
+    @Override
+    public int getTotalRow() {
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+        int rows = 0;
+
+        try {
+            conn = dataSource.getConnection();
+            String sql = "SELECT COUNT(*) FROM topic";
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+            if (rs.next()) {
+                rows = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, stmt, rs);
+        }
+        return rows;
+    }
+
     private TopicPo getTopic(ResultSet rs) throws SQLException {
         TopicPo topic = new TopicPo();
         topic.setTopicId(rs.getInt("topic_id"));
@@ -179,5 +234,22 @@ public class TopicDaoJdbcImpl implements TopicDao {
         topic.setLastTime(rs.getTimestamp("last_time"));
         topic.setCreated(rs.getTimestamp("created"));
         return topic;
+    }
+
+    private String makeQuerySql(int order, boolean isReverse) {
+        String sql = "SELECT * FROM topic ORDER BY";
+        if (ORDER_BY_REPLY_ACCOUNT == order) {
+            sql += " reply_account";
+        } else if (ORDER_BY_LAST_TIME == order) {
+            sql += " last_time";
+        } else if (ORDER_BY_CREATED == order) {
+            sql += " created";
+        } else {
+            sql += " created";
+        }
+        if (isReverse) {
+            sql += " DESC";
+        }
+        return sql + " LIMIT ?, ?";
     }
 }

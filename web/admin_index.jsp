@@ -7,7 +7,8 @@
 
 <a href="topic_manage_info.do">topic manage</a><br/>
 <a href="report_manage_info.do">report manage</a><br/>
-<a href="user_manage_info.do">user manage</a>
+<a href="user_manage_info.do">user manage</a><br/>
+<a href="group_manage_info.do">group manage</a><br/>
 
 </body>
 </html>

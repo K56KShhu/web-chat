@@ -13,6 +13,7 @@ public interface UserDao {
     List<UserPo> selectPossibleUsersByUsername(String username);
     List<UserPo> selectUsersByUsername(int startIndex, int rowsOnePage, String username);
     List<UserPo> selectUsers(int startIndex, int rowsOnePage, int order, boolean isReverse);
+    List<UserPo> selectUsersByGroup(int groupId);
     Set<String> selectRolesByUserId(int id);
     Set<String> selectRolesByUsername(String username);
     Set<Integer> selectGroupsByUserId(int id);

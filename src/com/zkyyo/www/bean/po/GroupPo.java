@@ -1,22 +1,24 @@
 package com.zkyyo.www.bean.po;
 
-import java.util.List;
+import java.sql.Timestamp;
 
 public class GroupPo {
     private int groupId;
     private String name;
     private String description;
-    private List<Integer> members;
+    private int population;
+    private Timestamp created;
 
     public GroupPo() {
 
     }
 
-    public GroupPo(int groupId, String name, String description, List<Integer> members) {
+    public GroupPo(int groupId, String name, String description, int population, Timestamp created) {
         this.groupId = groupId;
         this.name = name;
         this.description = description;
-        this.members = members;
+        this.population = population;
+        this.created = created;
     }
 
     public int getGroupId() {
@@ -43,12 +45,20 @@ public class GroupPo {
         this.description = description;
     }
 
-    public List<Integer> getMembers() {
-        return members;
+    public int getPopulation() {
+        return population;
     }
 
-    public void setMembers(List<Integer> members) {
-        this.members = members;
+    public void setPopulation(int population) {
+        this.population = population;
+    }
+
+    public Timestamp getCreated() {
+        return created;
+    }
+
+    public void setCreated(Timestamp created) {
+        this.created = created;
     }
 
     @Override
@@ -57,7 +67,9 @@ public class GroupPo {
                 "groupId=" + groupId +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", members=" + members +
+                ", population=" + population +
+                ", created=" + created +
                 '}';
     }
 }
+

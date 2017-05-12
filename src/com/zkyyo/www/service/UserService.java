@@ -150,6 +150,10 @@ public class UserService {
         return pageBean;
     }
 
+    public List<UserPo> queryUsersByGroup(int groupId) {
+        return userDao.selectUsersByGroup(groupId);
+    }
+
     public List<UserPo> getUsers() {
         return userDao.selectUsers();
     }

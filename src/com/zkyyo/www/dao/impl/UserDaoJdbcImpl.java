@@ -204,6 +204,30 @@ public class UserDaoJdbcImpl implements UserDao {
     }
 
     @Override
+    public List<UserPo> selectUsersByGroup(int groupId) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        List<UserPo> users = new ArrayList<>();
+
+        try {
+            conn = dataSource.getConnection();
+            String sql = "SELECT * FROM user WHERE user_id IN (SELECT user_id FROM user_usergroup WHERE usergroup_id=?)";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, groupId);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                users.add(getUser(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, pstmt, rs);
+        }
+        return users;
+    }
+
+    @Override
     public Set<String> selectRolesByUserId(int id) {
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -350,7 +374,7 @@ public class UserDaoJdbcImpl implements UserDao {
     public void addUser(UserPo userPo) {
         Connection conn = null;
         PreparedStatement pstmt = null;
-        ResultSet rs = null;
+        ResultSet rs;
 
         try {
             conn = dataSource.getConnection();

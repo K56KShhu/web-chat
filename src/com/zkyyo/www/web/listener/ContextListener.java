@@ -34,6 +34,7 @@ public class ContextListener implements ServletContextListener,
             context.setAttribute("replyService", new ReplyService(new ReplyDaoJdbcImpl(dataSource)));
             context.setAttribute("fileService", new FileService(new FileDaoJdbcImpl(dataSource)));
             context.setAttribute("reportService", new ReportService(new ReportDaoJdbcImpl(dataSource)));
+            context.setAttribute("groupService", new GroupService(new GroupDaoJdbcImpl(dataSource)));
         } catch (NamingException e) {
             e.printStackTrace();
         }

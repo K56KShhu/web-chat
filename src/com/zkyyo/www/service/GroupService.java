@@ -39,4 +39,20 @@ public class GroupService {
     public void addUser(int groupId, int userId) {
         groupDao.addUserInGroup(groupId, userId);
     }
+
+    public void deleteGroup(int groupId) {
+        groupDao.deleteGroup(groupId);
+    }
+
+    public boolean isValidName(String name) {
+        return true;
+    }
+
+    public boolean isValidDesc(String desc) {
+        return true;
+    }
+
+    public void addGroup(GroupPo groupPo) {
+        groupDao.addGroup(groupPo);
+    }
 }

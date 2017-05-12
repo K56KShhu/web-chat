@@ -120,6 +120,59 @@ public class GroupDaoJdbcImpl implements GroupDao {
         }
     }
 
+    @Override
+    public void deleteGroup(int groupId) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            conn = dataSource.getConnection();
+            conn.setAutoCommit(false);
+            //删除组别
+            String groupSql = "DELETE FROM usergroup WHERE usergroup_id=?";
+            pstmt = conn.prepareStatement(groupSql);
+            pstmt.setInt(1, groupId);
+            pstmt.execute();
+
+            //删除用户与组别的对应关系
+            String userSql = "DELETE FROM user_usergroup WHERE usergroup_id=?";
+            pstmt = conn.prepareStatement(userSql);
+            pstmt.setInt(1, groupId);
+            pstmt.execute();
+
+            //删除讨论区与组别的对应关系
+            String topicSql = "DELETE FROM topic_usergroup WHERE usergroup_id=?";
+            pstmt = conn.prepareStatement(topicSql);
+            pstmt.setInt(1, groupId);
+            pstmt.execute();
+
+            conn.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, pstmt);
+        }
+    }
+
+    @Override
+    public void addGroup(GroupPo groupPo) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            conn = dataSource.getConnection();
+            String sql = "INSERT INTO usergroup (name, description) VALUES (?, ?)";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, groupPo.getName());
+            pstmt.setString(2, groupPo.getDescription());
+            pstmt.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, pstmt);
+        }
+    }
+
     private GroupPo getGroup(ResultSet rs) throws SQLException {
         GroupPo group = new GroupPo();
         group.setGroupId(rs.getInt("usergroup_id"));

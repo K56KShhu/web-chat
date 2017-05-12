@@ -9,4 +9,6 @@ public interface GroupDao {
     GroupPo selectGroup(int groupId);
     void removeUserInGroup(int groupId, int userId);
     void addUserInGroup(int groupId, int userId);
+    void deleteGroup(int groupId);
+    void addGroup(GroupPo groupPo);
 }

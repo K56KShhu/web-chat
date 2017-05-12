@@ -52,7 +52,7 @@ CREATE TABLE usergroup
 (
     usergroup_id bigint(15) unsigned not null auto_increment primary key,
     name varchar(50) not null,
-    reason varchar(100) not null default ''
+    description varchar(100) not null default ''
 );
 
 DROP TABLE IF EXISTS user_usergroup;

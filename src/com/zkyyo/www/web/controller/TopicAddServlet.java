@@ -27,11 +27,11 @@ public class TopicAddServlet extends HttpServlet {
 
         TopicService topicService = (TopicService) getServletContext().getAttribute("topicService");
         List<String> errors = new ArrayList<>();
-        int type = TopicService.NOT_PRIVATE;
+        int type = TopicService.ACCESS_PUBLIC;
         if ("public".equals(typeStr)) {
-            type = TopicService.NOT_PRIVATE;
+            type = TopicService.ACCESS_PUBLIC;
         } else if ("private".equals(typeStr)) {
-            type = TopicService.IS_PRIVATE;
+            type = TopicService.ACCESS_PRIVATE;
         } else {
             errors.add("bad type");
         }
@@ -42,7 +42,6 @@ public class TopicAddServlet extends HttpServlet {
             errors.add("bad description");
         }
 
-        errors.add("bad things");
         if (errors.isEmpty()) {
             TopicPo topic = new TopicPo();
             topic.setTitle(title);

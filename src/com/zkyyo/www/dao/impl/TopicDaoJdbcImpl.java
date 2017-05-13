@@ -20,6 +20,10 @@ public class TopicDaoJdbcImpl implements TopicDao {
     public static final int ORDER_BY_LAST_TIME = 1;
     public static final int ORDER_BY_CREATED = 2;
 
+    public static final int ACCESS_PUBLIC = 0;
+    public static final int ACCESS_PRIVATE = 1;
+    public static final int ACCESS_ALL = 2;
+
     private DataSource dataSource;
 
     public TopicDaoJdbcImpl(DataSource dataSource) {
@@ -50,7 +54,7 @@ public class TopicDaoJdbcImpl implements TopicDao {
     }
 
     @Override
-    public List<TopicPo> selectTopicsByOrder(int startIndex, int ROWS_ONE_PAGE, int order, boolean isReverse) {
+    public List<TopicPo> selectTopicsByOrder(int type, int startIndex, int ROWS_ONE_PAGE, int order, boolean isReverse) {
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -58,7 +62,7 @@ public class TopicDaoJdbcImpl implements TopicDao {
 
         try {
             conn = dataSource.getConnection();
-            String sql = makeQuerySql(order, isReverse);
+            String sql = makeQuerySql(type, order, isReverse);
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, startIndex);
             pstmt.setInt(2, ROWS_ONE_PAGE);
@@ -103,7 +107,31 @@ public class TopicDaoJdbcImpl implements TopicDao {
     }
 
     @Override
-    public Set<TopicPo> selectTopicsByTitle(int startIndex, int ROWS_ONE_PAGE, Set<String> keys) {
+    public List<TopicPo> selectTopicsByGroup(int groupId) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        List<TopicPo> topics = new ArrayList<>();
+
+        try {
+            conn = dataSource.getConnection();
+            String sql = "SELECT * FROM topic WHERE topic_id IN (SELECT topic_id FROM topic_usergroup WHERE usergroup_id=?)";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, groupId);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                topics.add(getTopic(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, pstmt, rs);
+        }
+        return topics;
+    }
+
+    @Override
+    public Set<TopicPo> selectTopicsByTitle(int type, Set<String> keys, int startIndex, int rowsOnePage) {
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -111,12 +139,13 @@ public class TopicDaoJdbcImpl implements TopicDao {
 
         try {
             conn = dataSource.getConnection();
-            String sql = "SELECT * FROM topic WHERE title LIKE ? ORDER BY reply_account DESC LIMIT ?, ?";
+            String sql = "SELECT * FROM topic WHERE title LIKE ? AND is_private=? ORDER BY reply_account DESC LIMIT ?, ?";
             pstmt = conn.prepareStatement(sql);
             for (String key : keys) {
                 pstmt.setString(1, "%" + key + "%");
-                pstmt.setInt(2, startIndex);
-                pstmt.setInt(3, ROWS_ONE_PAGE);
+                pstmt.setInt(2, type);
+                pstmt.setInt(3, startIndex);
+                pstmt.setInt(4, rowsOnePage);
                 rs = pstmt.executeQuery();
                 while (rs.next()) {
                     topics.add(getTopic(rs));
@@ -291,16 +320,25 @@ public class TopicDaoJdbcImpl implements TopicDao {
         return topic;
     }
 
-    private String makeQuerySql(int order, boolean isReverse) {
-        String sql = "SELECT * FROM topic ORDER BY";
-        if (ORDER_BY_REPLY_ACCOUNT == order) {
-            sql += " reply_account";
-        } else if (ORDER_BY_LAST_TIME == order) {
-            sql += " last_time";
-        } else if (ORDER_BY_CREATED == order) {
-            sql += " created";
+    private String makeQuerySql(int type, int order, boolean isReverse) {
+        String sql = "SELECT * FROM topic";
+        if (ACCESS_PUBLIC == type) {
+            sql += " WHERE is_private = 0";
+        } else if (ACCESS_PRIVATE == type) {
+            sql += " WHERE is_private = 1";
+        } else if (ACCESS_ALL == type) {
+            sql += "";
         } else {
-            sql += " created";
+            sql += "";
+        }
+        if (ORDER_BY_REPLY_ACCOUNT == order) {
+            sql += " ORDER BY reply_account";
+        } else if (ORDER_BY_LAST_TIME == order) {
+            sql += " ORDER BY last_time";
+        } else if (ORDER_BY_CREATED == order) {
+            sql += " ORDER BY created";
+        } else {
+            sql += " ORDER BY created";
         }
         if (isReverse) {
             sql += " DESC";

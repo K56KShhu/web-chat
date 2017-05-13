@@ -7,9 +7,10 @@ import java.util.Set;
 
 public interface TopicDao {
     List<TopicPo> selectTopicsByOrder();
-    List<TopicPo> selectTopicsByOrder(int startIndex, int ROWS_ONE_PAGE, int order, boolean isReverse);
+    List<TopicPo> selectTopicsByOrder(int type, int startIndex, int ROWS_ONE_PAGE, int order, boolean isReverse);
     List<TopicPo> selectPossibleTopicsByTitle(Set<String> keys);
-    Set<TopicPo> selectTopicsByTitle(int startIndex, int ROWS_ONE_PAGE, Set<String> keys);
+    List<TopicPo> selectTopicsByGroup(int groupId);
+    Set<TopicPo> selectTopicsByTitle(int type, Set<String> keys, int startIndex, int rowsOnePage);
     TopicPo selectTopicByTopicId(int id);
     void addTopic(TopicPo topicPo);
     void deleteTopicByTopicId(int topicId);

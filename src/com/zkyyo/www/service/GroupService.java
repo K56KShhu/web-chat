@@ -55,4 +55,12 @@ public class GroupService {
     public void addGroup(GroupPo groupPo) {
         groupDao.addGroup(groupPo);
     }
+
+    public List<GroupPo> queryGroups(String name) {
+        return groupDao.selectGroupsByName(name);
+    }
+
+    public void addTopic(int groupId, int topicId) {
+        groupDao.addGroupInTopic(groupId, topicId);
+    }
 }

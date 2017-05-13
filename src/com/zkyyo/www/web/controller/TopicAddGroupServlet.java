@@ -1,7 +1,7 @@
 package com.zkyyo.www.web.controller;
 
 import com.zkyyo.www.service.GroupService;
-import com.zkyyo.www.service.UserService;
+import com.zkyyo.www.service.TopicService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,32 +11,31 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet(
-        name = "GroupAddUserServlet",
-        urlPatterns = {"/group_add_user.do"}
+        name = "TopicAddGroupServlet",
+        urlPatterns = {"/topic_add_group.do"}
 )
-public class GroupAddUserServlet extends HttpServlet {
+public class TopicAddGroupServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String groupId = request.getParameter("groupId");
-        String userId = request.getParameter("userId");
+        String topicId = request.getParameter("topicId");
 
         GroupService groupService = (GroupService) getServletContext().getAttribute("groupService");
-        UserService userService = (UserService) getServletContext().getAttribute("userService");
-        String message = "添加失败, 用户或小组不存在";
-        if (groupService.isValidId(groupId) && userService.isValidUserId(userId)) {
+        TopicService topicService = (TopicService) getServletContext().getAttribute("topicService");
+        String message = "添加失败, 讨论区或小组不存在";
+        if (groupService.isValidId(groupId) && topicService.isValidId(topicId)) {
             int gId = Integer.valueOf(groupId);
-            int uId = Integer.valueOf(userId);
-            if (groupService.isExisted(gId) && userService.isUserExisted(uId)) {
-                    groupService.addUser(gId, uId);
-                    message = "看起来是添加成功了";
-//                if (!groupService.isUserInGroup(gId, uId)) {
-//                    groupService.addUser(gId, uId);
-//                    message = "添加成功";
+            int tId = Integer.valueOf(topicId);
+            if (groupService.isExisted(gId) && topicService.isExisted(tId)) {
+                groupService.addTopic(gId, tId);
+                message = "开起来是添加成功了";
+//                if (!groupService.isGroupInTopic(gId, tId)) {
+//                    message = "添加成功"
 //                } else {
-//                    message = "添加失败, 用户已经位于小组中";
+//                    message = "添加失败, 讨论区已经包含该小组";
 //                }
             }
         }

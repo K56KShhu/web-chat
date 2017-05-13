@@ -8,7 +8,7 @@
 
 <%@ include file="/WEB-INF/header.jsp" %>
 
-<h1>index</h1>
+<h1>公共讨论区</h1>
 
 <form method="get" action="topic_find.do">
     搜索讨论区: <input type="text" name="search"/>
@@ -35,7 +35,6 @@
 <table border="1">
     <tr>
         <th>title</th>
-        <th>isPrivate</th>
         <th><a href="${replyAccountOderUrl}">reply</a></th>
         <th><a href="${lastTimeOrderUrl}">last</a></th>
         <th><a href="${createdOrderUrl}">created</a></th>
@@ -55,7 +54,6 @@
                     </tr>
                 </table>
             </td>
-            <td>${topic.isPrivate}</td>
             <td>${topic.replyAccount}</td>
             <td>${topic.lastTime}</td>
             <td>${topic.created}</td>

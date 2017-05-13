@@ -5,10 +5,12 @@
 </head>
 <body>
 
-<a href="topic_manage_info.do">topic manage</a><br/>
-<a href="report_manage_info.do">report manage</a><br/>
-<a href="user_manage_info.do">user manage</a><br/>
-<a href="group_manage_info.do">group manage</a><br/>
+<h1>管理</h1>
+
+<a href="user_manage_info.do">用户</a><br/>
+<a href="group_manage_info.do">小组</a><br/>
+<a href="topic_manage_info.do">讨论区</a><br/>
+<a href="report_manage_info.do">举报</a><br/>
 
 </body>
 </html>

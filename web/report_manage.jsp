@@ -6,6 +6,8 @@
 </head>
 <body>
 
+<%@ include file="/WEB-INF/header_for_admin.jsp" %>
+
 <h1>report manage</h1>
 
 <c:url value="report_manage_info.do" var="contentTypeOrderUrl">

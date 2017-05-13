@@ -6,6 +6,8 @@
 </head>
 <body>
 
+<%@ include file="/WEB-INF/header_for_admin.jsp" %>
+
 <h1>user manage</h1>
 
 <a href="admin_audit_info.do">audit</a><br/>

@@ -67,6 +67,30 @@ public class GroupDaoJdbcImpl implements GroupDao {
     }
 
     @Override
+    public List<GroupPo> selectGroupsByName(String name) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        List<GroupPo> groups = new ArrayList<>();
+
+        try {
+            conn = dataSource.getConnection();
+            String sql = "SELECT * FROM usergroup WHERE name LIKE ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, "%" + name + "%");
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                groups.add(getGroup(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, pstmt, rs);
+        }
+        return groups;
+    }
+
+    @Override
     public void removeUserInGroup(int groupId, int userId) {
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -165,6 +189,25 @@ public class GroupDaoJdbcImpl implements GroupDao {
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, groupPo.getName());
             pstmt.setString(2, groupPo.getDescription());
+            pstmt.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, pstmt);
+        }
+    }
+
+    @Override
+    public void addGroupInTopic(int groupId, int topicId) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            conn = dataSource.getConnection();
+            String sql = "INSERT INTO topic_usergroup (usergroup_id, topic_id) VALUES (?, ?)";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, groupId);
+            pstmt.setInt(2, topicId);
             pstmt.execute();
         } catch (SQLException e) {
             e.printStackTrace();

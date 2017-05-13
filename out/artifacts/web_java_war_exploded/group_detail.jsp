@@ -14,6 +14,7 @@
 
 <a href="${addUserUrl}">add user</a>
 
+<h2>小组信息</h2>
 <table border="1">
     <tr>
         <th>name</th>
@@ -59,6 +60,20 @@
             </table>
         </td>
     </tr>
+</table>
+
+<h2>该小组用于以下讨论区</h2>
+<table border="1">
+    <tr>
+        <th>title</th>
+        <th>created</th>
+    </tr>
+    <c:forEach var="topic" items="${requestScope.topics}">
+        <tr>
+            <td>${topic.title}</td>
+            <td>${topic.created}</td>
+        </tr>
+    </c:forEach>
 </table>
 
 </body>

@@ -6,9 +6,12 @@
 </head>
 <body>
 
+<%@ include file="/WEB-INF/header_for_admin.jsp" %>
+
 <h1>group manage</h1>
 
 <a href="group_add.jsp">group add</a><br/>
+
 
 <table border="1">
     <tr>

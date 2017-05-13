@@ -128,4 +128,9 @@ public class TopicService {
     public List<TopicPo> queryTopicsByGroup(int groupId) {
         return topicDao.selectTopicsByGroup(groupId);
     }
+
+    public Set<TopicPo> queryTopicsByGroups(Set<Integer> groupIds) {
+        return topicDao.selectTopicsByGroups(groupIds);
+    }
+
 }

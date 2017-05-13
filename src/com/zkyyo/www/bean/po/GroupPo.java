@@ -1,6 +1,7 @@
 package com.zkyyo.www.bean.po;
 
 import java.sql.Timestamp;
+import java.util.Objects;
 
 public class GroupPo {
     private int groupId;
@@ -59,6 +60,29 @@ public class GroupPo {
 
     public void setCreated(Timestamp created) {
         this.created = created;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        if (!(obj instanceof GroupPo)) {
+            return false;
+        }
+        GroupPo other = (GroupPo) obj;
+        return groupId == other.getGroupId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(groupId);
     }
 
     @Override

@@ -10,6 +10,28 @@
 
 <h1>公共讨论区</h1>
 
+<%--
+<c:url value="topic_find.do" var="privateTopicUrl">
+    <c:param name="type" value="private"/>
+</c:url>
+<c:url value="topic_find.do" var="publicTopicUrl">
+    <c:param name="type" value="public"/>
+</c:url>
+
+<c:choose><%@ include file="/WEB-INF/header.jsp" %>
+    <c:when test="${requestScope.type == 'private'}">
+        <h1>授权讨论区</h1>
+        <a href="${publicTopicUrl}">进入公共讨论区</a>
+    </c:when>
+    <c:otherwise>
+        <h1>公共讨论区</h1>
+        <a href="${privateTopicUrl}">进入授权讨论区</a>
+    </c:otherwise>
+</c:choose>
+--%>
+
+<a href="topic_find_private.do">进入授权讨论区</a>
+
 <form method="get" action="topic_find.do">
     搜索讨论区: <input type="text" name="search"/>
     <input type="submit"/>
@@ -44,16 +66,7 @@
             <c:param name="topicId" value="${topic.topicId}"/>
         </c:url>
         <tr>
-            <td>
-                <table>
-                    <tr>
-                        <td><a href="${topicUrl}">${topic.title}</a></td>
-                    </tr>
-                    <tr>
-                        <td>${topic.description}</td>
-                    </tr>
-                </table>
-            </td>
+            <td><a href="${topicUrl}">${topic.title}</a><br/>${topic.description}</td>
             <td>${topic.replyAccount}</td>
             <td>${topic.lastTime}</td>
             <td>${topic.created}</td>

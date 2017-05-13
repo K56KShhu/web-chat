@@ -1,8 +1,10 @@
 package com.zkyyo.www.web.controller;
 
 import com.zkyyo.www.bean.po.GroupPo;
+import com.zkyyo.www.bean.po.TopicPo;
 import com.zkyyo.www.bean.po.UserPo;
 import com.zkyyo.www.service.GroupService;
+import com.zkyyo.www.service.TopicService;
 import com.zkyyo.www.service.UserService;
 import com.zkyyo.www.web.Access;
 
@@ -12,9 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @WebServlet(
         name = "UserDetailServlet",
@@ -33,12 +33,19 @@ public class UserDetailServlet extends HttpServlet {
         UserPo userPo = userService.getUser(userId);
         //获得小组信息
         GroupService groupService = (GroupService) getServletContext().getAttribute("groupService");
+        TopicService topicService = (TopicService) getServletContext().getAttribute("topicService");
         Set<Integer> groupIds = access.getGroups();
-        List<GroupPo> groups = new ArrayList<>();
-        for (int groupId : groupIds) {
-            groups.add(groupService.findGroup(groupId));
-        }
+//        List<GroupPo> groups = new ArrayList<>();
+//        for (int groupId : groupIds) {
+//            groups.add(groupService.findGroup(groupId));
+//        }
+        Map<GroupPo, List<TopicPo>> groups = new HashMap<>();
         request.setAttribute("user", userPo);
+        for (int groupId: groupIds) {
+            GroupPo group = groupService.findGroup(groupId);
+            List<TopicPo> topics = topicService.queryTopicsByGroup(groupId);
+            groups.put(group, topics);
+        }
         request.setAttribute("groups", groups);
         request.getRequestDispatcher("user_detail.jsp").forward(request, response);
     }

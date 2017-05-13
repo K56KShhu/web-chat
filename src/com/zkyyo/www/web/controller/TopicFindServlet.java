@@ -21,23 +21,11 @@ public class TopicFindServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String typeStr = request.getParameter("type");
         String search = request.getParameter("search");
         String page = request.getParameter("page");
         String orderStr = request.getParameter("order");
         String isReverseStr = request.getParameter("isReverse");
 
-        String url = "index.jsp";
-        //获取讨论区类型
-        int type;
-        if ("public".equals(typeStr)) {
-            type = TopicService.ACCESS_PUBLIC;
-        } else if ("private".equals(typeStr)) {
-            type = TopicService.ACCESS_PRIVATE;
-            url = "topic_private.jsp";
-        } else {
-            type = TopicService.ACCESS_PUBLIC;
-        }
         //处理页数
         int currentPage = 1;
         if (page != null) {
@@ -62,31 +50,101 @@ public class TopicFindServlet extends HttpServlet {
         PageBean<TopicPo> pageBean;
         //判断搜索方式
         if (search != null && search.trim().length() > 0) { //根据关键词搜索, 无法进行排序
-            pageBean = topicService.queryTopics(type, search, currentPage);
+            pageBean = topicService.queryTopics(TopicService.ACCESS_PUBLIC, search, currentPage);
         } else { //根据排序搜索
-            pageBean = topicService.queryTopics(type, currentPage, order, isReverse);
+            pageBean = topicService.queryTopics(TopicService.ACCESS_PUBLIC, currentPage, order, isReverse);
         }
 
         request.setAttribute("search", search);
         request.setAttribute("pageBean", pageBean);
         request.setAttribute("isReverse", isReverse);
-        request.getRequestDispatcher(url).forward(request, response);
-
-        /*
-        if (search != null && search.trim().length() > 0) {
-            pageBean = topicService.queryTopics(currentPage, search);
-        } else {
-            if ("replyAccount".equals(order)) {
-                pageBean = topicService.queryTopics(currentPage, TopicService.ORDER_BY_REPLY_ACCOUNT, isReverse);
-            } else if ("lastTime".equals(order)) {
-                pageBean = topicService.queryTopics(currentPage, TopicService.ORDER_BY_LAST_TIME, isReverse);
-            } else if ("created".equals(order)) {
-                pageBean = topicService.queryTopics(currentPage, TopicService.ORDER_BY_CREATED, isReverse);
-            } else {
-                //默认按照最后回复时间的倒序进行排序
-                pageBean = topicService.queryTopics(currentPage, TopicService.ORDER_BY_LAST_TIME, true);
-            }
-        }
-        */
+        request.getRequestDispatcher("index.jsp").forward(request, response);
     }
 }
+
+    /*
+    private void processPublicTopic(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String search = request.getParameter("search");
+        String page = request.getParameter("page");
+        String orderStr = request.getParameter("order");
+        String isReverseStr = request.getParameter("isReverse");
+
+        int currentPage = 1;
+        if (page != null) {
+            currentPage = Integer.valueOf(page);
+        }
+        //升降序依据
+        boolean isReverse = "true".equals(isReverseStr);
+        //排序依据
+        int order;
+        if ("replyAccount".equals(orderStr)) {
+            order = TopicService.ORDER_BY_REPLY_ACCOUNT;
+        } else if ("lastTime".equals(orderStr)) {
+            order = TopicService.ORDER_BY_LAST_TIME;
+        } else if ("created".equals(orderStr)) {
+            order = TopicService.ORDER_BY_CREATED;
+        } else {
+            order = TopicService.ORDER_BY_CREATED;
+        }
+
+        //获得数据
+        TopicService topicService = (TopicService) getServletContext().getAttribute("topicService");
+        PageBean<TopicPo> pageBean;
+        //判断搜索方式
+        if (search != null && search.trim().length() > 0) { //根据关键词搜索, 无法进行排序
+            pageBean = topicService.queryTopics(TopicService.ACCESS_PUBLIC, search, currentPage);
+        } else { //根据排序搜索
+            pageBean = topicService.queryTopics(TopicService.ACCESS_PUBLIC, currentPage, order, isReverse);
+        }
+
+        request.setAttribute("type", request.getAttribute("type"));
+        request.setAttribute("search", search);
+        request.setAttribute("pageBean", pageBean);
+        request.setAttribute("isReverse", isReverse);
+        request.getRequestDispatcher("index.jsp").forward(request, response);
+
+    }
+
+    private void processPrivateTopic(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String search = request.getParameter("search");
+        String page = request.getParameter("page");
+        String orderStr = request.getParameter("order");
+        String isReverseStr = request.getParameter("isReverse");
+        Access access = (Access) request.getSession().getAttribute("access");
+        Set<Integer> topics = access.getGroups();
+
+        int currentPage = 1;
+        if (page != null) {
+            currentPage = Integer.valueOf(page);
+        }
+        //升降序依据
+        boolean isReverse = "true".equals(isReverseStr);
+        //排序依据
+        int order;
+        if ("replyAccount".equals(orderStr)) {
+            order = TopicService.ORDER_BY_REPLY_ACCOUNT;
+        } else if ("lastTime".equals(orderStr)) {
+            order = TopicService.ORDER_BY_LAST_TIME;
+        } else if ("created".equals(orderStr)) {
+            order = TopicService.ORDER_BY_CREATED;
+        } else {
+            order = TopicService.ORDER_BY_CREATED;
+        }
+
+        //获得数据
+        TopicService topicService = (TopicService) getServletContext().getAttribute("topicService");
+        PageBean<TopicPo> pageBean;
+        //判断搜索方式
+        if (search != null && search.trim().length() > 0) { //根据关键词搜索, 无法进行排序
+            pageBean = topicService.queryTopics(TopicService.ACCESS_PRIVATE, search, currentPage);
+        } else { //根据排序搜索
+            pageBean = topicService.queryTopics(TopicService.ACCESS_PRIVATE, currentPage, order, isReverse);
+        }
+
+        request.setAttribute("type", request.getAttribute("type"));
+        request.setAttribute("search", search);
+        request.setAttribute("pageBean", pageBean);
+        request.setAttribute("isReverse", isReverse);
+        request.getRequestDispatcher("index.jsp").forward(request, response);
+    }
+    */

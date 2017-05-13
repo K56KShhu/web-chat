@@ -10,6 +10,7 @@ public interface TopicDao {
     List<TopicPo> selectTopicsByOrder(int type, int startIndex, int ROWS_ONE_PAGE, int order, boolean isReverse);
     List<TopicPo> selectPossibleTopicsByTitle(Set<String> keys);
     List<TopicPo> selectTopicsByGroup(int groupId);
+    Set<TopicPo> selectTopicsByGroups(Set<Integer> groupIds);
     Set<TopicPo> selectTopicsByTitle(int type, Set<String> keys, int startIndex, int rowsOnePage);
     TopicPo selectTopicByTopicId(int id);
     void addTopic(TopicPo topicPo);

@@ -62,4 +62,13 @@ public class TopicAddServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
+
+    private void processPublicTopic(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+    }
+
+    private void processPrivateTopic(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+    }
+
 }

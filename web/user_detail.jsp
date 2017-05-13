@@ -27,17 +27,36 @@
 </table>
 
 <h2>group info</h2>
-<table border="1">
-    <tr>
-        <th>name</th>
-        <th>description</th>
-    </tr>
-    <c:forEach var="group" items="${requestScope.groups}">
+<c:forEach var="group" items="${requestScope.groups}">
+    <table border="1">
         <tr>
-            <td>${group.name}</td>
-            <td>${group.description}</td>
+            <th>name</th>
+            <td>${group.key.name}</td>
         </tr>
-    </c:forEach>
+        <tr>
+            <th>description</th>
+            <td>${group.key.description}</td>
+        </tr>
+        <tr>
+            <th>access</th>
+            <td>
+                <table border="1">
+                    <tr>
+                        <th>title</th>
+                        <th>created</th>
+                    </tr>
+                    <c:forEach var="topic" items="${group.value}">
+                        <tr>
+                            <td>${topic.title}</td>
+                            <td>${topic.created}</td>
+                        </tr>
+                    </c:forEach>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <br/>
+</c:forEach>
 </table>
 
 </body>

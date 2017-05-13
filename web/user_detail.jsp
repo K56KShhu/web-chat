@@ -10,6 +10,7 @@
 
 <a href="<c:url value='user_update_info.do'/>">修改信息</a>&nbsp;
 
+<h2>user info</h2>
 <table border="1">
     <tr>
         <th>username</th>
@@ -23,6 +24,20 @@
         <th>email</th>
         <td>${requestScope.user.email}</td>
     </tr>
+</table>
+
+<h2>group info</h2>
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>description</th>
+    </tr>
+    <c:forEach var="group" items="${requestScope.groups}">
+        <tr>
+            <td>${group.name}</td>
+            <td>${group.description}</td>
+        </tr>
+    </c:forEach>
 </table>
 
 </body>

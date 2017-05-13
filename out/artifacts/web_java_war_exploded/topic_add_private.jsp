@@ -15,7 +15,8 @@
 <form method="post" action="topic_add.do">
     标题: <input type="text" name="title"/><br/>
     描述: <textarea name="desc" rows="15" cols="80"></textarea><br/>
-    <input type="hidden" name="isPrivate" value="false"/>
+    <input type="radio" name="type" value="public">public
+    <input type="radio" name="type" value="private">private
     <input type="submit" value="发布"/>
 </form>
 

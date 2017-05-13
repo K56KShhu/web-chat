@@ -19,54 +19,45 @@ import java.util.List;
 )
 public class TopicAddServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String isPrivate = request.getParameter("isPrivate");
-        if ("false".equals(isPrivate)) {
-            processPubicTopic(request, response);
-        } else if ("true".equals("isPrivate")) {
-            processPrivateTopic(request, response);
-        } else {
-            response.sendRedirect("admin_index.jsp");
-        }
-    }
-
-    private void processPubicTopic(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String title = request.getParameter("title");
-        String desc = request.getParameter("desc");
+        String description = request.getParameter("description");
+        String typeStr = request.getParameter("type");
         Access access = (Access) request.getSession().getAttribute("access");
         int userId = access.getUserId();
 
         TopicService topicService = (TopicService) getServletContext().getAttribute("topicService");
         List<String> errors = new ArrayList<>();
+        int type = TopicService.NOT_PRIVATE;
+        if ("public".equals(typeStr)) {
+            type = TopicService.NOT_PRIVATE;
+        } else if ("private".equals(typeStr)) {
+            type = TopicService.IS_PRIVATE;
+        } else {
+            errors.add("bad type");
+        }
         if (!topicService.isValidTitle(title)) {
             errors.add("bad title");
         }
-        if (!topicService.isValidDescription(desc)) {
+        if (!topicService.isValidDescription(description)) {
             errors.add("bad description");
         }
 
+        errors.add("bad things");
         if (errors.isEmpty()) {
             TopicPo topic = new TopicPo();
             topic.setTitle(title);
-            topic.setDescription(desc);
+            topic.setDescription(description);
             topic.setCreatorId(userId);
             topic.setLastModifyId(userId);
-            topic.setIsPrivate(TopicService.NOT_PRIVATE);
+            topic.setIsPrivate(type);
             topicService.addTopic(topic);
         } else {
             request.setAttribute("title", title);
-            request.setAttribute("desc", desc);
+            request.setAttribute("description", description);
+            request.setAttribute("type", typeStr);
         }
         request.setAttribute("errors", errors);
-        request.getRequestDispatcher("topic_add_public.jsp").forward(request, response);
-    }
-
-    private void processPrivateTopic(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String title = request.getParameter("title");
-        String desc = request.getParameter("desc");
-        Access access = (Access) request.getSession().getAttribute("access");
-        int userId = access.getUserId();
-
-        TopicService topicService = (TopicService) getServletContext().getAttribute("topicService");
+        request.getRequestDispatcher("topic_add.jsp").forward(request, response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

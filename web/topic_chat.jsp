@@ -52,7 +52,13 @@
         <c:param name="contentType" value="0"/>
         <c:param name="contentId" value="${reply.replyId}"/>
     </c:url>
-    ${reply.username}&nbsp;(${reply.created})&nbsp;<a href="${reportUrl}">举报</a><br/>
+    <%--用户个人信息--%>
+    <c:url value="user_detail_other.do" var="userInfoUrl">
+        <c:param name="userId" value="${reply.userId}"/>
+    </c:url>
+    <a href="${userInfoUrl}">${reply.username}</a>&nbsp;
+    (${reply.created})&nbsp;
+    <a href="${reportUrl}">举报</a><br/>
     <%--[管理员]删除讨论区信息--%>
     <c:if test="${sessionScope.access.isUserInRole('admin')}">
         <c:url value="reply_delete.do" var="deleteReplyUrl">

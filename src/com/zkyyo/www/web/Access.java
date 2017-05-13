@@ -41,6 +41,19 @@ public class Access {
         return false;
     }
 
+    public boolean isUserInGroups(Set<Integer> topicGroups) {
+        for (int topicGroup : topicGroups) {
+            if (isUserInGroup(topicGroup)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isUserApproved(String s, Set<Integer> topicGroups) {
+        return isUserInRole(s) || isUserInGroups(topicGroups);
+    }
+
     public boolean isNormal() {
         return status == UserService.STATUS_NORMAL;
     }

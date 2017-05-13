@@ -9,6 +9,7 @@ import com.zkyyo.www.service.TopicService;
 import com.zkyyo.www.service.UserService;
 import com.zkyyo.www.util.BeanUtil;
 import com.zkyyo.www.bean.vo.ReplyVo;
+import com.zkyyo.www.web.Access;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @WebServlet(
         name = "TopicChatInfoServlet",
@@ -31,9 +33,10 @@ public class TopicChatInfoServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String topicId = request.getParameter("topicId");
         String page = request.getParameter("page");
-        int currengPage = 1;
+
+        int currentPage = 1;
         if (page != null) {
-            currengPage = Integer.valueOf(page);
+            currentPage = Integer.valueOf(page);
         }
 
         TopicService topicService = (TopicService) getServletContext().getAttribute("topicService");
@@ -41,11 +44,34 @@ public class TopicChatInfoServlet extends HttpServlet {
         UserService userService = (UserService) getServletContext().getAttribute("userService");
         if (topicService.isValidId(topicId)) {
             int tId = Integer.valueOf(topicId);
+            /*
+            Access access = (Access) request.getSession().getAttribute("access");
+            boolean isApproved = false;
+            if (access.isUserInRole("admin")) {
+                isApproved = true;
+            } else {
+                Set<Integer> groups = topicService.getGroups(tId);
+                if (access.isUserInGroups(groups)) {
+                    isApproved = true;
+                }
+            }
+            if (!isApproved) {
+                response.sendRedirect("index.jsp");
+                return;
+            }
+            */
+            Access access = (Access) request.getSession().getAttribute("access");
+            Set<Integer> groups = topicService.getGroups(tId);
+            if (!access.isUserApproved("admin", groups)) {
+                response.sendRedirect("index.jsp");
+                return;
+            }
+
             if (topicService.isExisted(tId)) {
                 //获取主题信息
                 TopicPo topic = topicService.findTopic(Integer.valueOf(topicId));
                 //获取回复信息
-                PageBean<ReplyPo> pageBeanPo = replyService.findReplys(tId, currengPage);
+                PageBean<ReplyPo> pageBeanPo = replyService.findReplys(tId, currentPage);
                 List<ReplyPo> replyPos = pageBeanPo.getList();
                 List<ReplyVo> replyVos = new ArrayList<>();
                 UserPo userPo;

@@ -12,6 +12,7 @@ public interface TopicDao {
     List<TopicPo> selectTopicsByGroup(int groupId);
     Set<TopicPo> selectTopicsByGroups(Set<Integer> groupIds);
     Set<TopicPo> selectTopicsByTitle(int type, Set<String> keys, int startIndex, int rowsOnePage);
+    Set<Integer> selectGroupsByTopicId(int topicId);
     TopicPo selectTopicByTopicId(int id);
     void addTopic(TopicPo topicPo);
     void deleteTopicByTopicId(int topicId);

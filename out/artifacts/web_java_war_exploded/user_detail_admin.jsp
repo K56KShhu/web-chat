@@ -2,13 +2,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>user detail</title>
+    <title>${requestScope.user.username}的档案</title>
 </head>
 <body>
 
-<h1>user detail</h1>
-
-<a href="<c:url value='user_update_info.do'/>">修改信息</a>&nbsp;
+<h1>${requestScope.user.username}的档案</h1>
 
 <h2>user info</h2>
 <table border="1">
@@ -23,6 +21,14 @@
     <tr>
         <th>email</th>
         <td>${requestScope.user.email}</td>
+    </tr>
+    <tr>
+        <th>status</th>
+        <td>${requestScope.user.status}</td>
+    </tr>
+    <tr>
+        <th>created</th>
+        <td>${requestScope.user.created}</td>
     </tr>
 </table>
 
@@ -58,6 +64,5 @@
     <br/>
 </c:forEach>
 </table>
-
 </body>
 </html>

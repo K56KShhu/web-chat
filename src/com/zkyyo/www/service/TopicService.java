@@ -133,4 +133,8 @@ public class TopicService {
         return topicDao.selectTopicsByGroups(groupIds);
     }
 
+    public Set<Integer> getGroups(int topicId) {
+        return topicDao.selectGroupsByTopicId(topicId);
+    }
+
 }

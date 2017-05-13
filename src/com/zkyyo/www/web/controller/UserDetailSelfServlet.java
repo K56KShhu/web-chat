@@ -17,10 +17,10 @@ import java.io.IOException;
 import java.util.*;
 
 @WebServlet(
-        name = "UserDetailServlet",
-        urlPatterns = {"/user_detail.do"}
+        name = "UserDetailSelfServlet",
+        urlPatterns = {"/user_detail_self.do"}
 )
-public class UserDetailServlet extends HttpServlet {
+public class UserDetailSelfServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
@@ -35,18 +35,14 @@ public class UserDetailServlet extends HttpServlet {
         GroupService groupService = (GroupService) getServletContext().getAttribute("groupService");
         TopicService topicService = (TopicService) getServletContext().getAttribute("topicService");
         Set<Integer> groupIds = access.getGroups();
-//        List<GroupPo> groups = new ArrayList<>();
-//        for (int groupId : groupIds) {
-//            groups.add(groupService.findGroup(groupId));
-//        }
         Map<GroupPo, List<TopicPo>> groups = new HashMap<>();
         request.setAttribute("user", userPo);
-        for (int groupId: groupIds) {
+        for (int groupId : groupIds) {
             GroupPo group = groupService.findGroup(groupId);
             List<TopicPo> topics = topicService.queryTopicsByGroup(groupId);
             groups.put(group, topics);
         }
         request.setAttribute("groups", groups);
-        request.getRequestDispatcher("user_detail.jsp").forward(request, response);
+        request.getRequestDispatcher("user_detail_self.jsp").forward(request, response);
     }
 }

@@ -186,6 +186,30 @@ public class TopicDaoJdbcImpl implements TopicDao {
     }
 
     @Override
+    public Set<Integer> selectGroupsByTopicId(int topicId) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        Set<Integer> groups = new HashSet<>();
+
+        try {
+            conn = dataSource.getConnection();
+            String sql = "SELECT usergroup_id FROM topic_usergroup WHERE topic_id=?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, topicId);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                groups.add(rs.getInt("usergroup_id"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, pstmt, rs);
+        }
+        return groups;
+    }
+
+    @Override
     public TopicPo selectTopicByTopicId(int id) {
         Connection conn = null;
         PreparedStatement pstmt = null;

@@ -20,6 +20,29 @@ public class ReportDaoJdbcImpl implements ReportDao {
     }
 
     @Override
+    public ReportPo selectReport(int reportId) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = dataSource.getConnection();
+            String sql = "SELECT * FROM report WHERE report_id=?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, reportId);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return getReport(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, pstmt, rs);
+        }
+        return null;
+    }
+
+    @Override
     public void addReport(ReportPo reportPo) {
         Connection conn = null;
         PreparedStatement pstmt = null;

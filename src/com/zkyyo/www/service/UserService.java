@@ -4,11 +4,14 @@ import com.zkyyo.www.bean.PageBean;
 import com.zkyyo.www.dao.UserDao;
 import com.zkyyo.www.dao.impl.UserDaoJdbcImpl;
 import com.zkyyo.www.bean.po.UserPo;
+import com.zkyyo.www.util.CheckUtil;
 import com.zkyyo.www.web.Access;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class UserService {
     public static final int STATUS_NORMAL = 1;
@@ -21,6 +24,10 @@ public class UserService {
     public static final int ORDER_BY_STATUS = 2;
 
     private static final int ROWS_ONE_PAGE = 15;
+
+    private static final int MAX_ID_LENGTH = 10;
+    private static final int MAX_USERNAME_LENGTH = 16;
+    private static final int MIN_USERNAME_LENGTH = 8;
 
     private UserDao userDao;
 
@@ -159,39 +166,58 @@ public class UserService {
     }
 
     public boolean isUserExisted(int userId) {
-        return true;
+        return getUser(userId) != null;
     }
 
     public boolean isUserExisted(String username) {
-        return true;
+        return getUser(username) != null;
     }
 
     public boolean isValidUserId(String userId) {
-        return true;
+        return CheckUtil.isValidId(userId, MAX_ID_LENGTH);
     }
 
     public boolean isValidUsername(String username) {
-        return true;
+        return CheckUtil.isValidString(username, MIN_USERNAME_LENGTH, MAX_USERNAME_LENGTH);
     }
 
     public boolean isValidPassword(String psw, String cpsw) {
-        return true;
+        if (psw == null || cpsw == null) {
+            return false;
+        }
+        if (psw.length() >= 8 && psw.length() <= 16) {
+            if (psw.equals(cpsw)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean isValidPassword(String pwd) {
-        return true;
+        return pwd != null && pwd.length() >= 8 && pwd.length() <= 16;
     }
 
     public boolean isValidEmail(String email) {
-        return true;
+        if (email == null) {
+            return false;
+        }
+        String regex = "^[\\w.+-]+@[\\w.+-]+\\.[\\w.+-]+$";
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(email);
+        return m.matches();
     }
 
     public boolean isValidSex(String sex) {
-        return true;
+        return "male".equals(sex)
+                || "female".equals(sex)
+                || "secret".equals(sex);
     }
 
     public boolean isValidStatus(String status) {
-        return true;
+        return Integer.toString(STATUS_NORMAL).equals(status)
+                || Integer.toString(STATUS_AUDIT).equals(status)
+                || Integer.toString(STATUS_NOT_APPROVED).equals(status)
+                || Integer.toString(STATUS_FORBIDDEN).equals(status);
     }
 
     public void addUser(UserPo userPo) {
@@ -211,6 +237,5 @@ public class UserService {
     public List<UserPo> fuzzySearchUsers(String search) {
         return userDao.selectPossibleUsersByUsername(search.trim());
     }
-
 }
 

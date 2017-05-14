@@ -1,6 +1,8 @@
 package com.zkyyo.www.web.controller;
 
 import com.zkyyo.www.bean.po.ReportPo;
+import com.zkyyo.www.service.FileService;
+import com.zkyyo.www.service.ReplyService;
 import com.zkyyo.www.service.ReportService;
 import com.zkyyo.www.web.Access;
 
@@ -25,20 +27,48 @@ public class ReportAddServlet extends HttpServlet {
         Access access = (Access) request.getSession().getAttribute("access");
         int userId = access.getUserId();
 
-        List<String> errors = new ArrayList<>();
         ReportService reportService = (ReportService) getServletContext().getAttribute("reportService");
-        //待检查输入的contentId合法性
-        if (!reportService.isValidContentType(contentType) || !reportService.isValidId(contentId)) {
+        ReplyService replyService = (ReplyService) getServletContext().getAttribute("replyService");
+        FileService fileService = (FileService) getServletContext().getAttribute("fileService");
+        int id;
+        int type;
+        if ("reply".equals(contentType)) {
+            if (!replyService.isValidId(contentId) || !replyService.isExisted(Integer.valueOf(contentId))) {
+                response.sendRedirect("index.jsp");
+                return;
+            } else {
+                id = Integer.valueOf(contentId);
+                type = ReportService.CONTENT_TYPE_REPLY;
+            }
+        } else if ("image".equals(contentType)) {
+            if (!fileService.isValidId(contentId) || !fileService.isExisted(Integer.valueOf(contentId))) {
+                response.sendRedirect("index.jsp");
+                return;
+            } else {
+                id = Integer.valueOf(contentId);
+                type = ReportService.CONTENT_TYPE_SHARE_IMAGE;
+            }
+        } else if ("file".equals(contentType)) {
+            if (!fileService.isValidId(contentId) || !fileService.isExisted(Integer.valueOf(contentId))) {
+                response.sendRedirect("index.jsp");
+                return;
+            } else {
+                id = Integer.valueOf(contentId);
+                type = ReportService.CONTENT_TYPE_SHARE_FILE;
+            }
+        } else {
             response.sendRedirect("index.jsp");
             return;
         }
+
+        List<String> errors = new ArrayList<>();
         if (!reportService.isValidReason(reason)) {
             errors.add("bad reason");
         }
         if (errors.isEmpty()) {
             ReportPo report = new ReportPo();
-            report.setContentId(Integer.valueOf(contentId));
-            report.setContentType(Integer.valueOf(contentType));
+            report.setContentId(id);
+            report.setContentType(type);
             report.setReason(reason);
             report.setUserId(userId);
             reportService.addReport(report);

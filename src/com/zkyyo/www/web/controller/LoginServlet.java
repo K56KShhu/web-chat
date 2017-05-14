@@ -25,12 +25,14 @@ public class LoginServlet extends HttpServlet {
         List<String> errors = new ArrayList<>();
         UserService userService = (UserService) getServletContext().getAttribute("userService");
         //检查信息合法性
+        /*
         if (!userService.isValidUsername(username) || !userService.isValidPassword(password)) {
             errors.add("用户名或密码输入有误");
             request.setAttribute("errors", errors);
             request.getRequestDispatcher("login.jsp").forward(request, response);
             return;
         }
+        */
 
         //若信息输入合法, 开始比对数据库中信息
         UserPo user = new UserPo(username, password);

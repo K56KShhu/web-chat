@@ -4,7 +4,6 @@ import com.zkyyo.www.bean.po.FilePo;
 import com.zkyyo.www.bean.po.ReplyPo;
 import com.zkyyo.www.service.FileService;
 import com.zkyyo.www.service.ReplyService;
-import com.zkyyo.www.service.ReportService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,9 +17,9 @@ import java.io.IOException;
         urlPatterns = {"/report_detail.do"}
 )
 public class ReportDetailServlet extends HttpServlet {
-    private static final int DETAIL_CHAT = 0;
-    private static final int DETAIL_SHARE_IMAGE = 1;
-    private static final int DETAIL_SHARE_FILE = 2;
+    private static final String DETAIL_REPLY = "0";
+    private static final String DETAIL_SHARE_IMAGE = "1";
+    private static final String DETAIL_SHARE_FILE = "2";
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -30,7 +29,45 @@ public class ReportDetailServlet extends HttpServlet {
         String contentId = request.getParameter("contentId");
         String contentType = request.getParameter("contentType");
 
-        ReportService reportService = (ReportService) getServletContext().getAttribute("reportService");
+        ReplyService replyService = (ReplyService) getServletContext().getAttribute("replyService");
+        FileService fileService = (FileService) getServletContext().getAttribute("fileService");
+        if (DETAIL_REPLY.equals(contentType)) {
+            if (replyService.isValidId(contentId) && replyService.isExisted(Integer.valueOf(contentId))) {
+                ReplyPo replyPo = replyService.findReply(Integer.valueOf(contentId));
+                response.sendRedirect("topic_chat_info.do?topicId=" + replyPo.getTopicId());
+                return;
+            }
+        } else if (DETAIL_SHARE_IMAGE.equals(contentType)) {
+            if (fileService.isValidId(contentId) && fileService.isExisted(Integer.valueOf(contentId))) {
+                FilePo filePo = fileService.findFile(Integer.valueOf(contentId));
+                response.sendRedirect("file_list.do?topicId=" + filePo.getTopicId() + "&shareType=image");
+                return;
+            }
+        } else if (DETAIL_SHARE_FILE.equals(contentType)) {
+            if (fileService.isValidId(contentId) && fileService.isExisted(Integer.valueOf(contentId))) {
+                FilePo filePo = fileService.findFile(Integer.valueOf(contentId));
+                response.sendRedirect("file_list.do?topicId=" + filePo.getTopicId() + "&shareType=file");
+                return;
+            }
+        }
+        response.sendRedirect("index.jsp");
+
+        /*
+        if (contentId == null) {
+            response.sendRedirect("index.jsp");
+            return;
+        }
+        if (DETAIL_REPLY.equals(contentType)) {
+            response.sendRedirect("topic_chat_info.do?topicId=" + contentId);
+        } else if (DETAIL_SHARE_IMAGE.equals(contentType)) {
+            response.sendRedirect("file_list.do?topicId=" + contentId + "&shareType=image");
+        } else if (DETAIL_SHARE_FILE.equals(contentType)) {
+            response.sendRedirect("file_list.do?topicId=" + contentId + "&shareType=file");
+        } else {
+            response.sendRedirect("index.jsp");
+        }
+        */
+        /*
         //待修改!!!!
         if (reportService.isValidId(contentId) && reportService.isValidContentType(contentType)) {
             int id = Integer.valueOf(contentId);
@@ -66,5 +103,6 @@ public class ReportDetailServlet extends HttpServlet {
         } else {
             response.sendRedirect("index.jsp");
         }
+        */
     }
 }

@@ -4,6 +4,7 @@ import com.zkyyo.www.bean.PageBean;
 import com.zkyyo.www.dao.FileDao;
 import com.zkyyo.www.bean.po.FilePo;
 import com.zkyyo.www.dao.impl.FileDaoJdbcImpl;
+import com.zkyyo.www.util.CheckUtil;
 
 import java.util.List;
 
@@ -14,6 +15,8 @@ public class FileService {
     public static final int ORDER_BY_CREATED = 0;
 
     private static final int ROWS_ONE_PAGE = 15;
+
+    private static final int MAX_ID_LENGTH = 10;
 
     private FileDao fileDao;
 
@@ -30,11 +33,11 @@ public class FileService {
     }
 
     public boolean isValidId(String fileId) {
-        return true;
+        return CheckUtil.isValidId(fileId, MAX_ID_LENGTH);
     }
 
     public boolean isExisted(int fileId) {
-        return true;
+        return findFile(fileId) != null;
     }
 
     public FilePo findFile(int fileId) {

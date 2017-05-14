@@ -53,7 +53,7 @@
 <c:forEach var="reply" items="${requestScope.pageBean.list}">
     <%--举报--%>
     <c:url value="report_add.jsp" var="reportUrl">
-        <c:param name="contentType" value="0"/>
+        <c:param name="contentType" value="reply"/>
         <c:param name="contentId" value="${reply.replyId}"/>
     </c:url>
     <%--用户个人信息--%>

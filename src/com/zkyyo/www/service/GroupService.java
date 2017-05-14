@@ -2,10 +2,17 @@ package com.zkyyo.www.service;
 
 import com.zkyyo.www.bean.po.GroupPo;
 import com.zkyyo.www.dao.GroupDao;
+import com.zkyyo.www.util.CheckUtil;
 
 import java.util.List;
 
 public class GroupService {
+    private static final int MAX_ID_LENGTH = 10;
+    private static final int MAX_DESCRIPTION_LENGTH = 100;
+    private static final int MIN_DESCRIPTION_LENGTH = 0;
+    private static final int MAX_NAME_LENGTH = 16;
+    private static final int MIN_NAME_LENGTH = 1;
+
     private GroupDao groupDao;
 
     public GroupService(GroupDao groupDao) {
@@ -17,11 +24,15 @@ public class GroupService {
     }
 
     public boolean isValidId(String groupId) {
-        return true;
+        return CheckUtil.isValidId(groupId, MAX_ID_LENGTH);
+    }
+
+    public boolean isValidDesc(String desc) {
+        return CheckUtil.isValidString(desc, MIN_DESCRIPTION_LENGTH, MAX_DESCRIPTION_LENGTH);
     }
 
     public boolean isExisted(int groupId) {
-        return true;
+        return findGroup(groupId) != null;
     }
 
     public GroupPo findGroup(int groupId) {
@@ -49,11 +60,7 @@ public class GroupService {
     }
 
     public boolean isValidName(String name) {
-        return true;
-    }
-
-    public boolean isValidDesc(String desc) {
-        return true;
+        return CheckUtil.isValidString(name, MIN_NAME_LENGTH, MAX_NAME_LENGTH);
     }
 
     public void addGroup(GroupPo groupPo) {

@@ -30,7 +30,7 @@
         </c:url>
         <%--举报--%>
         <c:url value="report_add.jsp" var="reportUrl">
-            <c:param name="contentType" value="1"/>
+            <c:param name="contentType" value="image"/>
             <c:param name="contentId" value="${image.fileId}"/>
         </c:url>
         <tr>

@@ -4,6 +4,7 @@ import com.zkyyo.www.bean.PageBean;
 import com.zkyyo.www.dao.TopicDao;
 import com.zkyyo.www.bean.po.TopicPo;
 import com.zkyyo.www.dao.impl.TopicDaoJdbcImpl;
+import com.zkyyo.www.util.CheckUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,11 +16,17 @@ public class TopicService {
     public static final int ACCESS_PUBLIC = 0;
     public static final int ACCESS_PRIVATE = 1;
 
-    private static final int ROWS_ONE_PAGE = 10;
-
     public static final int ORDER_BY_REPLY_ACCOUNT = 0;
     public static final int ORDER_BY_LAST_TIME = 1;
     public static final int ORDER_BY_CREATED = 2;
+
+    private static final int ROWS_ONE_PAGE = 10;
+
+    private static final int MAX_ID_LENGTH = 10;
+    private static final int MAX_TITLE_LENGTH = 60;
+    private static final int MIN_TITLE_LENGTH = 1;
+    private static final int MAX_DESCRIPTION_LENGTH = 255;
+    private static final int MIN_DESCRIPTION_LENGTH = 0;
 
     private TopicDao topicDao;
 
@@ -36,19 +43,19 @@ public class TopicService {
     }
 
     public boolean isValidId(String topicId) {
-        return true;
+        return CheckUtil.isValidId(topicId, MAX_ID_LENGTH);
     }
 
     public boolean isExisted(int topicId) {
-        return true;
+        return findTopic(topicId) != null;
     }
 
     public boolean isValidTitle(String title) {
-        return true;
+        return CheckUtil.isValidString(title, MIN_TITLE_LENGTH, MAX_TITLE_LENGTH);
     }
 
     public boolean isValidDescription(String desc) {
-        return true;
+        return CheckUtil.isValidString(desc, MIN_DESCRIPTION_LENGTH, MAX_DESCRIPTION_LENGTH);
     }
 
     public void addTopic(TopicPo topicPo) {

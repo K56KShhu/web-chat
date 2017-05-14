@@ -4,11 +4,12 @@ import com.zkyyo.www.bean.PageBean;
 import com.zkyyo.www.dao.ReportDao;
 import com.zkyyo.www.bean.po.ReportPo;
 import com.zkyyo.www.dao.impl.ReportDaoJdbcImpl;
+import com.zkyyo.www.util.CheckUtil;
 
 import java.util.List;
 
 public class ReportService {
-    public static final int CONTENT_TYPE_CHAT = 0;
+    public static final int CONTENT_TYPE_REPLY = 0;
     public static final int CONTENT_TYPE_SHARE_IMAGE = 1;
     public static final int CONTENT_TYPE_SHARE_FILE = 2;
 
@@ -16,6 +17,10 @@ public class ReportService {
     public static final int ORDER_BY_CREATED = 1;
 
     private static final int ROWS_ONE_PAGE = 15;
+
+    private static final int MAX_ID_LENGTH = 10;
+    private static final int MAX_REASON_LENGTH = 100;
+    private static final int MIN_REASON_LENGTH = 0;
 
     private ReportDao reportDao;
 
@@ -28,13 +33,11 @@ public class ReportService {
     }
 
     public boolean isValidReason(String reason) {
-        return true;
+        return CheckUtil.isValidString(reason, MIN_REASON_LENGTH, MAX_REASON_LENGTH);
     }
 
     public void addReport(ReportPo reportPo) {
-        for (int i = 0; i < 456; i++) {
-            reportDao.addReport(reportPo);
-        }
+        reportDao.addReport(reportPo);
     }
 
     public List<ReportPo> findReports() {
@@ -42,11 +45,11 @@ public class ReportService {
     }
 
     public boolean isValidId(String reportId) {
-        return true;
+        return CheckUtil.isValidId(reportId, MAX_ID_LENGTH);
     }
 
     public boolean isExisted(int reportId) {
-        return true;
+        return reportDao.selectReport(reportId) != null;
     }
 
     public void deleteReport(int reportId) {

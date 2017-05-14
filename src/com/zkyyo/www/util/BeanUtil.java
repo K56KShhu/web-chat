@@ -62,7 +62,7 @@ public class BeanUtil {
         String reason = reportPo.getReason();
         Timestamp created = reportPo.getCreated();
         String contentTypeStr;
-        if (contentType == ReportService.CONTENT_TYPE_CHAT) {
+        if (contentType == ReportService.CONTENT_TYPE_REPLY) {
             contentTypeStr = "发言";
         } else if (contentType == ReportService.CONTENT_TYPE_SHARE_IMAGE) {
             contentTypeStr = "分享图片";

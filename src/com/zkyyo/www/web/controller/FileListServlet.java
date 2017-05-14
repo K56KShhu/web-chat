@@ -29,7 +29,6 @@ public class FileListServlet extends HttpServlet {
     private static final String SHARE_FILE = "file";
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

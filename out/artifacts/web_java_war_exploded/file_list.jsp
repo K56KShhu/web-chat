@@ -25,7 +25,7 @@
     <c:forEach var="file" items="${requestScope.pageBean.list}">
         <%--举报文件URL--%>
         <c:url value="report_add.jsp" var="reportUrl">
-            <c:param name="contentType" value="2"/>
+            <c:param name="contentType" value="file"/>
             <c:param name="contentId" value="${file.fileId}"/>
         </c:url>
         <%--下载文件URL--%>

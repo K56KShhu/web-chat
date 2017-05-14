@@ -55,6 +55,7 @@ public class TopicFindServlet extends HttpServlet {
             pageBean = topicService.queryTopics(TopicService.ACCESS_PUBLIC, currentPage, order, isReverse);
         }
 
+        request.setAttribute("order", orderStr);
         request.setAttribute("search", search);
         request.setAttribute("pageBean", pageBean);
         request.setAttribute("isReverse", isReverse);

@@ -33,7 +33,7 @@
 <a href="topic_find_private.do">进入授权讨论区</a>
 
 <form method="get" action="topic_find.do">
-    搜索讨论区: <input type="text" name="search"/>
+    搜索讨论区: <input type="text" name="search" value="${requestScope.search}"/>
     <input type="submit"/>
 </form>
 
@@ -194,7 +194,15 @@
 <%--分页封装--%>
 
 <%--
-<c:choose>
+<c:choose>首页  用户  小组  讨论区  举报
+topic manage
+
+￼ 搜索: ￼
+ ￼Submit
+add topic
+title	creator	lastModifyId	isPrivate	reply	last	created
+请问打码是一种怎样的体验?
+听说现在很多人都在学习编程,大家认为变成是一种怎样的体验	2	2	0
     <c:when test="${requestScope.topics != null}">
         <table border="1">
             <tr>

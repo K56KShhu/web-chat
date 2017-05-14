@@ -19,6 +19,7 @@ public class TopicDaoJdbcImpl implements TopicDao {
     public static final int ORDER_BY_REPLY_ACCOUNT = 0;
     public static final int ORDER_BY_LAST_TIME = 1;
     public static final int ORDER_BY_CREATED = 2;
+    public static final int ORDER_BY_ACCESS = 3;
 
     public static final int ACCESS_PUBLIC = 0;
     public static final int ACCESS_PRIVATE = 1;
@@ -62,7 +63,7 @@ public class TopicDaoJdbcImpl implements TopicDao {
 
         try {
             conn = dataSource.getConnection();
-            String sql = makeQuerySql(type, order, isReverse);
+            String sql = makeQuerySql(false, type, order, isReverse);
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, startIndex);
             pstmt.setInt(2, ROWS_ONE_PAGE);
@@ -165,13 +166,13 @@ public class TopicDaoJdbcImpl implements TopicDao {
 
         try {
             conn = dataSource.getConnection();
-            String sql = "SELECT * FROM topic WHERE title LIKE ? AND is_private=? ORDER BY reply_account DESC LIMIT ?, ?";
+//            String sql = "SELECT * FROM topic WHERE title LIKE ? AND is_private=? ORDER BY reply_account DESC LIMIT ?, ?";
+            String sql = makeQuerySql(true, type, ORDER_BY_REPLY_ACCOUNT, true);
             pstmt = conn.prepareStatement(sql);
             for (String key : keys) {
                 pstmt.setString(1, "%" + key + "%");
-                pstmt.setInt(2, type);
-                pstmt.setInt(3, startIndex);
-                pstmt.setInt(4, rowsOnePage);
+                pstmt.setInt(2, startIndex);
+                pstmt.setInt(3, rowsOnePage);
                 rs = pstmt.executeQuery();
                 while (rs.next()) {
                     topics.add(getTopic(rs));
@@ -308,7 +309,7 @@ public class TopicDaoJdbcImpl implements TopicDao {
     }
 
     @Override
-    public int getTotalRow() {
+    public int getTotalRow(int accessType) {
         Connection conn = null;
         Statement stmt = null;
         ResultSet rs = null;
@@ -317,6 +318,11 @@ public class TopicDaoJdbcImpl implements TopicDao {
         try {
             conn = dataSource.getConnection();
             String sql = "SELECT COUNT(*) FROM topic";
+            if (ACCESS_PUBLIC == accessType) {
+                sql += " WHERE is_private = 0";
+            } else if (ACCESS_PRIVATE == accessType) {
+                sql += " WHERE is_private = 1";
+            }
             stmt = conn.createStatement();
             rs = stmt.executeQuery(sql);
             if (rs.next()) {
@@ -370,8 +376,14 @@ public class TopicDaoJdbcImpl implements TopicDao {
         return topic;
     }
 
-    private String makeQuerySql(int type, int order, boolean isReverse) {
-        String sql = "SELECT * FROM topic";
+    private String makeQuerySql(boolean isSearch, int type, int order, boolean isReverse) {
+        /*
+        String sql;
+        if (isSearch) {
+            sql = "SELECR * FROM topic WHERE title LIKE ? AND";
+        } else {
+            sql = "SELECT * FROM topic";
+        }
         if (ACCESS_PUBLIC == type) {
             sql += " WHERE is_private = 0";
         } else if (ACCESS_PRIVATE == type) {
@@ -381,12 +393,39 @@ public class TopicDaoJdbcImpl implements TopicDao {
         } else {
             sql += "";
         }
+        */
+        String sql;
+        if (isSearch) {
+            sql = "SELECT * FROM topic WHERE title LIKE ?";
+            if (ACCESS_PUBLIC == type) {
+                sql += " AND is_private = 0";
+            } else if (ACCESS_PRIVATE == type) {
+                sql += " AND is_private = 1";
+            } else if (ACCESS_ALL == type) {
+                sql += "";
+            } else {
+                sql += "";
+            }
+        } else {
+            sql = "SELECT * FROM topic";
+            if (ACCESS_PUBLIC == type) {
+                sql += " WHERE is_private = 0";
+            } else if (ACCESS_PRIVATE == type) {
+                sql += " WHERE is_private = 1";
+            } else if (ACCESS_ALL == type) {
+                sql += "";
+            } else {
+                sql += "";
+            }
+        }
         if (ORDER_BY_REPLY_ACCOUNT == order) {
             sql += " ORDER BY reply_account";
         } else if (ORDER_BY_LAST_TIME == order) {
             sql += " ORDER BY last_time";
         } else if (ORDER_BY_CREATED == order) {
             sql += " ORDER BY created";
+        } else if (ORDER_BY_ACCESS == order) {
+            sql += " ORDER BY is_private";
         } else {
             sql += " ORDER BY created";
         }
@@ -395,4 +434,15 @@ public class TopicDaoJdbcImpl implements TopicDao {
         }
         return sql + " LIMIT ?, ?";
     }
+
+    /*
+    public TopicDaoJdbcImpl() {
+
+    }
+
+    public static void main(String[] args) {
+        TopicDaoJdbcImpl topicDaoJdbc = new TopicDaoJdbcImpl();
+        System.out.println(topicDaoJdbc.makeQuerySql(ACCESS_PRIVATE, ORDER_BY_CREATED, true, true));
+    }
+    */
 }

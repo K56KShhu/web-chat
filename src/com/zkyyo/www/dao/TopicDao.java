@@ -17,6 +17,6 @@ public interface TopicDao {
     void addTopic(TopicPo topicPo);
     void deleteTopicByTopicId(int topicId);
     void updateTopic(TopicPo topicPo);
-    int getTotalRow();
+    int getTotalRow(int accessType);
     int getTotalRowByTitle(Set<String> keys);
 }

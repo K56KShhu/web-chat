@@ -15,10 +15,12 @@ import java.util.Set;
 public class TopicService {
     public static final int ACCESS_PUBLIC = 0;
     public static final int ACCESS_PRIVATE = 1;
+    public static final int ACCESS_ALL = 2;
 
     public static final int ORDER_BY_REPLY_ACCOUNT = 0;
     public static final int ORDER_BY_LAST_TIME = 1;
     public static final int ORDER_BY_CREATED = 2;
+    public static final int ORDER_BY_ACCESS = 3;
 
     private static final int ROWS_ONE_PAGE = 10;
 
@@ -34,9 +36,11 @@ public class TopicService {
         this.topicDao = topicDao;
     }
 
+    /*
     public List<TopicPo> findTopics() {
         return topicDao.selectTopicsByOrder();
     }
+    */
 
     public void deleteTopic(int topicId) {
         topicDao.deleteTopicByTopicId(topicId);
@@ -70,12 +74,14 @@ public class TopicService {
         topicDao.updateTopic(topicPo);
     }
 
+    /*
     public List<TopicPo> findTopicsByKeys(String keys) {
         String regex = "\\s+";
         Set<String> keySet = new HashSet<>(); //避免关键字重复
         Collections.addAll(keySet, keys.trim().split(regex)); //将字符串拆分为关键字
         return topicDao.selectPossibleTopicsByTitle(keySet);
     }
+    */
 
     public PageBean<TopicPo> queryTopics(int type, String keys, int currentPage) {
         //处理关键字
@@ -88,6 +94,8 @@ public class TopicService {
             type = TopicDaoJdbcImpl.ACCESS_PUBLIC;
         } else if (ACCESS_PRIVATE == type) {
             type = TopicDaoJdbcImpl.ACCESS_PRIVATE;
+        } else if (ACCESS_ALL == type) {
+            type = TopicDaoJdbcImpl.ACCESS_ALL;
         } else {
             return null;
         }
@@ -108,6 +116,8 @@ public class TopicService {
             accessType = TopicDaoJdbcImpl.ACCESS_PUBLIC;
         } else if (ACCESS_PRIVATE == type) {
             accessType = TopicDaoJdbcImpl.ACCESS_PRIVATE;
+        } else if (ACCESS_ALL == type) {
+            accessType = TopicDaoJdbcImpl.ACCESS_ALL;
         } else {
             return null;
         }
@@ -120,12 +130,14 @@ public class TopicService {
             orderType = TopicDaoJdbcImpl.ORDER_BY_LAST_TIME;
         } else if (ORDER_BY_CREATED == order) {
             orderType = TopicDaoJdbcImpl.ORDER_BY_CREATED;
+        } else if (ORDER_BY_ACCESS == order) {
+            orderType = TopicDaoJdbcImpl.ORDER_BY_ACCESS;
         } else {
             return null;
         }
 
         //分页系统
-        PageBean<TopicPo> pageBean = new PageBean<>(currentPage, topicDao.getTotalRow(), ROWS_ONE_PAGE);
+        PageBean<TopicPo> pageBean = new PageBean<>(currentPage, topicDao.getTotalRow(accessType), ROWS_ONE_PAGE);
         int startIndex = (pageBean.getCurrentPage() - 1) * ROWS_ONE_PAGE;
         List<TopicPo> topics = topicDao.selectTopicsByOrder(accessType, startIndex, ROWS_ONE_PAGE, orderType, isReverse);
         pageBean.setList(topics);

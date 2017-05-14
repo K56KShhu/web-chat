@@ -8,6 +8,7 @@ import com.zkyyo.www.service.TopicService;
 import com.zkyyo.www.service.UserService;
 import com.zkyyo.www.util.BeanUtil;
 import com.zkyyo.www.bean.vo.FileVo;
+import com.zkyyo.www.web.Access;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @WebServlet(
         name = "FileListServlet",
@@ -44,11 +46,17 @@ public class FileListServlet extends HttpServlet {
         }
 
         int tId = Integer.valueOf(topicId);
+        Access access = (Access) request.getSession().getAttribute("access");
+        Set<Integer> groups = topicService.getGroups(tId);
+        if (topicService.isPrivate(tId) && !access.isUserApprovedInTopic("admin", groups)) {
+            response.sendRedirect("index.jsp");
+            return;
+        }
+
         int currentPage = 1;
         if (page != null) {
             currentPage = Integer.valueOf(page);
         }
-
         boolean isReverse = "true".equals(isReverseStr);
 
         FileService fileService = (FileService) getServletContext().getAttribute("fileService");

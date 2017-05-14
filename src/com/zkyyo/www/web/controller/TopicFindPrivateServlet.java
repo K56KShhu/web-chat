@@ -1,7 +1,6 @@
 package com.zkyyo.www.web.controller;
 
 import com.zkyyo.www.bean.po.TopicPo;
-import com.zkyyo.www.dao.impl.TopicDaoJdbcImpl;
 import com.zkyyo.www.service.TopicService;
 import com.zkyyo.www.web.Access;
 
@@ -11,7 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 import java.util.Set;
 
 @WebServlet(

@@ -137,4 +137,9 @@ public class TopicService {
         return topicDao.selectGroupsByTopicId(topicId);
     }
 
+    public boolean isPrivate(int topicId) {
+        TopicPo topic = findTopic(topicId);
+        return topic.getIsPrivate() == TopicDaoJdbcImpl.ACCESS_PRIVATE;
+    }
+
 }

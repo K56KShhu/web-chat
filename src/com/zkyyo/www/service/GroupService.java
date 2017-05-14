@@ -32,6 +32,10 @@ public class GroupService {
         groupDao.removeUserInGroup(groupId, userId);
     }
 
+    public void removeTopic(int groupId, int userId) {
+        groupDao.removeTopicInGroup(groupId, userId);
+    }
+
     public boolean isUserInGroup(int groupId, int userId) {
         return true;
     }

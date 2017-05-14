@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @WebServlet(
@@ -45,6 +46,14 @@ public class FileUploadServlet extends HttpServlet {
             return;
         }
 
+        //权限
+        int tId = Integer.valueOf(topicId);
+        Set<Integer> groups = topicService.getGroups(tId);
+        if (topicService.isPrivate(tId) && !access.isUserApprovedInTopic("admin", groups)) {
+            response.sendRedirect("index.jsp");
+            return;
+        }
+
         String page = "index.jsp";
         try {
             FileItemFactory factory = new DiskFileItemFactory();
@@ -58,7 +67,6 @@ public class FileUploadServlet extends HttpServlet {
                 List<FileItem> list = upload.parseRequest(request);
                 for (FileItem item : list) {
                     if (!item.isFormField()) {
-                        int tId = Integer.valueOf(topicId);
                         //处理类型
                         if (CHAT_IMAGE.equals(shareType)) {
                             processChatImage(userId, tId, shareType, item);

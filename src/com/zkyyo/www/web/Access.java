@@ -50,7 +50,7 @@ public class Access {
         return false;
     }
 
-    public boolean isUserApproved(String s, Set<Integer> topicGroups) {
+    public boolean isUserApprovedInTopic(String s, Set<Integer> topicGroups) {
         return isUserInRole(s) || isUserInGroups(topicGroups);
     }
 

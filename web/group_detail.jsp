@@ -12,9 +12,9 @@
     <c:param name="groupId" value="${requestScope.group.groupId}"/>
 </c:url>
 
-<a href="${addUserUrl}">add user</a>
 
 <h2>小组信息</h2>
+<a href="${addUserUrl}">add user</a>
 <table border="1">
     <tr>
         <th>name</th>
@@ -69,9 +69,14 @@
         <th>created</th>
     </tr>
     <c:forEach var="topic" items="${requestScope.topics}">
+        <c:url value="group_remove_topic.do" var="removeTopicUrl">
+            <c:param name="groupId" value="${requestScope.group.groupId}"/>
+            <c:param name="topicId" value="${topic.topicId}"/>
+        </c:url>
         <tr>
             <td>${topic.title}</td>
             <td>${topic.created}</td>
+            <td><a href="${removeTopicUrl}">remove</a></td>
         </tr>
     </c:forEach>
 </table>

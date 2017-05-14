@@ -9,6 +9,7 @@ public interface GroupDao {
     GroupPo selectGroup(int groupId);
     List<GroupPo> selectGroupsByName(String name);
     void removeUserInGroup(int groupId, int userId);
+    void removeTopicInGroup(int groupId, int topicId);
     void addUserInGroup(int groupId, int userId);
     void deleteGroup(int groupId);
     void addGroup(GroupPo groupPo);

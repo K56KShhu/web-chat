@@ -118,6 +118,25 @@ public class GroupDaoJdbcImpl implements GroupDao {
     }
 
     @Override
+    public void removeTopicInGroup(int groupId, int topicId) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            conn = dataSource.getConnection();
+            String sql = "DELETE FROM topic_usergroup WHERE usergroup_id=? AND topic_id=?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, groupId);
+            pstmt.setInt(2, topicId);
+            pstmt.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, pstmt);
+        }
+    }
+
+    @Override
     public void addUserInGroup(int groupId, int userId) {
         Connection conn = null;
         PreparedStatement pstmt = null;

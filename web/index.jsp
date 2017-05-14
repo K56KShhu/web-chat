@@ -70,6 +70,19 @@
             <td>${topic.replyAccount}</td>
             <td>${topic.lastTime}</td>
             <td>${topic.created}</td>
+                <%--[管理员]权限--%>
+            <c:if test="${sessionScope.access.isUserInRole('admin')}">
+                <%--更新讨论区信息--%>
+                <c:url value="topic_update_info.do" var="topicUpdateUrl">
+                    <c:param name="topicId" value="${topic.topicId}"/>
+                </c:url>
+                <%--删除讨论区--%>
+                <c:url value="topic_delete.do" var="topicDeleteUrl">
+                    <c:param name="topicId" value="${topic.topicId}"/>
+                </c:url>
+                <td><a href="${topicUpdateUrl}">修改</a></td>
+                <td><a href="${topicDeleteUrl}">删除</a></td>
+            </c:if>
         </tr>
     </c:forEach>
 </table>

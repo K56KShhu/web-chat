@@ -22,6 +22,10 @@
 <a href="${imageUrl}">图片分享区</a>
 <a href="${fileUrl}">文件分享区</a>
 
+<jsp:include page="result.jsp">
+    <jsp:param name="faile" value="发送失败, 原因如下:"/>
+</jsp:include>
+
 <%--主题信息--%>
 <h1><c:out value="${requestScope.topic.title}"/></h1>
 <p><c:out value="${requestScope.topic.description}"/></p>
@@ -29,7 +33,7 @@
 <%--输入文本内容--%>
 <form method="post" action="reply_text_add.do">
     text:<br/>
-    <textarea name="content" rows="5" cols="60"></textarea>
+    <textarea name="content" rows="5" cols="60">${requestScope.content}</textarea>
     <input type="hidden" name="topicId" value="${requestScope.topic.topicId}"/>
     <input type="submit" value="reply"/>
 </form>

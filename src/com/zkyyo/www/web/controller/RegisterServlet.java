@@ -45,7 +45,7 @@ public class RegisterServlet extends HttpServlet {
             user.setPassword(password);
             user.setSex(sex);
             user.setEmail(email);
-            user.setStatus(UserService.STATUS_AUDIT); //待审核状态
+//            user.setStatus(UserService.STATUS_AUDIT); //待审核状态
             userService.addUser(user);
         } else {
             request.setAttribute("username", username);

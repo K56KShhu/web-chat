@@ -5,8 +5,11 @@ import com.zkyyo.www.dao.UserDao;
 import com.zkyyo.www.dao.impl.UserDaoJdbcImpl;
 import com.zkyyo.www.bean.po.UserPo;
 import com.zkyyo.www.util.CheckUtil;
+import com.zkyyo.www.util.Pbkdf2Util;
 import com.zkyyo.www.web.Access;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -35,10 +38,20 @@ public class UserService {
         this.userDao = userDao;
     }
 
-    public boolean checkLogin(UserPo userPo) {
-        if (userPo.getUsername() != null && userPo.getPassword() != null) {
-            UserPo user = getUser(userPo.getUsername());
-            return user != null && user.getPassword().equals(userPo.getPassword());
+    public boolean checkLogin(UserPo checkUser) {
+//        if (checkUser.getUsername() != null && checkUser.getPassword() != null) {
+//            UserPo user = getUser(checkUser.getUsername());
+//            return user != null && user.getPassword().equals(checkUser.getPassword());
+//        }
+//        return false;
+        if (checkUser.getUsername() != null && checkUser.getPassword() != null) {
+            UserPo user = getUser(checkUser.getUsername());
+            String correctPwd = user.getPassword();
+            try {
+                return Pbkdf2Util.validatePassword(checkUser.getPassword(), correctPwd);
+            } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+                e.printStackTrace();
+            }
         }
         return false;
     }
@@ -83,19 +96,25 @@ public class UserService {
 
     //用户修改信息
     public void update(UserPo userPo) {
-        UserPo initialUser = userDao.selectUserByUserId(userPo.getUserId());
-        List<Integer> updatedTypes = new ArrayList<>();
+        try {
+            UserPo initialUser = userDao.selectUserByUserId(userPo.getUserId());
+            List<Integer> updatedTypes = new ArrayList<>();
 
-        if (userPo.getSex() != null && !userPo.getSex().equals(initialUser.getSex())) {
-            updatedTypes.add(UserDaoJdbcImpl.UPDATE_SEX);
+            if (userPo.getSex() != null && !userPo.getSex().equals(initialUser.getSex())) {
+                updatedTypes.add(UserDaoJdbcImpl.UPDATE_SEX);
+            }
+            if (userPo.getEmail() != null && !userPo.getEmail().equals(initialUser.getEmail())) {
+                updatedTypes.add(UserDaoJdbcImpl.UPDATE_EMAIL);
+            }
+            if (userPo.getPassword() != null) {
+                String hashPwd = Pbkdf2Util.createHash(userPo.getPassword());
+                userPo.setPassword(hashPwd);
+                updatedTypes.add(UserDaoJdbcImpl.UPDATE_PASSWORD);
+            }
+            userDao.update(userPo, updatedTypes);
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            e.printStackTrace();
         }
-        if (userPo.getEmail() != null && !userPo.getEmail().equals(initialUser.getEmail())) {
-            updatedTypes.add(UserDaoJdbcImpl.UPDATE_EMAIL);
-        }
-        if (userPo.getPassword() != null && !userPo.getPassword().equals(initialUser.getPassword())) {
-            updatedTypes.add(UserDaoJdbcImpl.UPDATE_PASSWORD);
-        }
-        userDao.update(userPo, updatedTypes);
     }
 
     public List<UserPo> getUsersByStatus(int status) {
@@ -221,17 +240,14 @@ public class UserService {
     }
 
     public void addUser(UserPo userPo) {
-//        for (int i = 0; i < 200; i++) {
-//            if (Math.random() > 0.5) {
-//                userPo.setSex("male");
-//            } else {
-//                userPo.setSex("female");
-//            }
-//            userPo.setUserId(1234 + i);
-//            userDao.addUser(userPo);
-//            System.out.println("done");
-//        }
-        userDao.addUser(userPo);
+        String originalPwd = userPo.getPassword();
+        try {
+            String hashPwd = Pbkdf2Util.createHash(originalPwd);
+            userPo.setPassword(hashPwd);
+            userDao.addUser(userPo);
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            e.printStackTrace();
+        }
     }
 
     public List<UserPo> fuzzySearchUsers(String search) {

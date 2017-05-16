@@ -19,7 +19,7 @@
 <form method="post" action="login.do">
     username:<input type="text" name="username"/><br/>
     password:<input type="password" name="password"/><br/>
-    <input type="checkbox" name="remember" value="true">记住密码
+    <input type="checkbox" name="remember" value="true">自动登录
     <input type="submit"/>
 </form>
 

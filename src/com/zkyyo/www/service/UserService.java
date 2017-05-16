@@ -46,11 +46,13 @@ public class UserService {
 //        return false;
         if (checkUser.getUsername() != null && checkUser.getPassword() != null) {
             UserPo user = getUser(checkUser.getUsername());
-            String correctPwd = user.getPassword();
-            try {
-                return Pbkdf2Util.validatePassword(checkUser.getPassword(), correctPwd);
-            } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-                e.printStackTrace();
+            if (user != null) {
+                String correctPwd = user.getPassword();
+                try {
+                    return Pbkdf2Util.validatePassword(checkUser.getPassword(), correctPwd);
+                } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+                    e.printStackTrace();
+                }
             }
         }
         return false;

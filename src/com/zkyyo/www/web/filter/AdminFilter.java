@@ -17,6 +17,7 @@ public class AdminFilter implements Filter {
     }
 
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
+        /*
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) resp;
         Access access = (Access) request.getSession().getAttribute("access");
@@ -30,10 +31,11 @@ public class AdminFilter implements Filter {
         } else {
             response.sendRedirect("index.jsp");
         }
+        */
+
     }
 
     public void init(FilterConfig config) throws ServletException {
 
     }
-
 }

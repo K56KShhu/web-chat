@@ -27,5 +27,8 @@ public class TestAddUserServlet extends HttpServlet {
         user.setSex("male");
         user.setEmail("zkyyo@outlook.com");
         userService.addUser(user);
+        userService.updateStatus(userService.getUser("101").getUserId(), UserService.STATUS_NORMAL);
+        request.setAttribute("message", "finish");
+        request.getRequestDispatcher("message.jsp").forward(request, response);
     }
 }

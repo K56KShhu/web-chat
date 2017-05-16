@@ -95,3 +95,10 @@ CREATE TABLE report
     created timestamp not null default current_timestamp
 );
 
+DROP TABLE IF EXISTS remember;
+CREATE TABLE remember
+(
+    remember_id varchar(100) not null primary key,
+    username varchar(50) not null,
+    created timestamp not null default current_timestamp
+);

@@ -13,11 +13,12 @@ public class RememberService {
         rememberDao.addRemember(uuid, username);
     }
 
+    public void delete(String username) {
+        rememberDao.delete(username);
+    }
+
     public String find(String uuid) {
         return rememberDao.selectUsername(uuid);
     }
 
-    public void delete(String username) {
-        rememberDao.delete(username);
-    }
 }

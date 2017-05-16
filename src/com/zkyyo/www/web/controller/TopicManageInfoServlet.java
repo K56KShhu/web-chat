@@ -28,7 +28,7 @@ public class TopicManageInfoServlet extends HttpServlet {
         request.setAttribute("topics", topicPos);
         request.getRequestDispatcher("topic_manage.jsp").forward(request, response);
         */
-        String accessStr =request.getParameter("access");
+        String accessStr = request.getParameter("access");
         String search = request.getParameter("search");
         String page = request.getParameter("page");
         String orderStr = request.getParameter("order");
@@ -70,7 +70,7 @@ public class TopicManageInfoServlet extends HttpServlet {
         PageBean<TopicPo> pageBean;
         //判断搜索方式
         if (search != null && search.trim().length() > 0) { //根据关键词搜索, 无法进行排序
-            pageBean = topicService.queryTopics(access, search, currentPage);
+            pageBean = topicService.queryTopics(access, currentPage, search);
         } else { //根据排序搜索
             pageBean = topicService.queryTopics(access, currentPage, order, isReverse);
         }

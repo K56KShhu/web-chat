@@ -15,27 +15,29 @@
     <input type="submit"/>
 </form>
 
-<table border="1">
-    <tr>
-        <th>name</th>
-        <th>description</th>
-        <th>population</th>
-        <th>created</th>
-    </tr>
-    <c:forEach var="group" items="${requestScope.groups}">
-        <c:url value="topic_add_group.do" var="addGroupUrl">
-            <c:param name="topicId" value="${param.topicId}"/>
-            <c:param name="groupId" value="${group.groupId}"/>
-        </c:url>
+<c:if test="${requestScope.groups != null}">
+    <table border="1">
         <tr>
-            <td>${group.name}</td>
-            <td>${group.description}</td>
-            <td>${group.population}</td>
-            <td>${group.created}</td>
-            <td><a href="${addGroupUrl}">add</a></td>
+            <th>name</th>
+            <th>description</th>
+            <th>population</th>
+            <th>created</th>
         </tr>
-    </c:forEach>
-</table>
+        <c:forEach var="group" items="${requestScope.groups}">
+            <c:url value="topic_add_group.do" var="addGroupUrl">
+                <c:param name="topicId" value="${param.topicId}"/>
+                <c:param name="groupId" value="${group.groupId}"/>
+            </c:url>
+            <tr>
+                <td>${group.name}</td>
+                <td>${group.description}</td>
+                <td>${group.population}</td>
+                <td>${group.created}</td>
+                <td><a href="${addGroupUrl}">add</a></td>
+            </tr>
+        </c:forEach>
+    </table>
+</c:if>
 
 </body>
 </html>

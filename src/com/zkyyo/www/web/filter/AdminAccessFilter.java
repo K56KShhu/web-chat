@@ -2,15 +2,19 @@ package com.zkyyo.www.web.filter;
 
 import com.zkyyo.www.web.Access;
 
-import javax.servlet.*;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import java.io.IOException;
 
 @WebFilter(
-        filterName = "AdminFilter",
+        filterName = "AdminAccessFilter",
         urlPatterns = {"/admin.jsp"}
 )
-public class AdminFilter extends AbstractAccessFilter {
+public class AdminAccessFilter extends GeneralAccessFilter {
     public void destroy() {
     }
 
@@ -23,7 +27,7 @@ public class AdminFilter extends AbstractAccessFilter {
     }
 
     protected boolean checkAccess(Access access) {
-        System.out.println("(AdminFilter) checkAccess() invoked");
+        System.out.println("(AdminAccessFilter) checkAccess() invoked");
         //判断账号状态
         if (access.isNormal()) {
             //判断用户角色

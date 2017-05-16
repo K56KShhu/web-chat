@@ -1,8 +1,8 @@
 package com.zkyyo.www.service;
 
 import com.zkyyo.www.bean.PageBean;
-import com.zkyyo.www.dao.ReportDao;
 import com.zkyyo.www.bean.po.ReportPo;
+import com.zkyyo.www.dao.ReportDao;
 import com.zkyyo.www.dao.impl.ReportDaoJdbcImpl;
 import com.zkyyo.www.util.CheckUtil;
 
@@ -28,28 +28,26 @@ public class ReportService {
         this.reportDao = reportDao;
     }
 
+    public boolean isValidId(String reportId) {
+        return CheckUtil.isValidId(reportId, MAX_ID_LENGTH);
+    }
+
     public boolean isValidContentType(String contentType) {
-        return true;
+        return Integer.toString(CONTENT_TYPE_REPLY).equals(contentType)
+                || Integer.toString(CONTENT_TYPE_SHARE_IMAGE).equals(contentType)
+                || Integer.toString(CONTENT_TYPE_SHARE_FILE).equals(contentType);
     }
 
     public boolean isValidReason(String reason) {
         return CheckUtil.isValidString(reason, MIN_REASON_LENGTH, MAX_REASON_LENGTH);
     }
 
-    public void addReport(ReportPo reportPo) {
-        reportDao.addReport(reportPo);
-    }
-
-    public List<ReportPo> findReports() {
-        return reportDao.selectReports();
-    }
-
-    public boolean isValidId(String reportId) {
-        return CheckUtil.isValidId(reportId, MAX_ID_LENGTH);
-    }
-
     public boolean isExisted(int reportId) {
         return reportDao.selectReport(reportId) != null;
+    }
+
+    public void addReport(ReportPo reportPo) {
+        reportDao.addReport(reportPo);
     }
 
     public void deleteReport(int reportId) {
@@ -60,14 +58,16 @@ public class ReportService {
         PageBean<ReportPo> pageBean = new PageBean<>(currentPage, reportDao.getTotalRow(), ROWS_ONE_PAGE);
         int startIndex = (pageBean.getCurrentPage() - 1) * ROWS_ONE_PAGE;
 
-        List<ReportPo> reports;
+        int orderType;
         if (ORDER_BY_CONTENT_TYPE == order) {
-            reports = reportDao.selectReports(startIndex, ROWS_ONE_PAGE, ReportDaoJdbcImpl.ORDER_BY_CONTENT_TYPE, isReverse);
+            orderType = ReportDaoJdbcImpl.ORDER_BY_CONTENT_TYPE;
         } else if (ORDER_BY_CREATED == order) {
-            reports = reportDao.selectReports(startIndex, ROWS_ONE_PAGE, ReportDaoJdbcImpl.ORDER_BY_CREATED, isReverse);
+            orderType = ReportDaoJdbcImpl.ORDER_BY_CREATED;
         } else {
             return null;
         }
+
+        List<ReportPo> reports = reportDao.selectReports(startIndex, ROWS_ONE_PAGE, orderType, isReverse);
         pageBean.setList(reports);
         return pageBean;
     }

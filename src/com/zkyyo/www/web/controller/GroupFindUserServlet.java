@@ -1,5 +1,6 @@
 package com.zkyyo.www.web.controller;
 
+import com.zkyyo.www.bean.PageBean;
 import com.zkyyo.www.bean.po.UserPo;
 import com.zkyyo.www.service.UserService;
 
@@ -21,6 +22,7 @@ public class GroupFindUserServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        /*
         String search = request.getParameter("search");
 
         if (search != null && search.trim().length() > 0) {
@@ -29,6 +31,20 @@ public class GroupFindUserServlet extends HttpServlet {
             request.setAttribute("search", search);
             request.setAttribute("users", users);
         }
+        request.getRequestDispatcher("group_find_user.jsp").forward(request, response);
+        */
+        String search = request.getParameter("search");
+        String page = request.getParameter("page");
+        int currentPage = 1;
+        if (page != null) {
+            currentPage = Integer.valueOf(page);
+        }
+        if (search != null && search.trim().length() > 0) {
+            UserService userService = (UserService) getServletContext().getAttribute("userService");
+            PageBean<UserPo> pageBean = userService.queryUsers(search, currentPage);
+            request.setAttribute("pageBean", pageBean);
+        }
+        request.setAttribute("search", search);
         request.getRequestDispatcher("group_find_user.jsp").forward(request, response);
     }
 }

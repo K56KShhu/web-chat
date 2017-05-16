@@ -50,7 +50,7 @@ public class TopicFindServlet extends HttpServlet {
         PageBean<TopicPo> pageBean;
         //判断搜索方式
         if (search != null && search.trim().length() > 0) { //根据关键词搜索, 无法进行排序
-            pageBean = topicService.queryTopics(TopicService.ACCESS_PUBLIC, search, currentPage);
+            pageBean = topicService.queryTopics(TopicService.ACCESS_PUBLIC, currentPage, search);
         } else { //根据排序搜索
             pageBean = topicService.queryTopics(TopicService.ACCESS_PUBLIC, currentPage, order, isReverse);
         }

@@ -13,7 +13,7 @@
 <a href="admin_audit_info.do">audit</a><br/>
 
 <form method="get" action="user_manage_info.do">
-    搜索用户: <input type="text" name="search"/>
+    搜索用户: <input type="text" name="search" value="${requestScope.search}"/>
     <input type="submit"/>
 </form>
 

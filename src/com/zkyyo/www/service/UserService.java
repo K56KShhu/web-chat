@@ -39,11 +39,6 @@ public class UserService {
     }
 
     public boolean checkLogin(UserPo checkUser) {
-//        if (checkUser.getUsername() != null && checkUser.getPassword() != null) {
-//            UserPo user = getUser(checkUser.getUsername());
-//            return user != null && user.getPassword().equals(checkUser.getPassword());
-//        }
-//        return false;
         if (checkUser.getUsername() != null && checkUser.getPassword() != null) {
             UserPo user = getUser(checkUser.getUsername());
             if (user != null) {
@@ -53,6 +48,129 @@ public class UserService {
                 } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
                     e.printStackTrace();
                 }
+            }
+        }
+        return false;
+    }
+
+    public boolean isValidUserId(String userId) {
+        return CheckUtil.isValidId(userId, MAX_ID_LENGTH);
+    }
+
+    public boolean isValidUsername(String username) {
+        return CheckUtil.isValidString(username, MIN_USERNAME_LENGTH, MAX_USERNAME_LENGTH);
+    }
+
+    public boolean isValidPassword(String psw, String cpsw) {
+        if (psw == null || cpsw == null) {
+            return false;
+        }
+        if (psw.length() >= 8 && psw.length() <= 16) {
+            if (psw.equals(cpsw)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isValidEmail(String email) {
+        if (email == null) {
+            return false;
+        }
+        String regex = "^[\\w.+-]+@[\\w.+-]+\\.[\\w.+-]+$";
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(email);
+        return m.matches();
+    }
+
+    public boolean isValidSex(String sex) {
+        return "male".equals(sex)
+                || "female".equals(sex)
+                || "secret".equals(sex);
+    }
+
+    public boolean isValidStatus(String status) {
+        return Integer.toString(STATUS_NORMAL).equals(status)
+                || Integer.toString(STATUS_AUDIT).equals(status)
+                || Integer.toString(STATUS_NOT_APPROVED).equals(status)
+                || Integer.toString(STATUS_FORBIDDEN).equals(status);
+    }
+
+    public boolean isUserExisted(int userId) {
+        return getUser(userId) != null;
+    }
+
+    public boolean isUserExisted(String username) {
+        return getUser(username) != null;
+    }
+
+    public void addUser(UserPo userPo) {
+        String originalPwd = userPo.getPassword();
+        try {
+            String hashPwd = Pbkdf2Util.createHash(originalPwd);
+            userPo.setPassword(hashPwd);
+            userDao.addUser(userPo);
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public UserPo getUser(int userId) {
+        return userDao.selectUserByUserId(userId);
+    }
+
+    public UserPo getUser(String username) {
+        return userDao.selectUserByUsername(username);
+    }
+
+    public PageBean<UserPo> queryUsers(String username, int currentPage) {
+        PageBean<UserPo> pageBean = new PageBean<>(currentPage, userDao.getTotalRow(username), ROWS_ONE_PAGE);
+        int startIndex = (pageBean.getCurrentPage() - 1) * ROWS_ONE_PAGE;
+
+        List<UserPo> users = userDao.selectUsersByUsername(startIndex, ROWS_ONE_PAGE, username);
+        pageBean.setList(users);
+        return pageBean;
+    }
+
+    public PageBean<UserPo> queryUsers(int currentPage, int order, boolean isReverse) {
+        PageBean<UserPo> pageBean = new PageBean<>(currentPage, userDao.getTotalRow(), ROWS_ONE_PAGE);
+        int startIndex = (pageBean.getCurrentPage() - 1) * ROWS_ONE_PAGE;
+
+        List<UserPo> users;
+        if (ORDER_BY_SEX == order) {
+            users = userDao.selectUsers(startIndex, ROWS_ONE_PAGE, UserDaoJdbcImpl.ORDER_BY_SEX, isReverse);
+        } else if (ORDER_BY_CREATED == order) {
+            users = userDao.selectUsers(startIndex, ROWS_ONE_PAGE, UserDaoJdbcImpl.ORDER_BY_CREATED, isReverse);
+        } else if (ORDER_BY_STATUS == order) {
+            users = userDao.selectUsers(startIndex, ROWS_ONE_PAGE, UserDaoJdbcImpl.ORDER_BY_STATUS, isReverse);
+        } else {
+            return null;
+        }
+        pageBean.setList(users);
+        return pageBean;
+    }
+
+    public List<UserPo> queryUsersByStatus(int status) {
+        List<UserPo> users = new ArrayList<>();
+        if (STATUS_AUDIT == status) {
+            users = userDao.selectUsersByStatus(UserDaoJdbcImpl.STATUS_AUDIT);
+        } else if (STATUS_NORMAL == status) {
+            users = userDao.selectUsersByStatus(UserDaoJdbcImpl.STATUS_NORMAL);
+        } else if (STATUS_NOT_APPROVED == status) {
+            users = userDao.selectUsersByStatus(UserDaoJdbcImpl.STATUS_NOT_APPROVED);
+        }
+        return users; //用户输入不存在的status时会返回size为0的列表, 而不是null
+    }
+
+    public List<UserPo> queryUsersByGroup(int groupId) {
+        return userDao.selectUsersByGroup(groupId);
+    }
+    
+    public boolean isUserInGroup(int groupId, int userId) {
+        Set<Integer> groups = getGroups(userId);
+        for (int group : groups) {
+            if (groupId == group) {
+                return true;
             }
         }
         return false;
@@ -72,14 +190,6 @@ public class UserService {
 
     public Set<Integer> getGroups(String username) {
         return userDao.selectGroupsByUsername(username);
-    }
-
-    public UserPo getUser(int userId) {
-        return userDao.selectUserByUserId(userId);
-    }
-
-    public UserPo getUser(String username) {
-        return userDao.selectUserByUsername(username);
     }
 
     public Access getAccess(int userId) {
@@ -119,18 +229,6 @@ public class UserService {
         }
     }
 
-    public List<UserPo> getUsersByStatus(int status) {
-        List<UserPo> users = new ArrayList<>();
-        if (STATUS_AUDIT == status) {
-            users = userDao.selectUsersByStatus(UserDaoJdbcImpl.STATUS_AUDIT);
-        } else if (STATUS_NORMAL == status) {
-            users = userDao.selectUsersByStatus(UserDaoJdbcImpl.STATUS_NORMAL);
-        } else if (STATUS_NOT_APPROVED == status) {
-            users = userDao.selectUsersByStatus(UserDaoJdbcImpl.STATUS_NOT_APPROVED);
-        }
-        return users; //用户输入不存在的status时会返回size为0的列表, 而不是null
-    }
-
     public void updateStatus(int userId, int status) {
         UserPo user = new UserPo();
         user.setUserId(userId);
@@ -151,109 +249,10 @@ public class UserService {
         userDao.update(user, updateTypes);
     }
 
-    public PageBean<UserPo> queryUsers(int currentPage, String username) {
-        PageBean<UserPo> pageBean = new PageBean<>(currentPage, userDao.getTotalRow(username), ROWS_ONE_PAGE);
-        int startIndex = (pageBean.getCurrentPage() - 1) * ROWS_ONE_PAGE;
-
-        List<UserPo> users = userDao.selectUsersByUsername(startIndex, ROWS_ONE_PAGE, username);
-        pageBean.setList(users);
-        return pageBean;
-    }
-
-    public PageBean<UserPo> queryUsers(int currentPage, int order, boolean isReverse) {
-        PageBean<UserPo> pageBean = new PageBean<>(currentPage, userDao.getTotalRow(), ROWS_ONE_PAGE);
-        int startIndex = (pageBean.getCurrentPage() - 1) * ROWS_ONE_PAGE;
-
-        List<UserPo> users;
-        if (ORDER_BY_SEX == order) {
-            users = userDao.selectUsers(startIndex, ROWS_ONE_PAGE, UserDaoJdbcImpl.ORDER_BY_SEX, isReverse);
-        } else if (ORDER_BY_CREATED == order) {
-            users = userDao.selectUsers(startIndex, ROWS_ONE_PAGE, UserDaoJdbcImpl.ORDER_BY_CREATED, isReverse);
-        } else if (ORDER_BY_STATUS == order) {
-            users = userDao.selectUsers(startIndex, ROWS_ONE_PAGE, UserDaoJdbcImpl.ORDER_BY_STATUS, isReverse);
-        } else {
-            return null;
-        }
-        pageBean.setList(users);
-        return pageBean;
-    }
-
-    public List<UserPo> queryUsersByGroup(int groupId) {
-        return userDao.selectUsersByGroup(groupId);
-    }
-
-    public List<UserPo> getUsers() {
-        return userDao.selectUsers();
-    }
-
-    public boolean isUserExisted(int userId) {
-        return getUser(userId) != null;
-    }
-
-    public boolean isUserExisted(String username) {
-        return getUser(username) != null;
-    }
-
-    public boolean isValidUserId(String userId) {
-        return CheckUtil.isValidId(userId, MAX_ID_LENGTH);
-    }
-
-    public boolean isValidUsername(String username) {
-        return CheckUtil.isValidString(username, MIN_USERNAME_LENGTH, MAX_USERNAME_LENGTH);
-    }
-
-    public boolean isValidPassword(String psw, String cpsw) {
-        if (psw == null || cpsw == null) {
-            return false;
-        }
-        if (psw.length() >= 8 && psw.length() <= 16) {
-            if (psw.equals(cpsw)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean isValidPassword(String pwd) {
-        return pwd != null && pwd.length() >= 8 && pwd.length() <= 16;
-    }
-
-    public boolean isValidEmail(String email) {
-        if (email == null) {
-            return false;
-        }
-        String regex = "^[\\w.+-]+@[\\w.+-]+\\.[\\w.+-]+$";
-        Pattern p = Pattern.compile(regex);
-        Matcher m = p.matcher(email);
-        return m.matches();
-    }
-
-    public boolean isValidSex(String sex) {
-        return "male".equals(sex)
-                || "female".equals(sex)
-                || "secret".equals(sex);
-    }
-
-    public boolean isValidStatus(String status) {
-        return Integer.toString(STATUS_NORMAL).equals(status)
-                || Integer.toString(STATUS_AUDIT).equals(status)
-                || Integer.toString(STATUS_NOT_APPROVED).equals(status)
-                || Integer.toString(STATUS_FORBIDDEN).equals(status);
-    }
-
-    public void addUser(UserPo userPo) {
-        String originalPwd = userPo.getPassword();
-        try {
-            String hashPwd = Pbkdf2Util.createHash(originalPwd);
-            userPo.setPassword(hashPwd);
-            userDao.addUser(userPo);
-        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-            e.printStackTrace();
-        }
-    }
-
+    /*
     public List<UserPo> fuzzySearchUsers(String search) {
         return userDao.selectPossibleUsersByUsername(search.trim());
     }
+    */
 }
 

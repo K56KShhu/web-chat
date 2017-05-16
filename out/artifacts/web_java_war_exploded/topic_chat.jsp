@@ -7,7 +7,7 @@
 <body>
 
 <c:if test="${requestScope.topic == null}">
-    <c:redirect url="index.jsp"/>
+    <c:redirect url="topic_find.do"/>
 </c:if>
 
 <%--讨论区的图片分享和文件分享--%>

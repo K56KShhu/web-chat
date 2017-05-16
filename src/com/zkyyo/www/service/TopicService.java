@@ -36,16 +36,6 @@ public class TopicService {
         this.topicDao = topicDao;
     }
 
-    /*
-    public List<TopicPo> findTopics() {
-        return topicDao.selectTopicsByOrder();
-    }
-    */
-
-    public void deleteTopic(int topicId) {
-        topicDao.deleteTopicByTopicId(topicId);
-    }
-
     public boolean isValidId(String topicId) {
         return CheckUtil.isValidId(topicId, MAX_ID_LENGTH);
     }
@@ -66,24 +56,15 @@ public class TopicService {
         topicDao.addTopic(topicPo);
     }
 
+    public void deleteTopic(int topicId) {
+        topicDao.deleteTopicByTopicId(topicId);
+    }
+
     public TopicPo findTopic(int id) {
         return topicDao.selectTopicByTopicId(id);
     }
 
-    public void updateTopic(TopicPo topicPo) {
-        topicDao.updateTopic(topicPo);
-    }
-
-    /*
-    public List<TopicPo> findTopicsByKeys(String keys) {
-        String regex = "\\s+";
-        Set<String> keySet = new HashSet<>(); //避免关键字重复
-        Collections.addAll(keySet, keys.trim().split(regex)); //将字符串拆分为关键字
-        return topicDao.selectPossibleTopicsByTitle(keySet);
-    }
-    */
-
-    public PageBean<TopicPo> queryTopics(int type, String keys, int currentPage) {
+    public PageBean<TopicPo> queryTopics(int type, int currentPage, String keys) {
         //处理关键字
         String regex = "\\s+";
         Set<String> keySet = new HashSet<>(); //避免关键字重复
@@ -152,8 +133,8 @@ public class TopicService {
         return topicDao.selectTopicsByGroups(groupIds);
     }
 
-    public Set<Integer> getGroups(int topicId) {
-        return topicDao.selectGroupsByTopicId(topicId);
+    public void updateTopic(TopicPo topicPo) {
+        topicDao.updateTopic(topicPo);
     }
 
     public boolean isPrivate(int topicId) {
@@ -161,4 +142,17 @@ public class TopicService {
         return topic.getIsPrivate() == TopicDaoJdbcImpl.ACCESS_PRIVATE;
     }
 
+    public Set<Integer> getGroups(int topicId) {
+        return topicDao.selectGroupsByTopicId(topicId);
+    }
+
+    public boolean isTopicHasGroup(int groupId, int topicId) {
+        Set<Integer> groups = getGroups(topicId);
+        for (int group : groups) {
+            if (groupId == group) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

@@ -29,7 +29,7 @@ public class UserManageServlet extends HttpServlet {
 
         UserService userService = (UserService) getServletContext().getAttribute("userService");
         if (userService.isValidStatus(status)) {
-            if (userService.isValidUserId(userId) && userService.isUserExisted(userId)) {
+            if (userService.isValidUserId(userId) && userService.isUserExisted(Integer.valueOf(userId))) {
                 int uStatus = Integer.valueOf(status);
                 int id = Integer.valueOf(userId);
                 String url = "user_manage_info.do?search=" + search + "&order=" + order + "&page=" + page + "&isReverse=" + isReverse;

@@ -26,34 +26,25 @@ public class ReportManageInfoServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        ReportService reportService = (ReportService) getServletContext().getAttribute("reportService");
-//        UserService userService = (UserService) getServletContext().getAttribute("userService");
-//        List<ReportPo> reportPos = reportService.findReports();
-//        List<ReportVo> reportVos = new ArrayList<>();
-//        for (ReportPo reportPo : reportPos) {
-//            UserPo userPo = userService.getUser(reportPo.getUserId());
-//            reportVos.add(BeanUtil.reportPoToVo(reportPo, userPo));
-//        }
-//        request.setAttribute("reports", reportVos);
-//        request.getRequestDispatcher("report_manage.jsp").forward(request, response);
         String page = request.getParameter("page");
-        String order = request.getParameter("order");
-        String isReverseStr = request.getParameter("isReverse");
+        String orderStr = request.getParameter("orderStr");
+        boolean isReverse = "true".equals(request.getParameter("isReverse"));
+
         int currentPage = 1;
         if (page != null) {
             currentPage = Integer.valueOf(page);
         }
-
-        ReportService reportService = (ReportService) getServletContext().getAttribute("reportService");
-        boolean isReverse = "true".equals(isReverseStr);
-        PageBean<ReportPo> pageBeanPo;
-        if ("contentType".equals(order)) {
-            pageBeanPo = reportService.queryReports(currentPage, ReportService.ORDER_BY_CONTENT_TYPE, isReverse);
-        } else if ("created".equals(order)) {
-            pageBeanPo = reportService.queryReports(currentPage, ReportService.ORDER_BY_CREATED, isReverse);
+        int order;
+        if ("contentType".equals(orderStr)) {
+            order = ReportService.ORDER_BY_CONTENT_TYPE;
+        } else if ("created".equals(orderStr)) {
+            order = ReportService.ORDER_BY_CREATED;
         } else {
-            pageBeanPo = reportService.queryReports(currentPage, ReportService.ORDER_BY_CREATED, true);
+            order = ReportService.ORDER_BY_CREATED;
+            isReverse = true;
         }
+        ReportService reportService = (ReportService) getServletContext().getAttribute("reportService");
+        PageBean<ReportPo> pageBeanPo = reportService.queryReports(currentPage, order, isReverse);
 
         UserService userService = (UserService) getServletContext().getAttribute("userService");
         List<ReportPo> reportPos = pageBeanPo.getList();
@@ -65,7 +56,7 @@ public class ReportManageInfoServlet extends HttpServlet {
         PageBean<ReportVo> pageBeanVo = BeanUtil.pageBeanListTranslate(pageBeanPo, reportVos);
 
         request.setAttribute("pageBean", pageBeanVo);
-        request.setAttribute("order", order);
+        request.setAttribute("orderStr", orderStr);
         request.setAttribute("isReverse", isReverse);
         request.getRequestDispatcher("report_manage.jsp").forward(request, response);
     }

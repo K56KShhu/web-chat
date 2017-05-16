@@ -30,13 +30,12 @@ public class TopicAddGroupServlet extends HttpServlet {
             int gId = Integer.valueOf(groupId);
             int tId = Integer.valueOf(topicId);
             if (groupService.isExisted(gId) && topicService.isExisted(tId)) {
-                groupService.addTopic(gId, tId);
-                message = "开起来是添加成功了";
-//                if (!groupService.isGroupInTopic(gId, tId)) {
-//                    message = "添加成功"
-//                } else {
-//                    message = "添加失败, 讨论区已经包含该小组";
-//                }
+                if (!topicService.isTopicHasGroup(gId, tId)) {
+                    groupService.addTopic(gId, tId);
+                    message = "添加成功";
+                } else {
+                    message = "添加失败, 讨论区已经授权该小组";
+                }
             }
         }
         request.setAttribute("message", message);

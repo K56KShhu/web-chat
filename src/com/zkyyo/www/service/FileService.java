@@ -24,14 +24,6 @@ public class FileService {
         this.fileDao = fileDao;
     }
 
-    public void addFile(FilePo filePo) {
-        fileDao.addFile(filePo);
-    }
-
-    public List<FilePo> findFiles(int topicId, int apply) {
-        return fileDao.selectFilesByTopicId(topicId, apply);
-    }
-
     public boolean isValidId(String fileId) {
         return CheckUtil.isValidId(fileId, MAX_ID_LENGTH);
     }
@@ -40,12 +32,16 @@ public class FileService {
         return findFile(fileId) != null;
     }
 
-    public FilePo findFile(int fileId) {
-        return fileDao.selectFileByFileId(fileId);
+    public void addFile(FilePo filePo) {
+        fileDao.addFile(filePo);
     }
 
     public void deleteFile(int fileId) {
         fileDao.deleteFile(fileId);
+    }
+
+    public FilePo findFile(int fileId) {
+        return fileDao.selectFileByFileId(fileId);
     }
 
     public PageBean<FilePo> queryFiles(int currentPage, int order, boolean isReverse, int topicId, int apply) {

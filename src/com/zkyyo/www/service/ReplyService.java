@@ -27,35 +27,30 @@ public class ReplyService {
         return CheckUtil.isValidId(id, MAX_ID_LENGTH);
     }
 
-    public boolean isExisted(int id) {
-        return findReply(id) != null;
-    }
-
     public boolean isValidContent(String content) {
         return CheckUtil.isValidString(content, MIN_CONTENT_LENGTH, MAX_CONTENT_LENGTH);
+    }
+
+    public boolean isExisted(int id) {
+        return findReply(id) != null;
     }
 
     public void addReply(ReplyPo replyPo) {
         replyDao.addReply(replyPo);
     }
 
-    public List<ReplyPo> findReplys(int topicId) {
-        return replyDao.selectReplysByTopicId(topicId);
+    public void deleteReply(int replyId) {
+        replyDao.deleteReply(replyId);
     }
 
     public ReplyPo findReply(int replyId) {
         return replyDao.selectReplyByReplyId(replyId);
     }
 
-    public void deleteReply(int replyId) {
-        replyDao.deleteReply(replyId);
-    }
-
     public PageBean<ReplyPo> findReplys(int topicId, int currentPage) {
         PageBean<ReplyPo> pageBean = new PageBean<>(currentPage, replyDao.getTotalRow(topicId), ROWS_ONE_PAGE);
-//        不应该直接从参数获得当前页数, 而是应该从pageBean中获得处理过的当前页数
-//        int startIndex = (currentPage - 1) * ROWS_ONE_PAGE;
         int startIndex = (pageBean.getCurrentPage() - 1) * ROWS_ONE_PAGE;
+
         List<ReplyPo> replys = replyDao.selectReplysByTopicId(startIndex, ROWS_ONE_PAGE, topicId);
         pageBean.setList(replys);
         return pageBean;

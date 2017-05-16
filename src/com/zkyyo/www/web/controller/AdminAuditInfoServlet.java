@@ -18,7 +18,7 @@ import java.util.List;
 public class AdminAuditInfoServlet extends HttpServlet {
     private void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         UserService userService = (UserService) getServletContext().getAttribute("userService");
-        List<UserPo> users = userService.getUsersByStatus(UserService.STATUS_AUDIT);
+        List<UserPo> users = userService.queryUsersByStatus(UserService.STATUS_AUDIT);
         request.setAttribute("users", users);
         request.getRequestDispatcher("admin_audit.jsp").forward(request, response);
     }

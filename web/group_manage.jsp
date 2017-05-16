@@ -21,9 +21,15 @@
         <th>created</th>
     </tr>
     <c:forEach var="group" items="${requestScope.groups}">
+        <%--向小组中添加用户--%>
+        <c:url value="group_find_user.jsp" var="addUserUrl">
+            <c:param name="groupId" value="${group.groupId}"/>
+        </c:url>
+        <%--小组详细信息--%>
         <c:url value="group_detail.do" var="groupDetailUrl">
             <c:param name="groupId" value="${group.groupId}"/>
         </c:url>
+        <%--解散小组--%>
         <c:url value="group_delete.do" var="groupDeleteUrl">
             <c:param name="groupId" value="${group.groupId}"/>
         </c:url>
@@ -32,6 +38,7 @@
             <td>${group.description}</td>
             <td>${group.population}</td>
             <td>${group.created}</td>
+            <td><a href="${addUserUrl}">add user</a></td>
             <td><a href="${groupDetailUrl}">detail</a></td>
             <td><a href="${groupDeleteUrl}">delete</a></td>
         </tr>

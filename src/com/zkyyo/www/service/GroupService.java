@@ -19,12 +19,12 @@ public class GroupService {
         this.groupDao = groupDao;
     }
 
-    public List<GroupPo> queryGroups() {
-        return groupDao.selectGroups();
-    }
-
     public boolean isValidId(String groupId) {
         return CheckUtil.isValidId(groupId, MAX_ID_LENGTH);
+    }
+
+    public boolean isValidName(String name) {
+        return CheckUtil.isValidString(name, MIN_NAME_LENGTH, MAX_NAME_LENGTH);
     }
 
     public boolean isValidDesc(String desc) {
@@ -35,8 +35,20 @@ public class GroupService {
         return findGroup(groupId) != null;
     }
 
-    public GroupPo findGroup(int groupId) {
-        return groupDao.selectGroup(groupId);
+    public void addGroup(GroupPo groupPo) {
+        groupDao.addGroup(groupPo);
+    }
+
+    public void addUser(int groupId, int userId) {
+        groupDao.addUserInGroup(groupId, userId);
+    }
+
+    public void addTopic(int groupId, int topicId) {
+        groupDao.addGroupInTopic(groupId, topicId);
+    }
+
+    public void deleteGroup(int groupId) {
+        groupDao.deleteGroup(groupId);
     }
 
     public void removeUser(int groupId, int userId) {
@@ -47,31 +59,15 @@ public class GroupService {
         groupDao.removeTopicInGroup(groupId, userId);
     }
 
-    public boolean isUserInGroup(int groupId, int userId) {
-        return true;
-    }
-
-    public void addUser(int groupId, int userId) {
-        groupDao.addUserInGroup(groupId, userId);
-    }
-
-    public void deleteGroup(int groupId) {
-        groupDao.deleteGroup(groupId);
-    }
-
-    public boolean isValidName(String name) {
-        return CheckUtil.isValidString(name, MIN_NAME_LENGTH, MAX_NAME_LENGTH);
-    }
-
-    public void addGroup(GroupPo groupPo) {
-        groupDao.addGroup(groupPo);
+    public GroupPo findGroup(int groupId) {
+        return groupDao.selectGroup(groupId);
     }
 
     public List<GroupPo> queryGroups(String name) {
         return groupDao.selectGroupsByName(name);
     }
 
-    public void addTopic(int groupId, int topicId) {
-        groupDao.addGroupInTopic(groupId, topicId);
+    public List<GroupPo> queryGroups() {
+        return groupDao.selectGroups();
     }
 }

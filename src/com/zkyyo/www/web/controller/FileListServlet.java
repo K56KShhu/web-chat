@@ -33,13 +33,13 @@ public class FileListServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String topicId = request.getParameter("topicId");
-        String shareType = request.getParameter("shareType");
+        String shareTypeStr = request.getParameter("shareType");
         String page = request.getParameter("page");
         String order = request.getParameter("order");
-        String isReverseStr = request.getParameter("isReverse");
+        boolean isReverse = "true".equals(request.getParameter("isReverse"));
 
         TopicService topicService = (TopicService) getServletContext().getAttribute("topicService");
-        if (!topicService.isValidId(topicId) && !topicService.isExisted(Integer.valueOf(topicId))) {
+        if (!topicService.isValidId(topicId) || !topicService.isExisted(Integer.valueOf(topicId))) {
             response.sendRedirect("index.jsp");
             return;
         }
@@ -56,24 +56,38 @@ public class FileListServlet extends HttpServlet {
         if (page != null) {
             currentPage = Integer.valueOf(page);
         }
-        boolean isReverse = "true".equals(isReverseStr);
+        int shareType;
+        String url;
+        if ("image".equals(shareTypeStr)) {
+            shareType = FileService.APPLY_IMAGE;
+            url = "image_list.jsp";
+        } else if ("file".equals(shareTypeStr)) {
+            shareType = FileService.APPLY_FILE;
+            url = "file_list.jsp";
+        } else {
+            response.sendRedirect("index.jsp");
+            return;
+        }
 
         FileService fileService = (FileService) getServletContext().getAttribute("fileService");
+        PageBean<FilePo> pageBeanPo = fileService.queryFiles(currentPage, FileService.ORDER_BY_CREATED, isReverse, tId, shareType);
+        /*
+        FileService fileService = (FileService) getServletContext().getAttribute("fileService");
         PageBean<FilePo> pageBeanPo;
-        String url;
         switch (shareType) {
             case SHARE_IMAGE:
-                pageBeanPo = fileService.queryFiles(currentPage, FileService.ORDER_BY_CREATED, true, tId, FileService.APPLY_IMAGE);
+                pageBeanPo = fileService.queryFiles(currentPage, FileService.ORDER_BY_CREATED, isReverse, tId, FileService.APPLY_IMAGE);
                 url = "image_list.jsp";
                 break;
             case SHARE_FILE:
-                pageBeanPo = fileService.queryFiles(currentPage, FileService.ORDER_BY_CREATED, true, tId, FileService.APPLY_FILE);
+                pageBeanPo = fileService.queryFiles(currentPage, FileService.ORDER_BY_CREATED, isReverse, tId, FileService.APPLY_FILE);
                 url = "file_list.jsp";
                 break;
             default:
                 response.sendRedirect("index.jsp");
                 return;
         }
+        */
 
         UserService userService = (UserService) getServletContext().getAttribute("userService");
         List<FilePo> filePos = pageBeanPo.getList();
@@ -86,7 +100,7 @@ public class FileListServlet extends HttpServlet {
 
         request.setAttribute("topicId", topicId);
         request.setAttribute("pageBean", pageBeanVo);
-        request.setAttribute("shareType", shareType);
+        request.setAttribute("shareType", shareTypeStr);
         request.setAttribute("order", order);
         request.setAttribute("isReverse", isReverse);
         request.getRequestDispatcher(url).forward(request, response);

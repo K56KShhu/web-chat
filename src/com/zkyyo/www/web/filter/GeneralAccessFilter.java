@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebFilter(filterName = "AbstractAccessFilter")
-public class AbstractAccessFilter implements Filter {
+@WebFilter(filterName = "GeneralAccessFilter")
+public class GeneralAccessFilter implements Filter {
     public void destroy() {
     }
 
@@ -21,13 +21,13 @@ public class AbstractAccessFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) resp;
 
         Access access = (Access) request.getSession().getAttribute("access");
-        System.out.println("(AbstractAccessFilter) access: " + access);
+        System.out.println("(GeneralAccessFilter) access: " + access);
         boolean isApproved = false;
         //保证Session中存在包含用户权限信息的access
         //检查当前浏览器会话中是否存在Session
         if (access == null) {
             String uuid = CookieUtil.getCookieValue(request, "user");
-            System.out.println("(AbstractAccessFilter) uuid: " + uuid);
+            System.out.println("(GeneralAccessFilter) uuid: " + uuid);
             //检查浏览器中是否存在cookie
             if (uuid != null) {
                 //若存在, 尝试通过Cookie的uuid获取用户名, 从而获取用户权限信息
@@ -61,7 +61,7 @@ public class AbstractAccessFilter implements Filter {
     }
 
     protected boolean checkAccess(Access access) {
-        System.out.println("(AbstractAccessFilter) checkAccess() invoked");
+        System.out.println("(GeneralAccessFilter) checkAccess() invoked");
         return false;
     }
 }

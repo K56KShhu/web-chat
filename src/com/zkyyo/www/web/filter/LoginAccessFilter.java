@@ -2,17 +2,21 @@ package com.zkyyo.www.web.filter;
 
 import com.zkyyo.www.web.Access;
 
-import javax.servlet.*;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import java.io.IOException;
 
 @WebFilter(
-        filterName = "LoginFilter",
+        filterName = "LoginAccessFilter",
         urlPatterns = {
                 "/index.jsp"
         }
 )
-public class LoginFilter extends AbstractAccessFilter {
+public class LoginAccessFilter extends GeneralAccessFilter {
     public void destroy() {
     }
 
@@ -21,7 +25,7 @@ public class LoginFilter extends AbstractAccessFilter {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) resp;
         Access access = (Access) request.getSession().getAttribute("access");
-        System.out.println("LoginFilter: " + access);
+        System.out.println("LoginAccessFilter: " + access);
 
         if (access != null && access.isNormal()) {
             if (access.isUserInRole("user")) {
@@ -41,13 +45,13 @@ public class LoginFilter extends AbstractAccessFilter {
         HttpServletResponse response = (HttpServletResponse) resp;
 
         Access access = (Access) request.getSession().getAttribute("access");
-        System.out.println("(LoginFilter) access: " + access);
+        System.out.println("(LoginAccessFilter) access: " + access);
         boolean isApproved = false;
         //保证Session中存在包含用户权限信息的access
         //检查当前浏览器会话中是否存在Session
         if (access == null) {
             String uuid = CookieUtil.getCookieValue(request, "user");
-            System.out.println("(LoginFilter) uuid: " + uuid);
+            System.out.println("(LoginAccessFilter) uuid: " + uuid);
             //检查浏览器中是否存在cookie
             if (uuid != null) {
                 //若存在, 尝试通过Cookie的uuid获取用户名, 从而获取用户权限信息
@@ -81,7 +85,7 @@ public class LoginFilter extends AbstractAccessFilter {
     }
 
     protected boolean checkAccess(Access access) {
-        System.out.println("(LoginFilter) checkAccess() invoked");
+        System.out.println("(LoginAccessFilter) checkAccess() invoked");
         //判断账号状态
         if (access.isNormal()) {
             //判断用户角色

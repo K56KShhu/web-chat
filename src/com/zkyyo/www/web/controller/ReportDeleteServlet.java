@@ -32,7 +32,6 @@ public class ReportDeleteServlet extends HttpServlet {
                 reportService.deleteReport(rId);
                 String url = "report_manage_info.do?order=" + order + "&page=" + page + "&isReverse=" +isReverse;
                 response.sendRedirect(url);
-//                request.getRequestDispatcher("report_manage_info.do").forward(request, response);
             } else {
                 request.setAttribute("message", "举报不存在, 或已经被处理");
                 request.getRequestDispatcher("message.jsp").forward(request, response);

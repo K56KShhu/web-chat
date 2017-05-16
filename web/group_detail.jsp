@@ -6,6 +6,8 @@
 </head>
 <body>
 
+<%@ include file="/WEB-INF/header_for_admin.jsp" %>
+
 <h1>group detail</h1>
 
 <c:url value="group_find_user.jsp" var="addUserUrl">

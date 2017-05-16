@@ -7,7 +7,7 @@
 
 <h1>login</h1>
 
-<jsp:include page="result.jsp">
+<jsp:include page="WEB-INF/result.jsp">
     <jsp:param name="faile" value="登录失败, 原因如下:"/>
 </jsp:include>
 

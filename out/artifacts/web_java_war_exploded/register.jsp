@@ -8,7 +8,7 @@
 
 <h1>register</h1>
 
-<jsp:include page="result.jsp">
+<jsp:include page="WEB-INF/result.jsp">
     <jsp:param name="success" value="注册成功, 请等待管理员审核"/>
     <jsp:param name="faile" value="注册失败, 原因如下:"/>
 </jsp:include>

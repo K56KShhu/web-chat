@@ -6,6 +6,8 @@
 </head>
 <body>
 
+<%@ include file="/WEB-INF/header.jsp" %>
+
 <h1><c:out value="${requestScope.user.username}"/>的个人信息</h1>
 
 <h2>user info</h2>

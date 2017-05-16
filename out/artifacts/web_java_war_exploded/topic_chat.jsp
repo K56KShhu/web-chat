@@ -10,6 +10,8 @@
     <c:redirect url="topic_find.do"/>
 </c:if>
 
+<%@ include file="/WEB-INF/header.jsp" %>
+
 <%--讨论区的图片分享和文件分享--%>
 <c:url value="file_list.do" var="fileUrl">
     <c:param name="topicId" value="${requestScope.topic.topicId}"/>
@@ -19,10 +21,11 @@
     <c:param name="topicId" value="${requestScope.topic.topicId}"/>
     <c:param name="shareType" value="image"/>
 </c:url>
-<a href="${imageUrl}">图片分享区</a>
+
+<a href="${imageUrl}">图片分享区</a>&nbsp;
 <a href="${fileUrl}">文件分享区</a>
 
-<jsp:include page="result.jsp">
+<jsp:include page="WEB-INF/result.jsp">
     <jsp:param name="faile" value="发送失败, 原因如下:"/>
 </jsp:include>
 
@@ -32,8 +35,7 @@
 
 <%--输入文本内容--%>
 <form method="post" action="reply_text_add.do">
-    text:<br/>
-    <textarea name="content" rows="5" cols="60">${requestScope.content}</textarea>
+    文本:<textarea name="content" rows="5" cols="60">${requestScope.content}</textarea>
     <input type="hidden" name="topicId" value="${requestScope.topic.topicId}"/>
     <input type="submit" value="reply"/>
 </form>
@@ -44,7 +46,7 @@
     <c:param name="shareType" value="chat"/>
 </c:url>
 <form method="post" enctype="multipart/form-data" action="${uploadUrl}">
-    file: <input type="file" name="uploadFile"/><br/>
+    图片: <input type="file" name="uploadFile"/>
     <input type="submit" value="发送图片"/>
 </form>
 <br/><br/>
@@ -62,14 +64,15 @@
     </c:url>
     <a href="${userInfoUrl}">${reply.username}</a>&nbsp;
     (${reply.created})&nbsp;
-    <a href="${reportUrl}">举报</a><br/>
+    <a href="${reportUrl}">举报</a>&nbsp;
     <%--[管理员]删除讨论区信息--%>
     <c:if test="${sessionScope.access.isUserInRole('admin')}">
         <c:url value="reply_delete.do" var="deleteReplyUrl">
             <c:param name="replyId" value="${reply.replyId}"/>
         </c:url>
-        <a href="${deleteReplyUrl}">删除</a><br/>
+        <a href="${deleteReplyUrl}">删除</a>
     </c:if>
+    <br/>
     <c:choose>
         <%--文本信息--%>
         <c:when test="${reply.contentType == 1}">

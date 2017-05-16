@@ -28,6 +28,10 @@ public class RegisterServlet extends HttpServlet {
         List<String> errors = new ArrayList<>();
         if (!userService.isValidUsername(username)) {
             errors.add("bad username");
+        } else {
+            if (userService.isUserExisted(username)) {
+                errors.add("username occupied");
+            }
         }
         if (!userService.isValidPassword(password, confirmedPsw)) {
             errors.add("bad password");

@@ -21,14 +21,24 @@ public class AddUserTestServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         UserService userService = (UserService) getServletContext().getAttribute("userService");
-        for (int i = 0; i < 134; i++) {
-            UserPo user = new UserPo();
-            user.setUsername("1234567" + i);
+        //大号
+        UserPo user = new UserPo();
+        user.setUsername("101");
+        user.setPassword("abc");
+        user.setSex("male");
+        user.setEmail("z@o.com");
+        userService.addUser(user);
+        userService.updateStatus(userService.getUser("101").getUserId(), UserService.STATUS_NORMAL);
+
+        //小号
+        for (int i = 0; i < 131; i++) {
+            user = new UserPo();
+            user.setUsername("aaa12345" + i);
             user.setPassword("abc");
             user.setSex("male");
             user.setEmail("z@o.com");
             userService.addUser(user);
-            userService.updateStatus(userService.getUser("101").getUserId(), UserService.STATUS_NORMAL);
+            userService.updateStatus(userService.getUser("aaa12345" + i).getUserId(), UserService.STATUS_NORMAL);
         }
         request.setAttribute("message", "finish");
         request.getRequestDispatcher("message.jsp").forward(request, response);

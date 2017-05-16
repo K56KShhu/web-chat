@@ -1,6 +1,7 @@
 package com.zkyyo.www.web.controller;
 
-import com.zkyyo.www.service.ReportService;
+import com.zkyyo.www.service.FileService;
+import com.zkyyo.www.service.ReplyService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,9 +15,9 @@ import java.io.IOException;
         urlPatterns = {"/report_content_delete.do"}
 )
 public class ReportContentDeleteServlet extends HttpServlet {
-    private static final int DELETE_CHAT = 0;
-    private static final int DELETE_SHARE_IMAGE = 1;
-    private static final int DELETE_SHARE_FILE = 2;
+    private static final String DELETE_CHAT = "0";
+    private static final String DELETE_SHARE_IMAGE = "1";
+    private static final String DELETE_SHARE_FILE = "2";
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -26,25 +27,19 @@ public class ReportContentDeleteServlet extends HttpServlet {
         String contentId = request.getParameter("contentId");
         String contentType = request.getParameter("contentType");
 
-        ReportService reportService = (ReportService) getServletContext().getAttribute("reportService");
-        //待修改!!!!
-        if (reportService.isValidId(contentId) && reportService.isValidContentType(contentType)) {
-            int id = Integer.valueOf(contentId);
-            int type = Integer.valueOf(contentType);
-            switch (type) {
-                case DELETE_CHAT:
-                    response.sendRedirect("reply_delete.do?replyId=" + id);
-                    break;
-                case DELETE_SHARE_IMAGE:
-                case DELETE_SHARE_FILE:
-                    response.sendRedirect("file_delete.do?fileId=" + id);
-                    break;
-                default:
-                    response.sendRedirect("index.jsp");
-                    break;
+        ReplyService replyService = (ReplyService) getServletContext().getAttribute("replyService");
+        FileService fileService = (FileService) getServletContext().getAttribute("fileService");
+        if (DELETE_CHAT.equals(contentType)) {
+            if (replyService.isValidId(contentId) && replyService.isExisted(Integer.valueOf(contentId))) {
+                response.sendRedirect("reply_delete.do?replyId=" + contentId);
+                return;
             }
-        } else {
-            response.sendRedirect("index.jsp");
+        } else if (DELETE_SHARE_IMAGE.equals(contentType) || DELETE_SHARE_FILE.equals(contentType)) {
+            if (fileService.isValidId(contentId) && fileService.isExisted(Integer.valueOf(contentId))) {
+                response.sendRedirect("file_delete.do?fileId=" + contentId);
+                return;
+            }
         }
+        response.sendRedirect("index.jsp");
     }
 }

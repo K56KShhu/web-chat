@@ -6,6 +6,8 @@
 </head>
 <body>
 
+<%@ include file="/WEB-INF/header_for_admin.jsp" %>
+
 <h1>admin audit</h1>
 
 <c:choose>

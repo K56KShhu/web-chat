@@ -32,11 +32,13 @@ public class ReportService {
         return CheckUtil.isValidId(reportId, MAX_ID_LENGTH);
     }
 
+    /*
     public boolean isValidContentType(String contentType) {
         return Integer.toString(CONTENT_TYPE_REPLY).equals(contentType)
                 || Integer.toString(CONTENT_TYPE_SHARE_IMAGE).equals(contentType)
                 || Integer.toString(CONTENT_TYPE_SHARE_FILE).equals(contentType);
     }
+    */
 
     public boolean isValidReason(String reason) {
         return CheckUtil.isValidString(reason, MIN_REASON_LENGTH, MAX_REASON_LENGTH);

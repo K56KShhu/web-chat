@@ -5,9 +5,11 @@
 </head>
 <body>
 
+<%@ include file="/WEB-INF/header_for_admin.jsp" %>
+
 <h1>report add</h1>
 
-<jsp:include page="result.jsp">
+<jsp:include page="WEB-INF/result.jsp">
     <jsp:param name="success" value="举报提交成功"/>
     <jsp:param name="faile" value="举报提交失败, 原因如下:"/>
 </jsp:include>

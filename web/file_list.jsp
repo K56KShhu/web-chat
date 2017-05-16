@@ -5,7 +5,11 @@
     <title>file list</title>
 </head>
 <body>
+
+<%@ include file="/WEB-INF/header.jsp" %>
+
 <h1>file list</h1>
+
 <c:url value="file_upload.do" var="uploadUrl">
     <c:param name="topicId" value="${param.topicId}"/>
     <c:param name="shareType" value="file"/>

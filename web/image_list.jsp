@@ -6,7 +6,10 @@
 </head>
 <body>
 
+<%@ include file="/WEB-INF/header.jsp" %>
+
 <h1>img list</h1>
+
 <c:url value="file_upload.do" var="uploadUrl">
     <c:param name="topicId" value="${param.topicId}"/>
     <c:param name="shareType" value="image"/>

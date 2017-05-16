@@ -5,9 +5,11 @@
 </head>
 <body>
 
+<%@ include file="/WEB-INF/header_for_admin.jsp" %>
+
 <h1>group add</h1>
 
-<jsp:include page="result.jsp">
+<jsp:include page="WEB-INF/result.jsp">
     <jsp:param name="success" value="小组创建成功"/>
     <jsp:param name="faile" value="小组创建失败, 原因如下:"/>
 </jsp:include>

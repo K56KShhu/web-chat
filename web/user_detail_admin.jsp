@@ -6,6 +6,8 @@
 </head>
 <body>
 
+<%@ include file="/WEB-INF/header_for_admin.jsp" %>
+
 <h1>${requestScope.user.username}的档案</h1>
 
 <h2>user info</h2>

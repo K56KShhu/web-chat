@@ -8,7 +8,6 @@
 
 <%@ include file="/WEB-INF/header_for_admin.jsp" %>
 
-
 <c:url value="topic_manage_info.do" var="replyAccountOderUrl">
     <c:param name="order" value="replyAccount"/>
     <c:param name="isReverse" value="${requestScope.isReverse == true ? 'false' : 'true'}"/>

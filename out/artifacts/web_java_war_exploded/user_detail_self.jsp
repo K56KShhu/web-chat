@@ -6,6 +6,8 @@
 </head>
 <body>
 
+<%@ include file="/WEB-INF/header.jsp" %>
+
 <h1>我的信息</h1>
 
 <a href="<c:url value='user_update_info.do'/>">修改信息</a>&nbsp;

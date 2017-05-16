@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<%@ include file="/WEB-INF/header.jsp" %>
+<%@ include file="/WEB-INF/header_user.jsp" %>
 
 <h1>授权讨论区</h1>
 

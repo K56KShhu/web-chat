@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<%@ include file="/WEB-INF/header_for_admin.jsp" %>
+<%@ include file="/WEB-INF/header_admin.jsp" %>
 
 <h1>topic update</h1>
 

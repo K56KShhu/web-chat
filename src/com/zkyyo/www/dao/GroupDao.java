@@ -5,9 +5,10 @@ import com.zkyyo.www.bean.po.GroupPo;
 import java.util.List;
 
 public interface GroupDao {
-    List<GroupPo> selectGroups();
     GroupPo selectGroup(int groupId);
+    List<GroupPo> selectGroups();
     List<GroupPo> selectGroupsByName(String name);
+    List<GroupPo> selectGroupsByTopic(int topicId);
     void removeUserInGroup(int groupId, int userId);
     void removeTopicInGroup(int groupId, int topicId);
     void addUserInGroup(int groupId, int userId);

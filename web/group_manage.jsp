@@ -6,12 +6,13 @@
 </head>
 <body>
 
-<%@ include file="/WEB-INF/header_for_admin.jsp" %>
+<%@ include file="/WEB-INF/header_admin.jsp" %>
 
 <h1>group manage</h1>
 
-<a href="group_add.jsp">group add</a><br/>
-
+<p>
+    <a href="group_add.jsp">创建小组</a>
+</p>
 
 <table border="1">
     <tr>

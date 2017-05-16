@@ -6,7 +6,9 @@
 </head>
 <body>
 
-<%@ include file="/WEB-INF/header.jsp" %>
+<%@ include file="/WEB-INF/header_user.jsp" %>
+
+<a href="topic_find_private.do">进入授权讨论区</a>
 
 <h1>公共讨论区</h1>
 
@@ -18,7 +20,7 @@
     <c:param name="type" value="public"/>
 </c:url>
 
-<c:choose><%@ include file="/WEB-INF/header.jsp" %>
+<c:choose><%@ include file="/WEB-INF/header_user.jsp" %>
     <c:when test="${requestScope.type == 'private'}">
         <h1>授权讨论区</h1>
         <a href="${publicTopicUrl}">进入公共讨论区</a>
@@ -30,7 +32,6 @@
 </c:choose>
 --%>
 
-<a href="topic_find_private.do">进入授权讨论区</a>
 
 <form method="get" action="topic_find.do">
     搜索讨论区: <input type="text" name="search" value="${requestScope.search}"/>

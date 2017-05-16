@@ -6,14 +6,13 @@
 </head>
 <body>
 
-<%@ include file="/WEB-INF/header_for_admin.jsp" %>
+<%@ include file="/WEB-INF/header_admin.jsp" %>
 
 <h1>group detail</h1>
 
 <c:url value="group_find_user.jsp" var="addUserUrl">
     <c:param name="groupId" value="${requestScope.group.groupId}"/>
 </c:url>
-
 
 <h2>小组信息</h2>
 <a href="${addUserUrl}">add user</a>

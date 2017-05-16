@@ -63,11 +63,15 @@ public class GroupService {
         return groupDao.selectGroup(groupId);
     }
 
+    public List<GroupPo> queryGroups() {
+        return groupDao.selectGroups();
+    }
+
     public List<GroupPo> queryGroups(String name) {
         return groupDao.selectGroupsByName(name);
     }
 
-    public List<GroupPo> queryGroups() {
-        return groupDao.selectGroups();
+    public List<GroupPo> queryGroupsByTopic(int topicId) {
+        return groupDao.selectGroupsByTopic(topicId);
     }
 }

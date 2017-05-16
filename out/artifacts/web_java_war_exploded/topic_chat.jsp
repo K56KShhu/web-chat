@@ -10,7 +10,7 @@
     <c:redirect url="topic_find.do"/>
 </c:if>
 
-<%@ include file="/WEB-INF/header.jsp" %>
+<%@ include file="/WEB-INF/header_user.jsp" %>
 
 <%--讨论区的图片分享和文件分享--%>
 <c:url value="file_list.do" var="fileUrl">

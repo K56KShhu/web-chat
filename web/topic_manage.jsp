@@ -6,7 +6,8 @@
 </head>
 <body>
 
-<%@ include file="/WEB-INF/header_for_admin.jsp" %>
+<%@ include file="/WEB-INF/header_admin.jsp" %>
+
 
 <c:url value="topic_manage_info.do" var="replyAccountOderUrl">
     <c:param name="order" value="replyAccount"/>
@@ -31,6 +32,8 @@
 
 <h1>topic manage</h1>
 
+<a href="topic_add.jsp">创建讨论区</a><br/>
+
 <form method="get" action="topic_manage_info.do">
     <select name="access">
         <option value="all" ${requestScope.access == 'all' ? 'selected' : ''}>所有讨论区</option>
@@ -41,13 +44,10 @@
     <input type="submit"/>
 </form>
 
-<a href="topic_add.jsp">add topic</a><br/>
 
 <table border="1">
     <tr>
         <th>title</th>
-        <th>creator</th>
-        <th>lastModifyId</th>
         <th><a href="${accessOrderUrl}">isPrivate</a></th>
         <th><a href="${replyAccountOderUrl}">reply</a></th>
         <th><a href="${lastTimeOrderUrl}">last</a></th>
@@ -56,6 +56,10 @@
     <c:forEach var="topic" items="${requestScope.pageBean.list}">
         <%--参与讨论区--%>
         <c:url value="topic_chat_info.do" var="topicUrl">
+            <c:param name="topicId" value="${topic.topicId}"/>
+        </c:url>
+        <%--讨论区细节--%>
+        <c:url value="topic_detail.do" var="topicDetailUrl">
             <c:param name="topicId" value="${topic.topicId}"/>
         </c:url>
         <%--更新讨论区信息--%>
@@ -68,12 +72,11 @@
         </c:url>
         <tr>
             <td><a href="${topicUrl}">${topic.title}</a><br/>${topic.description}</td>
-            <td>${topic.creatorId}</td>
-            <td>${topic.lastModifyId}</td>
             <td>${topic.isPrivate}</td>
             <td>${topic.replyAccount}</td>
             <td>${topic.lastTime}</td>
             <td>${topic.created}</td>
+            <td><a href="${topicDetailUrl}">档案</a></td>
             <td><a href="${topicUpdateUrl}">修改</a></td>
             <td><a href="${topicDeleteUrl}">删除</a></td>
                 <%--为private讨论区增加小组访问权限--%>

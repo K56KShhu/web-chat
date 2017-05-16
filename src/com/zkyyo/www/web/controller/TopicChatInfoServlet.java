@@ -48,7 +48,7 @@ public class TopicChatInfoServlet extends HttpServlet {
         //验证用户权限
         Access access = (Access) request.getSession().getAttribute("access");
         Set<Integer> groups = topicService.getGroups(tId);
-        if (!access.isUserApprovedInTopic("admin", groups)) {
+        if (topicService.isPrivate(tId) && !access.isUserApprovedInTopic("admin", groups)) {
             response.sendRedirect("index.jsp");
             return;
         }

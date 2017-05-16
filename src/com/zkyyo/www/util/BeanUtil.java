@@ -2,12 +2,14 @@ package com.zkyyo.www.util;
 
 import com.zkyyo.www.bean.PageBean;
 import com.zkyyo.www.bean.po.*;
+import com.zkyyo.www.bean.vo.TopicVo;
 import com.zkyyo.www.service.FileService;
 import com.zkyyo.www.service.ReplyService;
 import com.zkyyo.www.service.ReportService;
 import com.zkyyo.www.bean.vo.FileVo;
 import com.zkyyo.www.bean.vo.ReplyVo;
 import com.zkyyo.www.bean.vo.ReportVo;
+import com.zkyyo.www.service.TopicService;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -72,6 +74,40 @@ public class BeanUtil {
             contentTypeStr = "unknown";
         }
         return new ReportVo(reportId, userId, username, contentId, contentType, contentTypeStr, reason, created);
+    }
+
+    public static TopicVo topicPotoVo(TopicPo topicPo, UserPo creator, UserPo modifier) {
+        int topicId = topicPo.getTopicId();
+        String title = topicPo.getTitle();
+        String description = topicPo.getDescription();
+        int creatorId = topicPo.getCreatorId();
+        String creatorUsername = creator.getUsername();
+        int lastModifyId = topicPo.getLastModifyId();
+        String lastModifyUsername = modifier.getUsername();
+        int isPrivate = topicPo.getIsPrivate();
+        String isPrivateStr;
+        int replyAccount = topicPo.getReplyAccount();
+        Timestamp lastTime = topicPo.getLastTime();
+        Timestamp created = topicPo.getCreated();
+        if (TopicService.ACCESS_PRIVATE == topicPo.getIsPrivate()) {
+            isPrivateStr = "授权";
+        } else {
+            isPrivateStr = "公开";
+        }
+        TopicVo topicVo = new TopicVo();
+        topicVo.setTopicId(topicId);
+        topicVo.setTitle(title);
+        topicVo.setDescription(description);
+        topicVo.setCreatorId(creatorId);
+        topicVo.setCreatorUsername(creatorUsername);
+        topicVo.setLastModifyId(lastModifyId);
+        topicVo.setLastModifyUsername(lastModifyUsername);
+        topicVo.setIsPrivate(isPrivate);
+        topicVo.setIsPrivateStr(isPrivateStr);
+        topicVo.setReplyAccount(replyAccount);
+        topicVo.setLastTime(lastTime);
+        topicVo.setCreated(created);
+        return topicVo;
     }
 
     public static <T, V> PageBean<V> pageBeanListTranslate(PageBean<T> initPage, List<V> newList) {

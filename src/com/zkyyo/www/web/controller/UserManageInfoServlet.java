@@ -35,6 +35,7 @@ public class UserManageInfoServlet extends HttpServlet {
         String search = request.getParameter("search");
         String order = request.getParameter("order");
         String isReverseStr = request.getParameter("isReverse");
+//        System.out.println("UserManageInfoServlet search: " + search);
 
         int currentPage = 1;
         if (page != null) {

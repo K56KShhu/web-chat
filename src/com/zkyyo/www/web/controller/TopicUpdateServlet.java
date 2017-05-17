@@ -57,7 +57,7 @@ public class TopicUpdateServlet extends HttpServlet {
             }
         } else {
             request.setAttribute("message", "该讨论区不存在");
-            request.getRequestDispatcher("error.jsp").forward(request, response);
+            request.getRequestDispatcher("message.jsp").forward(request, response);
         }
     }
 

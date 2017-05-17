@@ -8,3 +8,4 @@
     <a href="report_manage_info.do">举报</a>&nbsp;
     <a href="logout.do">注销</a>&nbsp;
 </div>
+<hr>

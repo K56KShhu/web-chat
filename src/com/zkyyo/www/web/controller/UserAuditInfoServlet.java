@@ -12,15 +12,15 @@ import java.io.IOException;
 import java.util.List;
 
 @WebServlet(
-        name = "AdminAuditInfoServlet",
-        urlPatterns = {"/admin_audit_info.do"}
+        name = "UserAuditInfoServlet",
+        urlPatterns = {"/user_audit_info.do"}
 )
-public class AdminAuditInfoServlet extends HttpServlet {
+public class UserAuditInfoServlet extends HttpServlet {
     private void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         UserService userService = (UserService) getServletContext().getAttribute("userService");
         List<UserPo> users = userService.queryUsersByStatus(UserService.STATUS_AUDIT);
         request.setAttribute("users", users);
-        request.getRequestDispatcher("admin_audit.jsp").forward(request, response);
+        request.getRequestDispatcher("user_audit.jsp").forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

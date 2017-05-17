@@ -9,3 +9,4 @@
         <a href="<c:url value='admin_index.jsp'/>">管理</a>&nbsp;
     </c:if>
 </div>
+<hr>

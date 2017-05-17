@@ -20,6 +20,7 @@ public class TopicVo {
 
     }
 
+    /*
     public TopicVo(int topicId, String title, String description, int creatorId, String creatorUsername, int lastModifyId, String lastModifyUsername, int isPrivate, String isPrivateStr, int replyAccount, Timestamp lastTime, Timestamp created) {
         this.topicId = topicId;
         this.title = title;
@@ -34,6 +35,7 @@ public class TopicVo {
         this.lastTime = lastTime;
         this.created = created;
     }
+    */
 
     public int getTopicId() {
         return topicId;

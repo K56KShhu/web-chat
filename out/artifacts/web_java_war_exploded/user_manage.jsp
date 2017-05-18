@@ -8,6 +8,10 @@
 
 <%@ include file="/WEB-INF/header_admin.jsp" %>
 
+<div style="text-align: right">
+    <a href="admin_manage_info.do">admin管理</a>
+</div>
+
 <h1>user manage</h1>
 
 <%--因为该界面集成了审核功能, 所以审核注册被移除--%>
@@ -37,8 +41,8 @@
     <c:param name="statusSearch" value="${requestScope.statusSearch}"/>
 </c:url>
 <%--<c:url value="user_manage_info.do" var="statusOrderUrl">--%>
-    <%--<c:param name="order" value="status"/>--%>
-    <%--<c:param name="isReverse" value="${requestScope.isReverse == true ? 'false' : 'true'}"/>--%>
+<%--<c:param name="order" value="status"/>--%>
+<%--<c:param name="isReverse" value="${requestScope.isReverse == true ? 'false' : 'true'}"/>--%>
 <%--</c:url>--%>
 
 <table border="1">

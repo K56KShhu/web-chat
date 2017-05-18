@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Set;
 
 public interface UserDao {
+    void addRole(int userId, String role);
+
     void addUser(UserPo userPo);
 
     UserPo selectUserByUserId(int id);
@@ -15,6 +17,8 @@ public interface UserDao {
     List<UserPo> selectUsersByUsername(int status, int startIndex, int rowsOnePage, String username);
 
     List<UserPo> selectUsersByOrder(int status, int startIndex, int rowsOnePage, int order, boolean isReverse);
+
+    List<UserPo> selectUsersByRole(String role);
 
     List<UserPo> selectUsersByGroup(int groupId);
 

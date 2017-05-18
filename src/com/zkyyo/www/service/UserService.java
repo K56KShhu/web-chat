@@ -116,6 +116,20 @@ public class UserService {
         }
     }
 
+    public boolean addAdmin(int rootId, String rootPwd, int userId) {
+        UserPo root = getUser(rootId);
+        try {
+            boolean isRoot =  Pbkdf2Util.validatePassword(rootPwd, root.getPassword());
+            if (isRoot) {
+                userDao.addRole(userId, UserDaoJdbcImpl.ROLE_ADMIN);
+                return true;
+            }
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public UserPo getUser(int userId) {
         return userDao.selectUserByUserId(userId);
     }
@@ -178,6 +192,10 @@ public class UserService {
         List<UserPo> users = userDao.selectUsersByOrder(statusType, startIndex, ROWS_ONE_PAGE, orderType, isReverse);
         pageBean.setList(users);
         return pageBean;
+    }
+
+    public List<UserPo> queryUsersByRole(String role) {
+        return userDao.selectUsersByRole(role);
     }
 
     public List<UserPo> queryUsersByGroup(int groupId) {

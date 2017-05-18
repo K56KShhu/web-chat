@@ -66,7 +66,6 @@ public class TopicFindServlet extends HttpServlet {
         request.getRequestDispatcher("index.jsp").forward(request, response);
     }
 }
-
     /*
     private void processPublicTopic(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String search = request.getParameter("search");

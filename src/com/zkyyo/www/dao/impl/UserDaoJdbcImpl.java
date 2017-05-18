@@ -140,6 +140,30 @@ public class UserDaoJdbcImpl implements UserDao {
     }
 
     @Override
+    public List<UserPo> selectUsersByRole(String role) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        List<UserPo> users = new ArrayList<>();
+
+        try {
+            conn = dataSource.getConnection();
+            String sql = "SELECT * FROM user WHERE user_id IN (SELECT user_id FROM user_role WHERE role=?)";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, role);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                users.add(getUser(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, pstmt, rs);
+        }
+        return users;
+    }
+
+    @Override
     public List<UserPo> selectUsersByGroup(int groupId) {
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -377,6 +401,25 @@ public class UserDaoJdbcImpl implements UserDao {
             DbClose.close(conn, pstmt, rs);
         }
         return rows;
+    }
+
+    @Override
+    public void addRole(int userId, String role) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            conn = dataSource.getConnection();
+            String sql = "INSERT INTO user_role (user_id, role) VALUES (?, ?)";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, userId);
+            pstmt.setString(2, role);
+            pstmt.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, pstmt);
+        }
     }
 
     @Override

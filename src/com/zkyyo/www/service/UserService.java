@@ -17,6 +17,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class UserService {
+    public static final int STATUS_ALL = 2;
     public static final int STATUS_NORMAL = 1;
     public static final int STATUS_AUDIT = 0;
     public static final int STATUS_NOT_APPROVED = -1;
@@ -123,6 +124,7 @@ public class UserService {
         return userDao.selectUserByUsername(username);
     }
 
+    //1234
     public PageBean<UserPo> queryUsers(String username, int currentPage) {
         PageBean<UserPo> pageBean = new PageBean<>(currentPage, userDao.getTotalRow(username), ROWS_ONE_PAGE);
         int startIndex = (pageBean.getCurrentPage() - 1) * ROWS_ONE_PAGE;
@@ -132,6 +134,31 @@ public class UserService {
         return pageBean;
     }
 
+    public PageBean<UserPo> queryUsers(int status, String username, int currentPage) {
+        int statusType;
+        if (STATUS_ALL == status) {
+            statusType = UserDaoJdbcImpl.STATUS_ALL;
+        } else if (STATUS_NORMAL == status) {
+            statusType = UserDaoJdbcImpl.STATUS_NORMAL;
+        } else if (STATUS_AUDIT == status) {
+            statusType = UserDaoJdbcImpl.STATUS_AUDIT;
+        } else if (STATUS_NOT_APPROVED == status) {
+            statusType = UserDaoJdbcImpl.STATUS_NOT_APPROVED;
+        } else if (STATUS_FORBIDDEN == status) {
+            statusType = UserDaoJdbcImpl.STATUS_FORBIDDEN;
+        } else {
+            return null;
+        }
+
+        PageBean<UserPo> pageBean = new PageBean<>(currentPage, userDao.getTotalRow(statusType, username), ROWS_ONE_PAGE);
+        int startIndex = (pageBean.getCurrentPage() - 1) * ROWS_ONE_PAGE;
+        List<UserPo> users = userDao.selectUsersByUsername(statusType, startIndex, ROWS_ONE_PAGE, username);
+        pageBean.setList(users);
+        System.out.println("[UserService] pageBean<UserPo>: " + pageBean);
+        return pageBean;
+    }
+
+    //don't use
     public PageBean<UserPo> queryUsers(int currentPage, int order, boolean isReverse) {
         PageBean<UserPo> pageBean = new PageBean<>(currentPage, userDao.getTotalRow(), ROWS_ONE_PAGE);
         int startIndex = (pageBean.getCurrentPage() - 1) * ROWS_ONE_PAGE;
@@ -148,6 +175,49 @@ public class UserService {
         }
         pageBean.setList(users);
         return pageBean;
+    }
+
+    public PageBean<UserPo> queryUsers(int status, int currentPage, int order, boolean isReverse) {
+        int statusType;
+        if (STATUS_ALL == status) {
+            statusType = UserDaoJdbcImpl.STATUS_ALL;
+        } else if (STATUS_NORMAL == status) {
+            statusType = UserDaoJdbcImpl.STATUS_NORMAL;
+        } else if (STATUS_AUDIT == status) {
+            statusType = UserDaoJdbcImpl.STATUS_AUDIT;
+        } else if (STATUS_NOT_APPROVED == status) {
+            statusType = UserDaoJdbcImpl.STATUS_NOT_APPROVED;
+        } else if (STATUS_FORBIDDEN == status) {
+            statusType = UserDaoJdbcImpl.STATUS_FORBIDDEN;
+        } else {
+            return null;
+        }
+        int orderType;
+        if (ORDER_BY_SEX == order) {
+            orderType = UserDaoJdbcImpl.ORDER_BY_SEX;
+        } else if (ORDER_BY_CREATED == order) {
+            orderType = UserDaoJdbcImpl.ORDER_BY_CREATED;
+        } else if (ORDER_BY_STATUS == order) {
+            orderType = UserDaoJdbcImpl.ORDER_BY_STATUS;
+        } else {
+            return null;
+        }
+        PageBean<UserPo> pageBean = new PageBean<>(currentPage, userDao.getTotalRowByStatus(statusType), ROWS_ONE_PAGE);
+        int startIndex = (pageBean.getCurrentPage() - 1) * ROWS_ONE_PAGE;
+        List<UserPo> users = userDao.selectUsers(statusType, startIndex, ROWS_ONE_PAGE, orderType, isReverse);
+        pageBean.setList(users);
+        return pageBean;
+        /*
+        if (ORDER_BY_SEX == order) {
+            users = userDao.selectUsers(startIndex, ROWS_ONE_PAGE, UserDaoJdbcImpl.ORDER_BY_SEX, isReverse);
+        } else if (ORDER_BY_CREATED == order) {
+            users = userDao.selectUsers(startIndex, ROWS_ONE_PAGE, UserDaoJdbcImpl.ORDER_BY_CREATED, isReverse);
+        } else if (ORDER_BY_STATUS == order) {
+            users = userDao.selectUsers(startIndex, ROWS_ONE_PAGE, UserDaoJdbcImpl.ORDER_BY_STATUS, isReverse);
+        } else {
+            return null;
+        }
+        */
     }
 
     public List<UserPo> queryUsersByStatus(int status) {

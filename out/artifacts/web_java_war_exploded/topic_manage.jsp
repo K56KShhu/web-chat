@@ -44,7 +44,6 @@
     <input type="submit"/>
 </form>
 
-
 <table border="1">
     <tr>
         <th>title</th>

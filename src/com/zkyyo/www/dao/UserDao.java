@@ -20,7 +20,11 @@ public interface UserDao {
 
     List<UserPo> selectUsersByUsername(int startIndex, int rowsOnePage, String username);
 
+    List<UserPo> selectUsersByUsername(int status, int startIndex, int rowsOnePage, String username);
+
     List<UserPo> selectUsers(int startIndex, int rowsOnePage, int order, boolean isReverse);
+
+    List<UserPo> selectUsers(int status, int startIndex, int rowsOnePage, int order, boolean isReverse);
 
     List<UserPo> selectUsersByGroup(int groupId);
 
@@ -37,6 +41,8 @@ public interface UserDao {
     int getTotalRowByStatus(int status);
 
     int getTotalRow();
+
+    int getTotalRow(int status, String username);
 
     void addUser(UserPo userPo);
 

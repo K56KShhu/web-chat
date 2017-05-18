@@ -21,28 +21,50 @@ public class UserManageInfoServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        String search = request.getParameter("search");
-//        UserService userService = (UserService) getServletContext().getAttribute("userService");
-//        List<UserPo> users;
-//        if (search != null && search.trim().length() > 0) {
-//            users = userService.getUsers();
-//        } else {
-//            users = userService.fuzzySearchUsers(search);
-//    }
-//        request.setAttribute("users", users);
-//        request.getRequestDispatcher("user_manage.jsp").forward(request, response);
         String page = request.getParameter("page");
         String search = request.getParameter("search");
-        String order = request.getParameter("order");
-        String isReverseStr = request.getParameter("isReverse");
-//        System.out.println("UserManageInfoServlet search: " + search);
+        String orderStr = request.getParameter("order");
+        String statusStr = request.getParameter("statusSearch");
+        boolean isReverse = "true".equals(request.getParameter("isReverse"));
 
         int currentPage = 1;
         if (page != null) {
             currentPage = Integer.valueOf(page);
         }
+        int order;
+        if ("sex".equals(orderStr)) {
+            order = UserService.ORDER_BY_SEX;
+        } else if ("created".equals(orderStr)) {
+            order = UserService.ORDER_BY_CREATED;
+        } else {
+            order = UserService.ORDER_BY_CREATED;
+            isReverse = true;
+        }
+        int status;
+        if ("all".equals(statusStr)) {
+            status = UserService.STATUS_ALL;
+        } else if ("normal".equals(statusStr)) {
+            status = UserService.STATUS_NORMAL;
+        } else if ("audit".equals(statusStr)) {
+            status = UserService.STATUS_AUDIT;
+        } else if ("notApproved".equals(statusStr)) {
+            status = UserService.STATUS_NOT_APPROVED;
+        } else if ("forbidden".equals(statusStr)) {
+            status = UserService.STATUS_FORBIDDEN;
+        } else {
+            status = UserService.STATUS_ALL;
+        }
+
         UserService userService = (UserService) getServletContext().getAttribute("userService");
-        boolean isReverse = "true".equals(isReverseStr);
+        PageBean<UserPo> pageBean;
+        if (search != null && search.trim().length() > 0) {
+            pageBean = userService.queryUsers(status, search, currentPage);
+        } else {
+//            pageBean = userService.queryUsers(currentPage, order, isReverse);
+            pageBean = userService.queryUsers(status, currentPage, order, isReverse);
+        }
+        /*
+        UserService userService = (UserService) getServletContext().getAttribute("userService");
         PageBean<UserPo> pageBean;
         if (search != null && search.trim().length() > 0) {
             pageBean = userService.queryUsers(search, currentPage);
@@ -58,6 +80,8 @@ public class UserManageInfoServlet extends HttpServlet {
                 pageBean = userService.queryUsers(currentPage, UserService.ORDER_BY_CREATED, true);
             }
         }
+        */
+        request.setAttribute("statusSearch", statusStr);
         request.setAttribute("search", search);
         request.setAttribute("order", order);
         request.setAttribute("isReverse", isReverse);

@@ -17,6 +17,7 @@ public class UserDaoJdbcImpl implements UserDao {
     public static final int UPDATE_PASSWORD = 3;
     public static final int UPDATE_STATUS = 4;
 
+    public static final int STATUS_ALL = 2;
     public static final int STATUS_NORMAL = 1;
     public static final int STATUS_AUDIT = 0;
     public static final int STATUS_NOT_APPROVED = -1;
@@ -205,6 +206,33 @@ public class UserDaoJdbcImpl implements UserDao {
     }
 
     @Override
+    public List<UserPo> selectUsersByUsername(int status, int startIndex, int rowsOnePage, String username) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        List<UserPo> users = new ArrayList<>();
+
+        try {
+            conn = dataSource.getConnection();
+            //SELECT * FROM user WHERE username LIKE ? AND status = status ORDER BY created DESC LIMIT ?, ?
+            String sql = makeQuerySql(true, status, ORDER_BY_CREATED, true);
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, "%" + username + "%");
+            pstmt.setInt(2, startIndex);
+            pstmt.setInt(3, rowsOnePage);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                users.add(getUser(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, pstmt, rs);
+        }
+        return users;
+    }
+
+    @Override
     public List<UserPo> selectUsers(int startIndex, int rowsOnePage, int order, boolean isReverse) {
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -214,6 +242,32 @@ public class UserDaoJdbcImpl implements UserDao {
         try {
             conn = dataSource.getConnection();
             String sql = makeQuerySql(order, isReverse);
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, startIndex);
+            pstmt.setInt(2, rowsOnePage);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                users.add(getUser(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, pstmt, rs);
+        }
+        return users;
+    }
+
+    @Override
+    public List<UserPo> selectUsers(int status, int startIndex, int rowsOnePage, int order, boolean isReverse) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        List<UserPo> users = new ArrayList<>();
+
+        try {
+            conn = dataSource.getConnection();
+            //SELECT * FROM user WHERE status = status ORDER BY order LIMIT ?, ?;
+            String sql = makeQuerySql(false, status, order, isReverse);
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, startIndex);
             pstmt.setInt(2, rowsOnePage);
@@ -376,23 +430,35 @@ public class UserDaoJdbcImpl implements UserDao {
     @Override
     public int getTotalRowByStatus(int status) {
         Connection conn = null;
-        PreparedStatement pstmt = null;
+        Statement stmt = null;
         ResultSet rs = null;
         int rows = 0;
 
         try {
             conn = dataSource.getConnection();
-            String sql = "SELECT COUNT(*) FROM user WHERE status=?";
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, status);
-            rs = pstmt.executeQuery();
+            String sql = "SELECT COUNT(*) FROM user";
+            if (STATUS_ALL == status) {
+                sql += "";
+            } else if (STATUS_NORMAL == status) {
+                sql += " WHERE status = 1";
+            } else if (STATUS_AUDIT == status) {
+                sql += " WHERE status = 0";
+            } else if (STATUS_NOT_APPROVED == status) {
+                sql += " WHERE status = -1";
+            } else if (STATUS_FORBIDDEN == status) {
+                sql += " WHERE status = -2";
+            } else {
+                sql += "";
+            }
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
             if (rs.next()) {
                 rows = rs.getInt(1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            DbClose.close(conn, pstmt, rs);
+            DbClose.close(conn, stmt, rs);
         }
         return rows;
     }
@@ -416,6 +482,43 @@ public class UserDaoJdbcImpl implements UserDao {
             e.printStackTrace();
         } finally {
             DbClose.close(conn, stmt, rs);
+        }
+        return rows;
+    }
+
+    @Override
+    public int getTotalRow(int status, String username) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        int rows = 0;
+
+        try {
+            conn = dataSource.getConnection();
+            String sql = "SELECT COUNT(*) FROM user WHERE username LIKE ?";
+            if (STATUS_ALL == status) {
+                sql += "";
+            } else if (STATUS_NORMAL == status) {
+                sql += " AND status = 1";
+            } else if (STATUS_AUDIT == status) {
+                sql += " AND status = 0";
+            } else if (STATUS_NOT_APPROVED == status) {
+                sql += " AND status = -1";
+            } else if (STATUS_FORBIDDEN == status) {
+                sql += " AND status = -2";
+            } else {
+                sql += "";
+            }
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, "%" + username + "%");
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                rows = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, pstmt, rs);
         }
         return rows;
     }
@@ -513,6 +616,54 @@ public class UserDaoJdbcImpl implements UserDao {
 
     private String makeQuerySql(int order, boolean isReverse) {
         String sql = "SELECT * FROM user";
+        if (ORDER_BY_SEX == order) {
+            sql += " ORDER BY sex";
+        } else if (ORDER_BY_CREATED == order) {
+            sql += " ORDER BY created";
+        } else if (ORDER_BY_STATUS == order) {
+            sql += " ORDER BY status";
+        } else {
+            sql += " ORDER BY created";
+        }
+        if (isReverse) {
+            sql += " DESC";
+        }
+        return sql + " LIMIT ?, ?";
+    }
+
+    private String makeQuerySql(boolean isSearch, int status, int order, boolean isReverse) {
+        String sql;
+        if (isSearch) {
+            sql = "SELECT * FROM user WHERE username LIKE ?";
+            if (STATUS_ALL == status) {
+                sql += "";
+            } else if (STATUS_NORMAL == status) {
+                sql += " AND status = 1";
+            } else if (STATUS_AUDIT == status) {
+                sql += " AND status = 0";
+            } else if (STATUS_NOT_APPROVED == status) {
+                sql += " AND status = -1";
+            } else if (STATUS_FORBIDDEN == status) {
+                sql += " AND status = -2";
+            } else {
+                sql += "";
+            }
+        } else {
+            sql = "SELECT * FROM user";
+            if (STATUS_ALL == status) {
+                sql += "";
+            } else if (STATUS_NORMAL == status) {
+                sql += " WHERE status = 1";
+            } else if (STATUS_AUDIT == status) {
+                sql += " WHERE status = 0";
+            } else if (STATUS_NOT_APPROVED == status) {
+                sql += " WHERE status = -1";
+            } else if (STATUS_FORBIDDEN == status) {
+                sql += " WHERE status = -2";
+            } else {
+                sql += "";
+            }
+        }
         if (ORDER_BY_SEX == order) {
             sql += " ORDER BY sex";
         } else if (ORDER_BY_CREATED == order) {

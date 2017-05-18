@@ -13,29 +13,40 @@
 <a href="user_audit_info.do">审核注册</a>
 
 <form method="get" action="user_manage_info.do">
-    搜索用户: <input type="text" name="search" value="${requestScope.search}"/>
+    <select name="statusSearch">
+        <option value="all" ${requestScope.statusSearch == 'all' ? 'selected' : ''}>所有</option>
+        <option value="normal" ${requestScope.statusSearch == 'normal' ? 'selected' : ''}>正常</option>
+        <option value="forbidden" ${requestScope.statusSearch == 'forbidden' ? 'selected' : ''}>被封印</option>
+        <option value="audit" ${requestScope.statusSearch == 'audit' ? 'selected' : ''}>审核中</option>
+        <option value="notApproved" ${requestScope.statusSearch == 'notApproved' ? 'selected' : ''}>审核不通过</option>
+    </select>
+    搜索用户:
+    <input type="text" name="search" value="${requestScope.search}"/>
     <input type="submit"/>
 </form>
 
 <c:url value="user_manage_info.do" var="sexOrderUrl">
     <c:param name="order" value="sex"/>
     <c:param name="isReverse" value="${requestScope.isReverse == true ? 'false' : 'true'}"/>
+    <c:param name="statusSearch" value="${requestScope.statusSearch}"/>
 </c:url>
 <c:url value="user_manage_info.do" var="createdOrderUrl">
     <c:param name="order" value="created"/>
     <c:param name="isReverse" value="${requestScope.isReverse == true ? 'false' : 'true'}"/>
+    <c:param name="statusSearch" value="${requestScope.statusSearch}"/>
 </c:url>
-<c:url value="user_manage_info.do" var="statusOrderUrl">
-    <c:param name="order" value="status"/>
-    <c:param name="isReverse" value="${requestScope.isReverse == true ? 'false' : 'true'}"/>
-</c:url>
+<%--<c:url value="user_manage_info.do" var="statusOrderUrl">--%>
+    <%--<c:param name="order" value="status"/>--%>
+    <%--<c:param name="isReverse" value="${requestScope.isReverse == true ? 'false' : 'true'}"/>--%>
+<%--</c:url>--%>
 
 <table border="1">
     <tr>
         <th>username</th>
         <th><a href="${sexOrderUrl}">sex</a></th>
         <th>email</th>
-        <th><a href="${statusOrderUrl}">status</a></th>
+        <%--<th><a href="${statusOrderUrl}">status</a></th>--%>
+        <th>status</th>
         <th><a href="${createdOrderUrl}">created</a></th>
     </tr>
     <c:forEach var="user" items="${requestScope.pageBean.list}">
@@ -46,6 +57,7 @@
             <c:param name="order" value="${requestScope.order}"/>
             <c:param name="page" value="${requestScope.pageBean.currentPage}"/>
             <c:param name="isReverse" value="${requestScope.isReverse}"/>
+            <c:param name="statusSearch" value="${requestScope.statusSearch}"/>
         </c:url>
         <c:url value="user_manage.do" var="userNotApprovedUrl">
             <c:param name="userId" value="${user.userId}"/>
@@ -54,6 +66,7 @@
             <c:param name="order" value="${requestScope.order}"/>
             <c:param name="page" value="${requestScope.pageBean.currentPage}"/>
             <c:param name="isReverse" value="${requestScope.isReverse}"/>
+            <c:param name="statusSearch" value="${requestScope.statusSearch}"/>
         </c:url>
         <c:url value="user_manage.do" var="userForbiddenUrl">
             <c:param name="userId" value="${user.userId}"/>
@@ -62,6 +75,7 @@
             <c:param name="order" value="${requestScope.order}"/>
             <c:param name="page" value="${requestScope.pageBean.currentPage}"/>
             <c:param name="isReverse" value="${requestScope.isReverse}"/>
+            <c:param name="statusSearch" value="${requestScope.statusSearch}"/>
         </c:url>
         <tr>
             <td>${user.username}</td>
@@ -104,24 +118,28 @@
 
 <%--首页, 上一页, 下一页, 尾页设置--%>
 <c:url value="${pageScope.myQueryUrl}" var="firstPageUrl">
+    <c:param name="statusSearch" value="${requestScope.statusSearch}"/>
     <c:param name="page" value="1"/>
     <c:param name="search" value="${requestScope.search}"/>
     <c:param name="order" value="${requestScope.order}"/>
     <c:param name="isReverse" value="${requestScope.isReverse}"/>
 </c:url>
 <c:url value="${pageScope.myQueryUrl}" var="previousPageUrl">
+    <c:param name="statusSearch" value="${requestScope.statusSearch}"/>
     <c:param name="page" value="${pageScope.myPageBean.currentPage - 1}"/>
     <c:param name="search" value="${requestScope.search}"/>
     <c:param name="order" value="${requestScope.order}"/>
     <c:param name="isReverse" value="${requestScope.isReverse}"/>
 </c:url>
 <c:url value="${pageScope.myQueryUrl}" var="nextPageUrl">
+    <c:param name="statusSearch" value="${requestScope.statusSearch}"/>
     <c:param name="page" value="${pageScope.myPageBean.currentPage + 1}"/>
     <c:param name="search" value="${requestScope.search}"/>
     <c:param name="order" value="${requestScope.order}"/>
     <c:param name="isReverse" value="${requestScope.isReverse}"/>
 </c:url>
 <c:url value="${pageScope.myQueryUrl}" var="lastPageUrl">
+    <c:param name="statusSearch" value="${requestScope.statusSearch}"/>
     <c:param name="page" value="${pageScope.myPageBean.totalPage}"/>
     <c:param name="search" value="${requestScope.search}"/>
     <c:param name="order" value="${requestScope.order}"/>
@@ -175,6 +193,7 @@
 <a href="${previousPageUrl}">上一页</a>
 <c:forEach var="number" begin="${pageScope.begin}" end="${pageScope.end}">
     <c:url value="${pageScope.myQueryUrl}" var="indexPageUrl">
+        <c:param name="statusSearch" value="${requestScope.statusSearch}"/>
         <c:param name="page" value="${number}"/>
         <c:param name="search" value="${requestScope.search}"/>
         <c:param name="order" value="${requestScope.order}"/>
@@ -191,7 +210,6 @@
 </c:forEach>
 <a href="${nextPageUrl}">下一页</a>
 <a href="${lastPageUrl}">最后一页</a>
-
 
 </body>
 </html>

@@ -23,6 +23,7 @@ public class UserManageServlet extends HttpServlet {
         String userId = request.getParameter("userId");
         String status = request.getParameter("status");
         //重定向时保存此时的搜索状态
+        String statusSearch = request.getParameter("statusSearch");
         String search = request.getParameter("search");
         String order = request.getParameter("order");
         String page = request.getParameter("page");
@@ -35,7 +36,8 @@ public class UserManageServlet extends HttpServlet {
                 int id = Integer.valueOf(userId);
 //                search = new String(search.getBytes("UTF-8"), "ISO-8859-1");
                 search = URLEncoder.encode(search, "UTF-8");
-                String url = "user_manage_info.do?search=" + search + "&order=" + order + "&page=" + page + "&isReverse=" + isReverse;
+                String url = "user_manage_info.do?search=" + search + "&order=" + order + "&page=" + page
+                        + "&isReverse=" + isReverse + "&statusSearch=" + statusSearch;
                 if (uStatus == UserService.STATUS_NORMAL) {
                     userService.updateStatus(id, UserService.STATUS_NORMAL);
                     response.sendRedirect(url);

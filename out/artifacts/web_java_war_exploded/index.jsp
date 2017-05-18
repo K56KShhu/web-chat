@@ -62,7 +62,6 @@
         <th>title</th>
         <th><a href="${replyAccountOderUrl}">reply</a></th>
         <th><a href="${lastTimeOrderUrl}">last</a></th>
-        <th><a href="${createdOrderUrl}">created</a></th>
     </tr>
     <c:forEach var="topic" items="${requestScope.pageBean.list}">
         <c:url value="topic_chat_info.do" var="topicUrl">
@@ -72,7 +71,6 @@
             <td><a href="${topicUrl}">${topic.title}</a><br/>${topic.description}</td>
             <td>${topic.replyAccount}</td>
             <td>${topic.lastTime}</td>
-            <td>${topic.created}</td>
                 <%--[管理员]权限--%>
             <c:if test="${sessionScope.access.isUserInRole('admin')}">
                 <%--更新讨论区信息--%>

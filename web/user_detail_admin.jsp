@@ -26,7 +26,7 @@
     </tr>
     <tr>
         <th>status</th>
-        <td>${requestScope.user.status}</td>
+        <td>${requestScope.user.statusStr}</td>
     </tr>
     <tr>
         <th>created</th>

@@ -82,7 +82,7 @@
             <td>${user.username}</td>
             <td>${user.sex}</td>
             <td>${user.email}</td>
-            <td>${user.status}</td>
+            <td>${user.statusStr}</td>
             <td>${user.created}</td>
             <c:if test="${user.status == 1}">
                 <td>&nbsp;</td>

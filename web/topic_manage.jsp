@@ -72,7 +72,7 @@
         </c:url>
         <tr>
             <td><a href="${topicUrl}">${topic.title}</a><br/>${topic.description}</td>
-            <td>${topic.isPrivate}</td>
+            <td>${topic.isPrivateStr}</td>
             <td>${topic.replyAccount}</td>
             <td>${topic.lastTime}</td>
             <td>${topic.created}</td>

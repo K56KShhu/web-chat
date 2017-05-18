@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 public class FileVo {
     private int fileId;
-    private int apply; // 1图片分享 2文件分享
+    private int apply; // 0图片分享 1文件分享
     private String applyStr; //vo
     private int userId;
     private String username; //vo

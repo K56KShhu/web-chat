@@ -10,6 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ReportDaoJdbcImpl implements ReportDao {
+    public static final int CONTENT_TYPE_REPLY = 0;
+    public static final int CONTENT_TYPE_SHARE_IMAGE = 1;
+    public static final int CONTENT_TYPE_SHARE_FILE = 2;
+
     public static final int ORDER_BY_CONTENT_TYPE = 0;
     public static final int ORDER_BY_CREATED = 1;
 

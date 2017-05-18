@@ -2,7 +2,9 @@ package com.zkyyo.www.web.controller;
 
 import com.zkyyo.www.bean.PageBean;
 import com.zkyyo.www.bean.po.UserPo;
+import com.zkyyo.www.bean.vo.UserVo;
 import com.zkyyo.www.service.UserService;
+import com.zkyyo.www.util.BeanUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,6 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @WebServlet(
         name = "UserManageInfoServlet",
@@ -56,36 +60,26 @@ public class UserManageInfoServlet extends HttpServlet {
         }
 
         UserService userService = (UserService) getServletContext().getAttribute("userService");
-        PageBean<UserPo> pageBean;
+        PageBean<UserPo> pageBeanPo;
         if (search != null && search.trim().length() > 0) {
-            pageBean = userService.queryUsers(status, currentPage, search);
+            pageBeanPo = userService.queryUsers(status, currentPage, search);
         } else {
-//            pageBean = userService.queryUsers(currentPage, order, isReverse);
-            pageBean = userService.queryUsers(status, currentPage, order, isReverse);
+            pageBeanPo = userService.queryUsers(status, currentPage, order, isReverse);
         }
-        /*
-        UserService userService = (UserService) getServletContext().getAttribute("userService");
-        PageBean<UserPo> pageBean;
-        if (search != null && search.trim().length() > 0) {
-            pageBean = userService.queryUsers(search, currentPage);
-        } else {
-            if ("sex".equals(order)) {
-                pageBean = userService.queryUsers(currentPage, UserService.ORDER_BY_SEX, isReverse);
-            } else if ("created".equals(order)) {
-                pageBean = userService.queryUsers(currentPage, UserService.ORDER_BY_CREATED, isReverse);
-            } else if ("status".equals(order)) {
-                pageBean = userService.queryUsers(currentPage, UserService.ORDER_BY_STATUS, isReverse);
-            } else {
-                //默认显示最新加入的用户
-                pageBean = userService.queryUsers(currentPage, UserService.ORDER_BY_CREATED, true);
-            }
+
+        List<UserPo> userPos = pageBeanPo.getList();
+        List<UserVo> userVos = new ArrayList<>();
+        for (UserPo userPo : userPos) {
+            userVos.add(BeanUtil.userPoToVo(userPo));
         }
-        */
+        PageBean<UserVo> pageBeanVo = BeanUtil.pageBeanListTranslate(pageBeanPo, userVos);
+
+
         request.setAttribute("statusSearch", statusStr);
         request.setAttribute("search", search);
         request.setAttribute("order", order);
         request.setAttribute("isReverse", isReverse);
-        request.setAttribute("pageBean", pageBean);
+        request.setAttribute("pageBean", pageBeanVo);
         request.getRequestDispatcher("user_manage.jsp").forward(request, response);
     }
 }

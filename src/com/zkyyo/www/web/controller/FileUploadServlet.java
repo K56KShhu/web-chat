@@ -2,6 +2,8 @@ package com.zkyyo.www.web.controller;
 
 import com.zkyyo.www.bean.po.FilePo;
 import com.zkyyo.www.bean.po.ReplyPo;
+import com.zkyyo.www.dao.impl.FileDaoJdbcImpl;
+import com.zkyyo.www.dao.impl.ReplyDaoJdbcImpl;
 import com.zkyyo.www.service.FileService;
 import com.zkyyo.www.service.ReplyService;
 import com.zkyyo.www.service.TopicService;
@@ -13,6 +15,7 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebInitParam;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -27,7 +30,11 @@ import java.util.UUID;
 
 @WebServlet(
         name = "FileUploadServlet",
-        urlPatterns = {"/file_upload.do"}
+        urlPatterns = {"/file_upload.do"},
+        initParams = {
+                @WebInitParam(name = "FILE_SIZE_MAX", value = "31457280"), //30 * 1024 * 1024
+                @WebInitParam(name = "FILE_TOTAL_SIZE_MAX", value = "104857600") //100 * 1024 * 1024
+        }
 )
 public class FileUploadServlet extends HttpServlet {
     private static final String CHAT_IMAGE = "chat";
@@ -36,8 +43,13 @@ public class FileUploadServlet extends HttpServlet {
 
     private String TOPIC_DIR;
 
+    private long fileSizeMax;
+    private long fileTotalSizeMax;
+
     public void init() throws ServletException {
         TOPIC_DIR = (String) getServletContext().getAttribute("topicDir");
+        fileSizeMax = Long.valueOf(getInitParameter("FILE_SIZE_MAX"));
+        fileTotalSizeMax = Long.valueOf(getInitParameter("FILE_TOTAL_SIZE_MAX"));
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -65,8 +77,8 @@ public class FileUploadServlet extends HttpServlet {
             FileItemFactory factory = new DiskFileItemFactory();
             ServletFileUpload upload = new ServletFileUpload(factory);
 
-            upload.setFileSizeMax(30 * 1024 * 1024);
-            upload.setSizeMax(80 * 1024 * 1024);
+            upload.setFileSizeMax(fileSizeMax);
+            upload.setSizeMax(fileTotalSizeMax);
             upload.setHeaderEncoding("UTF-8");
 
             if (ServletFileUpload.isMultipartContent(request)) {
@@ -132,7 +144,7 @@ public class FileUploadServlet extends HttpServlet {
         replyPo.setTopicId(topicId);
         replyPo.setUserId(userId);
         replyPo.setContent(relativePath + "/" + filename);
-        replyPo.setContentType(2);
+        replyPo.setContentType(ReplyDaoJdbcImpl.CONTENT_TYPE_IMAGE);
         replyService.addReply(replyPo);
     }
 
@@ -154,9 +166,9 @@ public class FileUploadServlet extends HttpServlet {
         filePo.setTopicId(topicId);
         filePo.setPath(relativePath + "/" + filename);
         if (SHARE_IMAGE.equals(shareType)) {
-            filePo.setApply(FileService.APPLY_IMAGE);
+            filePo.setApply(FileDaoJdbcImpl.APPLY_IMAGE);
         } else if (SHARE_FILE.equals(shareType)) {
-            filePo.setApply(FileService.APPLY_FILE);
+            filePo.setApply(FileDaoJdbcImpl.APPLY_FILE);
         }
         FileService fileService = (FileService) getServletContext().getAttribute("fileService");
         fileService.addFile(filePo);

@@ -77,11 +77,11 @@
     <br/>
     <c:choose>
         <%--文本信息--%>
-        <c:when test="${reply.contentType == 1}">
+        <c:when test="${reply.contentType == 0}">
             <c:out value="${reply.content}"/><br/>
         </c:when>
         <%--图片信息--%>
-        <c:when test="${reply.contentType == 2}">
+        <c:when test="${reply.contentType == 1}">
             <c:url value="image_show.do" var="imageUrl">
                 <c:param name="relativePath" value="${reply.content}"/>
             </c:url>

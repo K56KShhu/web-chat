@@ -1,6 +1,7 @@
 package com.zkyyo.www.web.controller;
 
 import com.zkyyo.www.bean.po.ReplyPo;
+import com.zkyyo.www.dao.impl.ReplyDaoJdbcImpl;
 import com.zkyyo.www.service.ReplyService;
 import com.zkyyo.www.service.TopicService;
 import com.zkyyo.www.web.Access;
@@ -66,7 +67,7 @@ public class ReplyTextAddServlet extends HttpServlet {
             reply.setUserId(userId);
             reply.setTopicId(tId);
             reply.setContent(content);
-            reply.setContentType(ReplyService.CONTENT_TEXT);
+            reply.setContentType(ReplyDaoJdbcImpl.CONTENT_TYPE_TEXT);
             replyService.addReply(reply);
             String page = "topic_chat_info.do?topicId=" + topicId; //讨论区有效
             response.sendRedirect(page);

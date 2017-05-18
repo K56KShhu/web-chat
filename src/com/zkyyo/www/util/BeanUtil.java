@@ -1,15 +1,21 @@
 package com.zkyyo.www.util;
 
 import com.zkyyo.www.bean.PageBean;
-import com.zkyyo.www.bean.po.*;
-import com.zkyyo.www.bean.vo.TopicVo;
-import com.zkyyo.www.service.FileService;
-import com.zkyyo.www.service.ReplyService;
-import com.zkyyo.www.service.ReportService;
+import com.zkyyo.www.bean.po.FilePo;
+import com.zkyyo.www.bean.po.ReplyPo;
+import com.zkyyo.www.bean.po.ReportPo;
+import com.zkyyo.www.bean.po.TopicPo;
+import com.zkyyo.www.bean.po.UserPo;
 import com.zkyyo.www.bean.vo.FileVo;
 import com.zkyyo.www.bean.vo.ReplyVo;
 import com.zkyyo.www.bean.vo.ReportVo;
-import com.zkyyo.www.service.TopicService;
+import com.zkyyo.www.bean.vo.TopicVo;
+import com.zkyyo.www.bean.vo.UserVo;
+import com.zkyyo.www.dao.impl.FileDaoJdbcImpl;
+import com.zkyyo.www.dao.impl.ReplyDaoJdbcImpl;
+import com.zkyyo.www.dao.impl.ReportDaoJdbcImpl;
+import com.zkyyo.www.dao.impl.TopicDaoJdbcImpl;
+import com.zkyyo.www.dao.impl.UserDaoJdbcImpl;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -25,9 +31,9 @@ public class BeanUtil {
         String contentTypeStr;
         Timestamp created = replyPo.getCreated();
         String username = userPo.getUsername();
-        if (ReplyService.CONTENT_TEXT == contentType) {
+        if (ReplyDaoJdbcImpl.CONTENT_TYPE_TEXT == contentType) {
             contentTypeStr = "聊天文本";
-        } else if (ReplyService.CONTENT_IMAGE == contentType) {
+        } else if (ReplyDaoJdbcImpl.CONTENT_TYPE_IMAGE == contentType) {
             contentTypeStr = "聊天图片";
         } else {
             return null;
@@ -54,9 +60,9 @@ public class BeanUtil {
         String path = filePo.getPath();
         String shortName = path.substring(path.indexOf("_") + 1);
         Timestamp created = filePo.getCreated();
-        if (FileService.APPLY_IMAGE == apply) {
+        if (FileDaoJdbcImpl.APPLY_IMAGE == apply) {
             applyStr = "图片分享";
-        } else if (FileService.APPLY_FILE == apply) {
+        } else if (FileDaoJdbcImpl.APPLY_FILE == apply) {
             applyStr = "文件分享";
         } else {
             return null;
@@ -83,11 +89,11 @@ public class BeanUtil {
         String reason = reportPo.getReason();
         Timestamp created = reportPo.getCreated();
         String contentTypeStr;
-        if (ReportService.CONTENT_TYPE_REPLY == contentType) {
+        if (ReportDaoJdbcImpl.CONTENT_TYPE_REPLY == contentType) {
             contentTypeStr = "发言";
-        } else if (ReportService.CONTENT_TYPE_SHARE_IMAGE == contentType) {
+        } else if (ReportDaoJdbcImpl.CONTENT_TYPE_SHARE_IMAGE == contentType) {
             contentTypeStr = "分享图片";
-        } else if (ReportService.CONTENT_TYPE_SHARE_FILE == contentType) {
+        } else if (ReportDaoJdbcImpl.CONTENT_TYPE_SHARE_FILE == contentType) {
             contentTypeStr = "分享文件";
         } else {
             return null;
@@ -117,10 +123,12 @@ public class BeanUtil {
         int replyAccount = topicPo.getReplyAccount();
         Timestamp lastTime = topicPo.getLastTime();
         Timestamp created = topicPo.getCreated();
-        if (TopicService.ACCESS_PRIVATE == topicPo.getIsPrivate()) {
+        if (TopicDaoJdbcImpl.ACCESS_PRIVATE == topicPo.getIsPrivate()) {
             isPrivateStr = "授权";
-        } else {
+        } else if (TopicDaoJdbcImpl.ACCESS_PUBLIC == topicPo.getIsPrivate()) {
             isPrivateStr = "公开";
+        } else {
+            return null;
         }
         TopicVo topicVo = new TopicVo();
         topicVo.setTopicId(topicId);
@@ -136,6 +144,73 @@ public class BeanUtil {
         topicVo.setLastTime(lastTime);
         topicVo.setCreated(created);
         return topicVo;
+    }
+
+    public static TopicVo topicPoToVoForList(TopicPo topicPo) {
+        int topicId = topicPo.getTopicId();
+        String title = topicPo.getTitle();
+        String description = topicPo.getDescription();
+        int isPrivate = topicPo.getIsPrivate();
+        String isPrivateStr;
+        int replyAccount = topicPo.getReplyAccount();
+        Timestamp lastTime = topicPo.getLastTime();
+        Timestamp created = topicPo.getCreated();
+        if (TopicDaoJdbcImpl.ACCESS_PRIVATE == isPrivate) {
+            isPrivateStr = "授权";
+        } else if (TopicDaoJdbcImpl.ACCESS_PUBLIC == isPrivate) {
+            isPrivateStr = "公开";
+        } else {
+            return null;
+        }
+        TopicVo topicVo = new TopicVo();
+        topicVo.setTopicId(topicId);
+        topicVo.setTitle(title);
+        topicVo.setDescription(description);
+        topicVo.setIsPrivate(isPrivate);
+        topicVo.setIsPrivateStr(isPrivateStr);
+        topicVo.setReplyAccount(replyAccount);
+        topicVo.setLastTime(lastTime);
+        topicVo.setCreated(created);
+        return topicVo;
+    }
+
+    public static UserVo userPoToVo(UserPo userPo) {
+        int userId = userPo.getUserId();
+        String username = userPo.getUsername();
+        String sex = userPo.getSex();
+        String email = userPo.getEmail();
+        int status = userPo.getStatus();
+        Timestamp created = userPo.getCreated();
+        if ("male".equals(sex)) {
+            sex = "男";
+        } else if ("female".equals(sex)) {
+            sex = "女";
+        } else if ("secret".equals(sex)) {
+            sex = "秘密";
+        } else {
+            return null;
+        }
+        String statusStr;
+        if (UserDaoJdbcImpl.STATUS_NORMAL == status) {
+            statusStr = "正常";
+        } else if (UserDaoJdbcImpl.STATUS_AUDIT == status) {
+            statusStr = "审核中";
+        } else if (UserDaoJdbcImpl.STATUS_NOT_APPROVED == status) {
+            statusStr = "审核不通过";
+        } else if (UserDaoJdbcImpl.STATUS_FORBIDDEN == status) {
+            statusStr = "封印";
+        } else {
+            return null;
+        }
+        UserVo userVo = new UserVo();
+        userVo.setUserId(userId);
+        userVo.setUsername(username);
+        userVo.setSex(sex);
+        userVo.setEmail(email);
+        userVo.setStatus(status);
+        userVo.setStatusStr(statusStr);
+        userVo.setCreated(created);
+        return userVo;
     }
 
     public static <T, V> PageBean<V> pageBeanListTranslate(PageBean<T> initPage, List<V> newList) {

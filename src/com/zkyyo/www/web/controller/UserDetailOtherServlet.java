@@ -3,9 +3,11 @@ package com.zkyyo.www.web.controller;
 import com.zkyyo.www.bean.po.GroupPo;
 import com.zkyyo.www.bean.po.TopicPo;
 import com.zkyyo.www.bean.po.UserPo;
+import com.zkyyo.www.bean.vo.UserVo;
 import com.zkyyo.www.service.GroupService;
 import com.zkyyo.www.service.TopicService;
 import com.zkyyo.www.service.UserService;
+import com.zkyyo.www.util.BeanUtil;
 import com.zkyyo.www.web.Access;
 
 import javax.servlet.ServletException;
@@ -63,6 +65,7 @@ public class UserDetailOtherServlet extends HttpServlet {
         //获得个人信息
         UserService userService = (UserService) getServletContext().getAttribute("userService");
         UserPo userPo = userService.getUser(userId);
+        UserVo userVo = BeanUtil.userPoToVo(userPo);
         //获得小组信息
         GroupService groupService = (GroupService) getServletContext().getAttribute("groupService");
         TopicService topicService = (TopicService) getServletContext().getAttribute("topicService");
@@ -74,7 +77,7 @@ public class UserDetailOtherServlet extends HttpServlet {
             groups.put(group, topics);
         }
 
-        request.setAttribute("user", userPo);
+        request.setAttribute("user", userVo);
         request.setAttribute("groups", groups);
         request.getRequestDispatcher("user_detail_admin.jsp").forward(request, response);
     }

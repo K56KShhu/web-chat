@@ -9,8 +9,8 @@ import com.zkyyo.www.util.CheckUtil;
 import java.util.List;
 
 public class FileService {
-    public static final int APPLY_IMAGE = 1;
-    public static final int APPLY_FILE = 2;
+    public static final int APPLY_IMAGE = 0;
+    public static final int APPLY_FILE = 1;
 
     public static final int ORDER_BY_CREATED = 0;
 
@@ -86,7 +86,6 @@ public class FileService {
         int startIndex = (pageBean.getCurrentPage() - 1) * ROWS_ONE_PAGE;
         List<FilePo> files = fileDao.selectFilesByTopicId(startIndex, ROWS_ONE_PAGE, orderType, isReverse, topicId, applyType);
         pageBean.setList(files);
-        System.out.println("[FileService] totalRow: " + fileDao.getTotalRow(topicId, applyType));
         return pageBean;
     }
 }

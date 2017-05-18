@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FileDaoJdbcImpl implements FileDao {
-    public static final int APPLY_IMAGE = 0;
-    public static final int APPLY_FILE = 1;
+    public static final int APPLY_IMAGE = 0; //图片
+    public static final int APPLY_FILE = 1; //文件
 
     public static final int ORDER_BY_CREATED = 0;
 
@@ -45,22 +45,24 @@ public class FileDaoJdbcImpl implements FileDao {
     @Override
     public List<FilePo> selectFilesByTopicId(int currentPage, int rowsOnePage, int order, boolean isReverse, int topicId, int apply) {
         Connection conn = null;
-        Statement stmt = null;
+        PreparedStatement pstmt = null;
         ResultSet rs = null;
         List<FilePo> files = new ArrayList<>();
 
         try {
             conn = dataSource.getConnection();
-            String sql = makeQuerySql(currentPage, rowsOnePage, order, isReverse, topicId, apply);
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery(sql);
+            String sql = makeQuerySql(currentPage, rowsOnePage, order, isReverse);
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, topicId);
+            pstmt.setInt(2, apply);
+            rs = pstmt.executeQuery();
             while (rs.next()) {
                 files.add(getFile(rs));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            DbClose.close(conn, stmt, rs);
+            DbClose.close(conn, pstmt, rs);
         }
         return files;
     }
@@ -115,16 +117,10 @@ public class FileDaoJdbcImpl implements FileDao {
 
         try {
             conn = dataSource.getConnection();
-            String sql = "SELECT COUNT(*) FROM upload_file WHERE topic_id=?";
-            if (APPLY_IMAGE == apply) {
-                sql += " AND apply = 1";
-            } else if (APPLY_FILE == apply) {
-                sql += " AND apply = 2";
-            } else {
-                sql += "";
-            }
+            String sql = "SELECT COUNT(*) FROM upload_file WHERE topic_id=? AND apply=?";
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, topicId);
+            pstmt.setInt(2, apply);
             rs = pstmt.executeQuery();
             if (rs.next()) {
                 rows = rs.getInt(1);
@@ -148,13 +144,8 @@ public class FileDaoJdbcImpl implements FileDao {
         return file;
     }
 
-    private String makeQuerySql(int currentPage, int rowsOnePage, int order, boolean isReverse, int topicId, int apply) {
-        String sql = "SELECT * FROM upload_file WHERE topic_id = " + topicId;
-        if (APPLY_IMAGE == apply) {
-            sql += " AND apply = 1";
-        } else if (APPLY_FILE == apply) {
-            sql += " AND apply = 2";
-        }
+    private String makeQuerySql(int currentPage, int rowsOnePage, int order, boolean isReverse) {
+        String sql = "SELECT * FROM upload_file WHERE topic_id=? AND apply=?";
         if (ORDER_BY_CREATED == order) {
             sql += " ORDER BY created";
         } else {

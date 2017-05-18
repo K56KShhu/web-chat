@@ -10,9 +10,6 @@
 
 <h1>group add user</h1>
 
-<h2>param.groupId: ${param.groupId}</h2>
-<h2>requestScope.groupId: ${requestScope.groupId}</h2>
-
 搜索用户
 <form method="get" action="group_find_user.do">
     <input type="hidden" name="groupId" value="${param.groupId}"/>

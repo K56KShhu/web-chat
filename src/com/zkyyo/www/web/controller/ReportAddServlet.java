@@ -1,6 +1,7 @@
 package com.zkyyo.www.web.controller;
 
 import com.zkyyo.www.bean.po.ReportPo;
+import com.zkyyo.www.dao.impl.ReportDaoJdbcImpl;
 import com.zkyyo.www.service.FileService;
 import com.zkyyo.www.service.ReplyService;
 import com.zkyyo.www.service.ReportService;
@@ -38,7 +39,7 @@ public class ReportAddServlet extends HttpServlet {
                 return;
             } else {
                 id = Integer.valueOf(contentId);
-                type = ReportService.CONTENT_TYPE_REPLY;
+                type = ReportDaoJdbcImpl.CONTENT_TYPE_REPLY;
             }
         } else if ("image".equals(contentType)) {
             if (!fileService.isValidId(contentId) || !fileService.isExisted(Integer.valueOf(contentId))) {
@@ -46,7 +47,7 @@ public class ReportAddServlet extends HttpServlet {
                 return;
             } else {
                 id = Integer.valueOf(contentId);
-                type = ReportService.CONTENT_TYPE_SHARE_IMAGE;
+                type = ReportDaoJdbcImpl.CONTENT_TYPE_SHARE_IMAGE;
             }
         } else if ("file".equals(contentType)) {
             if (!fileService.isValidId(contentId) || !fileService.isExisted(Integer.valueOf(contentId))) {
@@ -54,7 +55,7 @@ public class ReportAddServlet extends HttpServlet {
                 return;
             } else {
                 id = Integer.valueOf(contentId);
-                type = ReportService.CONTENT_TYPE_SHARE_FILE;
+                type = ReportDaoJdbcImpl.CONTENT_TYPE_SHARE_FILE;
             }
         } else {
             response.sendRedirect("index.jsp");

@@ -1,6 +1,7 @@
 package com.zkyyo.www.web.controller;
 
 import com.zkyyo.www.bean.po.TopicPo;
+import com.zkyyo.www.dao.impl.TopicDaoJdbcImpl;
 import com.zkyyo.www.service.TopicService;
 import com.zkyyo.www.web.Access;
 
@@ -27,11 +28,11 @@ public class TopicAddServlet extends HttpServlet {
 
         TopicService topicService = (TopicService) getServletContext().getAttribute("topicService");
         List<String> errors = new ArrayList<>();
-        int type = TopicService.ACCESS_PUBLIC;
+        int type = TopicDaoJdbcImpl.ACCESS_PUBLIC;
         if ("public".equals(typeStr)) {
-            type = TopicService.ACCESS_PUBLIC;
+            type = TopicDaoJdbcImpl.ACCESS_PUBLIC;
         } else if ("private".equals(typeStr)) {
-            type = TopicService.ACCESS_PRIVATE;
+            type = TopicDaoJdbcImpl.ACCESS_PRIVATE;
         } else {
             errors.add("bad type");
         }

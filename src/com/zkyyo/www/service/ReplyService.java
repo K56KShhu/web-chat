@@ -8,8 +8,8 @@ import com.zkyyo.www.util.CheckUtil;
 import java.util.List;
 
 public class ReplyService {
-    public static final int CONTENT_TEXT = 1;
-    public static final int CONTENT_IMAGE = 2;
+    public static final int CONTENT_TEXT = 0;
+    public static final int CONTENT_IMAGE = 1;
 
     private static final int MAX_ID_LENGTH = 10;
     private static final int MAX_CONTENT_LENGTH = 255;

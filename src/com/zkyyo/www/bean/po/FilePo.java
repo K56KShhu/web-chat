@@ -6,7 +6,7 @@ import java.util.Objects;
 
 public class FilePo implements Serializable {
     private int fileId;
-    private int apply; // 1图片分享 2文件分享
+    private int apply; // 0图片分享 1文件分享
     private int userId;
     private int topicId;
     private String path;

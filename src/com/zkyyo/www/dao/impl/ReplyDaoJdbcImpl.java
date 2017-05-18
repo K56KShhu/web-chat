@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ReplyDaoJdbcImpl implements ReplyDao {
+    public static final int CONTENT_TYPE_TEXT = 0;
+    public static final int CONTENT_TYPE_IMAGE = 1;
+
     private DataSource dataSource;
 
     public ReplyDaoJdbcImpl(DataSource dataSource) {

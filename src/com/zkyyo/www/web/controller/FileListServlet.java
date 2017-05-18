@@ -25,8 +25,6 @@ import java.util.Set;
         urlPatterns = {"/file_list.do"}
 )
 public class FileListServlet extends HttpServlet {
-    private static final String SHARE_IMAGE = "image";
-    private static final String SHARE_FILE = "file";
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     }

@@ -15,13 +15,19 @@ import java.io.OutputStream;
         urlPatterns = {"/image_show.do"}
 )
 public class ImageShowServlet extends HttpServlet {
+    private String TOPIC_DIR;
+
+    public void init() throws ServletException {
+        TOPIC_DIR = (String) getServletContext().getAttribute("topicDir");
+    }
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String relativePath = request.getParameter("relativePath");
-        String bathPath = getServletContext().getRealPath("/WEB-INF/topics");
+        String bathPath = getServletContext().getRealPath(TOPIC_DIR);
         String absolutePath = bathPath + relativePath;
         File file = new File(absolutePath);
 

@@ -13,6 +13,12 @@ import java.net.URLEncoder;
         urlPatterns = {"/file_download.do"}
 )
 public class FileDownloadServlet extends HttpServlet {
+    private String TOPIC_DIR;
+
+    public void init() throws ServletException {
+        TOPIC_DIR = (String) getServletContext().getAttribute("topicDir");
+    }
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
@@ -20,7 +26,7 @@ public class FileDownloadServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String relativePath = request.getParameter("relativePath");
 
-        String bathPath = getServletContext().getRealPath("/WEB-INF/topics");
+        String bathPath = getServletContext().getRealPath(TOPIC_DIR);
         String absolutePath = bathPath + relativePath;
         File file = new File(absolutePath);
         if (!file.exists()) {

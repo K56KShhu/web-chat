@@ -17,10 +17,10 @@ import javax.servlet.http.HttpSessionBindingEvent;
 import javax.sql.DataSource;
 
 @WebListener()
-public class ContextListener implements ServletContextListener,
+public class ContextServiceListener implements ServletContextListener,
         HttpSessionListener, HttpSessionAttributeListener {
 
-    public ContextListener() {
+    public ContextServiceListener() {
     }
 
     public void contextInitialized(ServletContextEvent sce) {

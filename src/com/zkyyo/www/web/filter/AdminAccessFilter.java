@@ -15,16 +15,19 @@ import java.io.IOException;
         urlPatterns = {"/admin.jsp"}
 )
 public class AdminAccessFilter extends GeneralAccessFilter {
+    /*
     public void destroy() {
     }
+    */
 
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
         super.doFilter(req, resp, chain);
     }
 
+    /*
     public void init(FilterConfig config) throws ServletException {
-
     }
+    */
 
     protected boolean checkAccess(Access access) {
         System.out.println("(AdminAccessFilter) checkAccess() invoked");

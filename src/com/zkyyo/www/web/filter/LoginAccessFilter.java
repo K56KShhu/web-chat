@@ -17,8 +17,10 @@ import java.io.IOException;
         }
 )
 public class LoginAccessFilter extends GeneralAccessFilter {
+    /*
     public void destroy() {
     }
+    */
 
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
         /*
@@ -80,9 +82,11 @@ public class LoginAccessFilter extends GeneralAccessFilter {
         super.doFilter(req, resp, chain);
     }
 
+    /*
     public void init(FilterConfig config) throws ServletException {
-
+        super.init(config);
     }
+    */
 
     protected boolean checkAccess(Access access) {
         System.out.println("(LoginAccessFilter) checkAccess() invoked");

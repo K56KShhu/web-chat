@@ -34,6 +34,12 @@ public class FileUploadServlet extends HttpServlet {
     private static final String SHARE_IMAGE = "image";
     private static final String SHARE_FILE = "file";
 
+    private String TOPIC_DIR;
+
+    public void init() throws ServletException {
+        TOPIC_DIR = (String) getServletContext().getAttribute("topicDir");
+    }
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String topicId = request.getParameter("topicId");
         String shareType = request.getParameter("shareType");
@@ -178,7 +184,7 @@ public class FileUploadServlet extends HttpServlet {
     }
 
     private String makeAbsolutePath(String relativePath) {
-        String bathPath = getServletContext().getRealPath("/WEB-INF/topics");
+        String bathPath = getServletContext().getRealPath(TOPIC_DIR);
         String absolutePath = bathPath + relativePath;
 
         File file = new File(absolutePath);

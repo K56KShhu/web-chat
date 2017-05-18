@@ -21,6 +21,12 @@ import java.util.UUID;
         urlPatterns = {"/login.do"}
 )
 public class LoginServlet extends HttpServlet {
+    private String LOGIN_COOKIE;
+
+    public void init() throws ServletException {
+        LOGIN_COOKIE = (String) getServletContext().getAttribute("loginCookie");
+    }
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         /*
         String username = request.getParameter("username");
@@ -73,10 +79,10 @@ public class LoginServlet extends HttpServlet {
                 if (remember) {
                     String uuid = UUID.randomUUID().toString();
                     rememberService.save(uuid, username);
-                    CookieUtil.addCookie(response, "user", uuid, 30 * 60);
+                    CookieUtil.addCookie(response, LOGIN_COOKIE, uuid, 30 * 60);
                 } else {
                     rememberService.delete(username);
-                    CookieUtil.removeCookie(response, "user");
+                    CookieUtil.removeCookie(response, LOGIN_COOKIE);
                 }
                 request.getSession().setAttribute("access", access);
                 response.sendRedirect("index.jsp");

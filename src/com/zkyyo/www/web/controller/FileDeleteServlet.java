@@ -16,6 +16,12 @@ import java.io.IOException;
         urlPatterns = {"/file_delete.do"}
 )
 public class FileDeleteServlet extends HttpServlet {
+    private String TOPIC_DIR;
+
+    public void init() throws ServletException {
+        TOPIC_DIR = (String) getServletContext().getAttribute("topicDir");
+    }
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
@@ -31,7 +37,7 @@ public class FileDeleteServlet extends HttpServlet {
             if (fileService.isExisted(fId)) {
                 FilePo file = fileService.findFile(fId);
                 String relativePath = file.getPath();
-                String bathPath = getServletContext().getRealPath("/WEB-INF/topics");
+                String bathPath = getServletContext().getRealPath(TOPIC_DIR);
                 String absolutePath = bathPath + relativePath;
                 File f = new File(absolutePath);
                 //检测文件在硬盘上是否存在

@@ -9,6 +9,8 @@
 
 <h1>topic add</h1>
 
+
+
 <jsp:include page="WEB-INF/result.jsp">
     <jsp:param name="success" value="讨论区创建成功"/>
     <jsp:param name="faile" value="讨论区创建失败, 原因如下:"/>

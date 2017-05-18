@@ -18,7 +18,8 @@ import java.io.IOException;
 
 @WebFilter(filterName = "GeneralAccessFilter")
 public class GeneralAccessFilter implements Filter {
-    private String LOGIN_COOKIE;
+    private String LOGIN_COOKIE_NAME;
+    private int STAY_LOGGED_TIME;
 
     public void destroy() {
     }
@@ -33,23 +34,25 @@ public class GeneralAccessFilter implements Filter {
         //保证Session中存在包含用户权限信息的access
         //检查当前浏览器会话中是否存在Session
         if (access == null) {
-            String uuid = CookieUtil.getCookieValue(request, LOGIN_COOKIE);
+            String uuid = CookieUtil.getCookieValue(request, LOGIN_COOKIE_NAME);
             System.out.println("(GeneralAccessFilter) uuid: " + uuid);
             //检查浏览器中是否存在cookie
             if (uuid != null) {
-                //若存在, 尝试通过Cookie的uuid获取用户名, 从而获取用户权限信息
+                //若存在,101 尝试通过Cookie的uuid获取用户名, 从而获取用户权限信息
                 UserService userService = (UserService) request.getServletContext().getAttribute("userService");
                 RememberService rememberService = (RememberService) request.getServletContext().getAttribute("rememberService");
                 String username = rememberService.find(uuid);
-                access = userService.getAccess(username);
-                //校验角色权限
-                isApproved = this.checkAccess(access);
-                if (isApproved) {
-                    request.getSession().setAttribute("access", access);
-                    CookieUtil.addCookie(response, LOGIN_COOKIE, uuid, 10 * 60); //更新Cookie最大时间
+                if (username != null) {
+                    access = userService.getAccess(username);
+                    //校验角色权限
+                    isApproved = this.checkAccess(access);
+                    if (isApproved) {
+                        request.getSession().setAttribute("access", access);
+                        CookieUtil.addCookie(response, LOGIN_COOKIE_NAME, uuid, STAY_LOGGED_TIME); //更新Cookie最大时间
+                    }
                 }
             } else { //Cookie不存在
-                CookieUtil.removeCookie(response, LOGIN_COOKIE);
+                CookieUtil.removeCookie(response, LOGIN_COOKIE_NAME);
             }
         } else {
             //校验角色权限
@@ -64,7 +67,8 @@ public class GeneralAccessFilter implements Filter {
     }
 
     public void init(FilterConfig config) throws ServletException {
-        LOGIN_COOKIE = (String) config.getServletContext().getAttribute("loginCookie");
+        LOGIN_COOKIE_NAME = (String) config.getServletContext().getAttribute("loginCookieName");
+        STAY_LOGGED_TIME = (int) config.getServletContext().getAttribute("stayLoggedTime");
     }
 
     protected boolean checkAccess(Access access) {

@@ -1,15 +1,13 @@
-package com.zkyyo.www.web.listener; /**
- * Created by xu on 5/18/17.
- */
+package com.zkyyo.www.web.listener;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpSessionAttributeListener;
+import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
-import javax.servlet.http.HttpSessionBindingEvent;
 
 @WebListener()
 public class ContextParameterListener implements ServletContextListener,
@@ -20,9 +18,11 @@ public class ContextParameterListener implements ServletContextListener,
 
     public void contextInitialized(ServletContextEvent sce) {
         ServletContext context = sce.getServletContext();
-        String loginCookie = context.getInitParameter("LOGIN_COOKIE");
+        String loginCookieName = context.getInitParameter("LOGIN_COOKIE_NAME");
+        int stayLoggedTime = Integer.valueOf(context.getInitParameter("STAY_LOGGED_TIME"));
         String topicPath = context.getInitParameter("TOPIC_DIR");
-        context.setAttribute("loginCookie", loginCookie);
+        context.setAttribute("loginCookieName", loginCookieName);
+        context.setAttribute("stayLoggedTime", stayLoggedTime);
         context.setAttribute("topicDir", topicPath);
     }
 

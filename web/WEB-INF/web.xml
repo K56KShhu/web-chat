@@ -5,13 +5,22 @@
          version="3.1">
     <context-param>
         <description>cookie name for staying logged</description>
-        <param-name>LOGIN_COOKIE</param-name>
+        <param-name>LOGIN_COOKIE_NAME</param-name>
         <param-value>login</param-value>
+    </context-param>
+    <context-param>
+        <description>stay logged in a week</description>
+        <param-name>STAY_LOGGED_TIME</param-name>
+        <param-value>604800</param-value>
     </context-param>
     <context-param>
         <param-name>TOPIC_DIR</param-name>
         <param-value>/WEB-INF/topics</param-value>
     </context-param>
+
+    <session-config>
+        <session-timeout>15</session-timeout>
+    </session-config>
     <!--
     <security-constraint>
         <web-resource-collection>

@@ -10,10 +10,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet(
-        name = "AdminAuditServlet",
-        urlPatterns = {"/admin_audit.do"}
+        name = "UserAuditServlet",
+        urlPatterns = {"/user_audit.do"}
 )
-public class AdminAuditServlet extends HttpServlet {
+public class UserAuditServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
@@ -36,6 +36,6 @@ public class AdminAuditServlet extends HttpServlet {
             response.sendRedirect("admin_index.jsp");
             return;
         }
-        request.getRequestDispatcher("admin_audit_info.do").forward(request, response);
+        request.getRequestDispatcher("user_audit_info.do").forward(request, response);
     }
 }

@@ -129,6 +129,32 @@ public class UserDaoJdbcImpl implements UserDao {
     }
 
     @Override
+    public List<UserPo> selectUsersByStatus(int startIndex, int rowsOnePage, int status) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        List<UserPo> users = new ArrayList<>();
+
+        try {
+            conn = dataSource.getConnection();
+            String sql = "SELECT * FROM user WHERE status=? ORDER BY created DESC LIMIT ?, ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, status);
+            pstmt.setInt(2, startIndex);
+            pstmt.setInt(3, rowsOnePage);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                users.add(getUser(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, pstmt, rs);
+        }
+        return users;
+    }
+
+    @Override
     public List<UserPo> selectPossibleUsersByUsername(String username) {
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -335,6 +361,30 @@ public class UserDaoJdbcImpl implements UserDao {
             String sql = "SELECT COUNT(*) FROM user WHERE username LIKE ?";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, "%" + username + "%");
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                rows = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, pstmt, rs);
+        }
+        return rows;
+    }
+
+    @Override
+    public int getTotalRowByStatus(int status) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        int rows = 0;
+
+        try {
+            conn = dataSource.getConnection();
+            String sql = "SELECT COUNT(*) FROM user WHERE status=?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, status);
             rs = pstmt.executeQuery();
             if (rs.next()) {
                 rows = rs.getInt(1);

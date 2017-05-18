@@ -10,7 +10,7 @@
 
 <h1>user manage</h1>
 
-<a href="admin_audit_info.do">审核注册</a>
+<a href="user_audit_info.do">审核注册</a>
 
 <form method="get" action="user_manage_info.do">
     搜索用户: <input type="text" name="search" value="${requestScope.search}"/>

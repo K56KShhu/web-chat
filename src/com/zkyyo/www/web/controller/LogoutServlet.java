@@ -17,13 +17,19 @@ import java.io.IOException;
         urlPatterns = {"/logout.do"}
 )
 public class LogoutServlet extends HttpServlet {
+    private String LOGIN_COOKIE_NAME;
+
+    public void init() throws ServletException {
+        LOGIN_COOKIE_NAME = (String) getServletContext().getAttribute("loginCookieName");
+    }
+
     private void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //移除Cookie
         Access access = (Access) request.getSession().getAttribute("access");
         if (access != null) {
             RememberService rememberService = (RememberService) getServletContext().getAttribute("rememberService");
             rememberService.delete(access.getUsername());
-            CookieUtil.removeCookie(response, "user");
+            CookieUtil.removeCookie(response, LOGIN_COOKIE_NAME);
         }
         //移除Session
         HttpSession session = request.getSession();

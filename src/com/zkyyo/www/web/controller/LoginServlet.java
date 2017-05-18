@@ -21,10 +21,12 @@ import java.util.UUID;
         urlPatterns = {"/login.do"}
 )
 public class LoginServlet extends HttpServlet {
-    private String LOGIN_COOKIE;
+    private String LOGIN_COOKIE_NAME;
+    private int STAY_LOGGED_TIME;
 
     public void init() throws ServletException {
-        LOGIN_COOKIE = (String) getServletContext().getAttribute("loginCookie");
+        LOGIN_COOKIE_NAME = (String) getServletContext().getAttribute("loginCookieName");
+        STAY_LOGGED_TIME = (int) getServletContext().getAttribute("stayLoggedTime");
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -79,10 +81,10 @@ public class LoginServlet extends HttpServlet {
                 if (remember) {
                     String uuid = UUID.randomUUID().toString();
                     rememberService.save(uuid, username);
-                    CookieUtil.addCookie(response, LOGIN_COOKIE, uuid, 30 * 60);
+                    CookieUtil.addCookie(response, LOGIN_COOKIE_NAME, uuid, STAY_LOGGED_TIME);
                 } else {
                     rememberService.delete(username);
-                    CookieUtil.removeCookie(response, LOGIN_COOKIE);
+                    CookieUtil.removeCookie(response, LOGIN_COOKIE_NAME);
                 }
                 request.getSession().setAttribute("access", access);
                 response.sendRedirect("index.jsp");
@@ -102,6 +104,6 @@ public class LoginServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        response.sendRedirect("login.jsp");
     }
 }

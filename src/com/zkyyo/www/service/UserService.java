@@ -1,9 +1,9 @@
 package com.zkyyo.www.service;
 
 import com.zkyyo.www.bean.PageBean;
+import com.zkyyo.www.bean.po.UserPo;
 import com.zkyyo.www.dao.UserDao;
 import com.zkyyo.www.dao.impl.UserDaoJdbcImpl;
-import com.zkyyo.www.bean.po.UserPo;
 import com.zkyyo.www.util.CheckUtil;
 import com.zkyyo.www.util.Pbkdf2Util;
 import com.zkyyo.www.web.Access;
@@ -162,10 +162,28 @@ public class UserService {
         return users; //用户输入不存在的status时会返回size为0的列表, 而不是null
     }
 
+    public PageBean<UserPo> queryUsersByStatus(int currentPage, int status) {
+        PageBean<UserPo> pageBean = new PageBean<>(currentPage, userDao.getTotalRowByStatus(status), ROWS_ONE_PAGE);
+        int startIndex = (pageBean.getCurrentPage() - 1) * ROWS_ONE_PAGE;
+
+        List<UserPo> users;
+        if (STATUS_AUDIT == status) {
+            users = userDao.selectUsersByStatus(startIndex, ROWS_ONE_PAGE, UserDaoJdbcImpl.STATUS_AUDIT);
+        } else if (STATUS_NORMAL == status) {
+            users = userDao.selectUsersByStatus(startIndex, ROWS_ONE_PAGE, UserDaoJdbcImpl.STATUS_NORMAL);
+        } else if (STATUS_NOT_APPROVED == status) {
+            users = userDao.selectUsersByStatus(startIndex, ROWS_ONE_PAGE, UserDaoJdbcImpl.STATUS_NOT_APPROVED);
+        } else {
+            return null;
+        }
+        pageBean.setList(users);
+        return pageBean;
+    }
+
     public List<UserPo> queryUsersByGroup(int groupId) {
         return userDao.selectUsersByGroup(groupId);
     }
-    
+
     public boolean isUserInGroup(int groupId, int userId) {
         Set<Integer> groups = getGroups(userId);
         for (int group : groups) {

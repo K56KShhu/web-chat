@@ -14,6 +14,8 @@ public interface UserDao {
 
     List<UserPo> selectUsersByStatus(int status);
 
+    List<UserPo> selectUsersByStatus(int startIndex, int rowsOnePage, int status);
+
     List<UserPo> selectPossibleUsersByUsername(String username);
 
     List<UserPo> selectUsersByUsername(int startIndex, int rowsOnePage, String username);
@@ -31,6 +33,8 @@ public interface UserDao {
     Set<Integer> selectGroupsByUsername(String username);
 
     int getTotalRow(String username);
+
+    int getTotalRowByStatus(int status);
 
     int getTotalRow();
 

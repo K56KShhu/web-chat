@@ -3,7 +3,8 @@
 
 <%--操作失败--%>
 <c:if test="${requestScope.errors != null && !requestScope.errors.isEmpty()}">
-    ${param.faile}<br/>
+    <%--${param.faile}<br/>--%>
+    <c:out value="${param.faile}"/><br/>
     <c:forEach var="error" items="${requestScope.errors}">
         <p style='font-family:arial,serif;color:red;font-size:20px;'>
             <c:out value="${error}"/><br/></p>
@@ -11,5 +12,6 @@
 </c:if>
 <%--操作成功--%>
 <c:if test="${requestScope.errors != null && requestScope.errors.isEmpty()}">
-    ${param.success}<br/>
+    <%--${param.success}<br/>--%>
+    <c:out value="${param.success}"/><br/>
 </c:if>

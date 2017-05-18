@@ -41,7 +41,7 @@ public class FileService {
     }
 
     public FilePo findFile(int fileId) {
-        return fileDao.selectFileByFileId(fileId);
+        return fileDao.selectFile(fileId);
     }
 
     public PageBean<FilePo> queryFiles(int currentPage, int order, boolean isReverse, int topicId, int apply) {

@@ -142,7 +142,7 @@ public class GroupDaoJdbcImpl implements GroupDao {
     }
 
     @Override
-    public void removeTopicInGroup(int groupId, int topicId) {
+    public void removeGroupInTopic(int groupId, int topicId) {
         Connection conn = null;
         PreparedStatement pstmt = null;
 

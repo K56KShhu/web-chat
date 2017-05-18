@@ -10,6 +10,9 @@
 
 <h1>group add user</h1>
 
+<h2>param.groupId: ${param.groupId}</h2>
+<h2>requestScope.groupId: ${requestScope.groupId}</h2>
+
 搜索用户
 <form method="get" action="group_find_user.do">
     <input type="hidden" name="groupId" value="${param.groupId}"/>
@@ -22,18 +25,16 @@
         <tr>
             <th>username</th>
             <th>sex</th>
-            <th>status</th>
             <th>created</th>
         </tr>
         <c:forEach var="user" items="${requestScope.pageBean.list}">
             <c:url value="group_add_user.do" var="addUserUrl">
-                <c:param name="groupId" value="${param.groupId}"/>
+                <c:param name="groupId" value="${requestScope.groupId}"/>
                 <c:param name="userId" value="${user.userId}"/>
             </c:url>
             <tr>
                 <td>${user.username}</td>
                 <td>${user.sex}</td>
-                <td>${user.status}</td>
                 <td>${user.created}</td>
                 <td><a href="${addUserUrl}">add</a></td>
             </tr>
@@ -49,18 +50,22 @@
     <c:url value="${pageScope.myQueryUrl}" var="firstPageUrl">
         <c:param name="page" value="1"/>
         <c:param name="search" value="${requestScope.search}"/>
+        <c:param name="groupId" value="${requestScope.groupId}"/>
     </c:url>
     <c:url value="${pageScope.myQueryUrl}" var="previousPageUrl">
         <c:param name="page" value="${pageScope.myPageBean.currentPage - 1}"/>
         <c:param name="search" value="${requestScope.search}"/>
+        <c:param name="groupId" value="${requestScope.groupId}"/>
     </c:url>
     <c:url value="${pageScope.myQueryUrl}" var="nextPageUrl">
         <c:param name="page" value="${pageScope.myPageBean.currentPage + 1}"/>
         <c:param name="search" value="${requestScope.search}"/>
+        <c:param name="groupId" value="${requestScope.groupId}"/>
     </c:url>
     <c:url value="${pageScope.myQueryUrl}" var="lastPageUrl">
         <c:param name="page" value="${pageScope.myPageBean.totalPage}"/>
         <c:param name="search" value="${requestScope.search}"/>
+        <c:param name="groupId" value="${requestScope.groupId}"/>
     </c:url>
 
     <%--中间页设置--%>
@@ -112,6 +117,7 @@
         <c:url value="${pageScope.myQueryUrl}" var="indexPageUrl">
             <c:param name="page" value="${number}"/>
             <c:param name="search" value="${requestScope.search}"/>
+            <c:param name="groupId" value="${requestScope.groupId}"/>
         </c:url>
         <c:choose>
             <c:when test="${number == pageScope.myPageBean.currentPage}">

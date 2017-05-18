@@ -58,7 +58,7 @@ public class UserManageInfoServlet extends HttpServlet {
         UserService userService = (UserService) getServletContext().getAttribute("userService");
         PageBean<UserPo> pageBean;
         if (search != null && search.trim().length() > 0) {
-            pageBean = userService.queryUsers(status, search, currentPage);
+            pageBean = userService.queryUsers(status, currentPage, search);
         } else {
 //            pageBean = userService.queryUsers(currentPage, order, isReverse);
             pageBean = userService.queryUsers(status, currentPage, order, isReverse);

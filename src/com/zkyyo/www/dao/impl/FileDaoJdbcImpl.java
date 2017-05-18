@@ -43,37 +43,6 @@ public class FileDaoJdbcImpl implements FileDao {
     }
 
     @Override
-    public List<FilePo> selectFilesByTopicId(int topicId, int apply) {
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        List<FilePo> files = new ArrayList<>();
-
-        try {
-            conn = dataSource.getConnection();
-            String sql = "SELECT * FROM upload_file WHERE topic_id=? AND apply=? ORDER BY created";
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, topicId);
-            pstmt.setInt(2, apply);
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                FilePo file = new FilePo();
-                file.setFileId(rs.getInt("upload_file_id"));
-                file.setApply(apply);
-                file.setUserId(rs.getInt("user_id"));
-                file.setPath(rs.getString("relative_path"));
-                file.setCreated(rs.getTimestamp("created"));
-                files.add(file);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            DbClose.close(conn, pstmt, rs);
-        }
-        return files;
-    }
-
-    @Override
     public List<FilePo> selectFilesByTopicId(int currentPage, int rowsOnePage, int order, boolean isReverse, int topicId, int apply) {
         Connection conn = null;
         Statement stmt = null;
@@ -97,7 +66,7 @@ public class FileDaoJdbcImpl implements FileDao {
     }
 
     @Override
-    public FilePo selectFileByFileId(int fileId) {
+    public FilePo selectFile(int fileId) {
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;

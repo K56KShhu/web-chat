@@ -35,15 +35,18 @@ public class GroupFindUserServlet extends HttpServlet {
         */
         String search = request.getParameter("search");
         String page = request.getParameter("page");
+        String groupId = request.getParameter("groupId");
         int currentPage = 1;
         if (page != null) {
             currentPage = Integer.valueOf(page);
         }
         if (search != null && search.trim().length() > 0) {
             UserService userService = (UserService) getServletContext().getAttribute("userService");
-            PageBean<UserPo> pageBean = userService.queryUsers(search, currentPage);
+//            PageBean<UserPo> pageBean = userService.queryUsers(search, currentPage);
+            PageBean<UserPo> pageBean = userService.queryUsers(UserService.STATUS_NORMAL, currentPage, search);
             request.setAttribute("pageBean", pageBean);
         }
+        request.setAttribute("groupId", groupId);
         request.setAttribute("search", search);
         request.getRequestDispatcher("group_find_user.jsp").forward(request, response);
     }

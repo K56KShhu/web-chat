@@ -1,3 +1,4 @@
+/*
 package com.zkyyo.www.web.controller;
 
 import com.zkyyo.www.bean.PageBean;
@@ -10,7 +11,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 //暂时不使用该Servlet: UserManageServlet已有类似功能
 @WebServlet(
@@ -29,12 +29,6 @@ public class UserAuditInfoServlet extends HttpServlet {
         PageBean<UserPo> pageBean = userService.queryUsersByStatus(currentPage, UserService.STATUS_AUDIT);
         request.setAttribute("pageBean", pageBean);
         request.getRequestDispatcher("user_audit.jsp").forward(request, response);
-        /*
-        UserService userService = (UserService) getServletContext().getAttribute("userService");
-        List<UserPo> users = userService.queryUsersByStatus(UserService.STATUS_AUDIT);
-        request.setAttribute("users", users);
-        request.getRequestDispatcher("user_audit.jsp").forward(request, response);
-        */
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -45,3 +39,4 @@ public class UserAuditInfoServlet extends HttpServlet {
         process(request, response);
     }
 }
+*/

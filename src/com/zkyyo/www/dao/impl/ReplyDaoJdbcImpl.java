@@ -49,37 +49,6 @@ public class ReplyDaoJdbcImpl implements ReplyDao {
     }
 
     @Override
-    public List<ReplyPo> selectReplysByTopicId(int topicId) {
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        List<ReplyPo> replys = new ArrayList<>();
-
-        try {
-            conn = dataSource.getConnection();
-            String sql = "SELECT * FROM reply WHERE topic_id=? ORDER BY created";
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, topicId);
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                ReplyPo reply = new ReplyPo();
-                reply.setReplyId(rs.getInt("reply_id"));
-                reply.setTopicId(rs.getInt("topic_id"));
-                reply.setUserId(rs.getInt("user_id"));
-                reply.setContent(rs.getString("content"));
-                reply.setContentType(rs.getInt("content_type"));
-                reply.setCreated(rs.getTimestamp("created"));
-                replys.add(reply);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            DbClose.close(conn, pstmt, rs);
-        }
-        return replys;
-    }
-
-    @Override
     public List<ReplyPo> selectReplysByTopicId(int startIndex, int rowsOnePage, int topicId) {
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -173,7 +142,7 @@ public class ReplyDaoJdbcImpl implements ReplyDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            DbClose.close(conn ,pstmt, rs);
+            DbClose.close(conn, pstmt, rs);
         }
         return rows;
     }

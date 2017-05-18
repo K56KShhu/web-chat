@@ -6,25 +6,15 @@ import java.util.List;
 import java.util.Set;
 
 public interface UserDao {
+    void addUser(UserPo userPo);
+
     UserPo selectUserByUserId(int id);
 
     UserPo selectUserByUsername(String username);
 
-    List<UserPo> selectUsers();
-
-    List<UserPo> selectUsersByStatus(int status);
-
-    List<UserPo> selectUsersByStatus(int startIndex, int rowsOnePage, int status);
-
-    List<UserPo> selectPossibleUsersByUsername(String username);
-
-    List<UserPo> selectUsersByUsername(int startIndex, int rowsOnePage, String username);
-
     List<UserPo> selectUsersByUsername(int status, int startIndex, int rowsOnePage, String username);
 
-    List<UserPo> selectUsers(int startIndex, int rowsOnePage, int order, boolean isReverse);
-
-    List<UserPo> selectUsers(int status, int startIndex, int rowsOnePage, int order, boolean isReverse);
+    List<UserPo> selectUsersByOrder(int status, int startIndex, int rowsOnePage, int order, boolean isReverse);
 
     List<UserPo> selectUsersByGroup(int groupId);
 
@@ -36,6 +26,8 @@ public interface UserDao {
 
     Set<Integer> selectGroupsByUsername(String username);
 
+    void update(UserPo userPo, List<Integer> updatedTypes);
+
     int getTotalRow(String username);
 
     int getTotalRowByStatus(int status);
@@ -43,8 +35,4 @@ public interface UserDao {
     int getTotalRow();
 
     int getTotalRow(int status, String username);
-
-    void addUser(UserPo userPo);
-
-    void update(UserPo userPo, List<Integer> updatedTypes);
 }

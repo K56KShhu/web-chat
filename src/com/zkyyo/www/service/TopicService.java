@@ -65,11 +65,6 @@ public class TopicService {
     }
 
     public PageBean<TopicPo> queryTopics(int type, int currentPage, String keys) {
-        //处理关键字
-        String regex = "\\s+";
-        Set<String> keySet = new HashSet<>(); //避免关键字重复
-        Collections.addAll(keySet, keys.trim().split(regex)); //将字符串拆分为关键字
-
         //根据讨论区类型查询
         if (ACCESS_PUBLIC == type) {
             type = TopicDaoJdbcImpl.ACCESS_PUBLIC;
@@ -80,6 +75,11 @@ public class TopicService {
         } else {
             return null;
         }
+
+        //将搜索语句拆分为关键词集合
+        String regex = "\\s+";
+        Set<String> keySet = new HashSet<>();
+        Collections.addAll(keySet, keys.trim().split(regex));
 
         //分页系统
         PageBean<TopicPo> pageBean = new PageBean<>(currentPage, topicDao.getTotalRowByTitle(keySet), ROWS_ONE_PAGE);

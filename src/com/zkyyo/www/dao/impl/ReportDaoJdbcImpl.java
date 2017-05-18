@@ -64,30 +64,7 @@ public class ReportDaoJdbcImpl implements ReportDao {
     }
 
     @Override
-    public List<ReportPo> selectReports() {
-        Connection conn = null;
-        Statement stmt = null;
-        ResultSet rs = null;
-        List<ReportPo> reports = new ArrayList<>();
-
-        try {
-            conn = dataSource.getConnection();
-            String sql = "SELECT * FROM report";
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery(sql);
-            while (rs.next()) {
-                reports.add(getReport(rs));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            DbClose.close(conn, stmt, rs);
-        }
-        return reports;
-    }
-
-    @Override
-    public List<ReportPo> selectReports(int startIndex, int rowsOnePage, int order, boolean isReverse) {
+    public List<ReportPo> selectReportsByOrder(int startIndex, int rowsOnePage, int order, boolean isReverse) {
         Connection conn = null;
         Statement stmt = null;
         ResultSet rs = null;

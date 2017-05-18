@@ -5,10 +5,13 @@ import com.zkyyo.www.bean.po.ReportPo;
 import java.util.List;
 
 public interface ReportDao {
-    ReportPo selectReport(int reportId);
     void addReport(ReportPo reportPo);
-    List<ReportPo> selectReports();
-    List<ReportPo> selectReports(int startIndex, int rowsOnePage, int order, boolean isReverse);
+
     void deleteReport(int reportId);
+
+    ReportPo selectReport(int reportId);
+
+    List<ReportPo> selectReportsByOrder(int startIndex, int rowsOnePage, int order, boolean isReverse);
+
     int getTotalRow();
 }

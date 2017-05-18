@@ -56,7 +56,7 @@ public class GroupService {
     }
 
     public void removeTopic(int groupId, int userId) {
-        groupDao.removeTopicInGroup(groupId, userId);
+        groupDao.removeGroupInTopic(groupId, userId);
     }
 
     public GroupPo findGroup(int groupId) {

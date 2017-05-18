@@ -32,29 +32,6 @@ public class TopicDaoJdbcImpl implements TopicDao {
     }
 
     @Override
-    public List<TopicPo> selectTopicsByOrder() {
-        Connection conn = null;
-        Statement stmt = null;
-        ResultSet rs = null;
-        List<TopicPo> topics = new ArrayList<>();
-
-        try {
-            conn = dataSource.getConnection();
-            String sql = "SELECT * FROM topic";
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery(sql);
-            while (rs.next()) {
-                topics.add(getTopic(rs));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            DbClose.close(conn, stmt, rs);
-        }
-        return topics;
-    }
-
-    @Override
     public List<TopicPo> selectTopicsByOrder(int type, int startIndex, int ROWS_ONE_PAGE, int order, boolean isReverse) {
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -71,34 +48,6 @@ public class TopicDaoJdbcImpl implements TopicDao {
             while (rs.next()) {
                 topics.add(getTopic(rs));
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            DbClose.close(conn, pstmt, rs);
-        }
-        return topics;
-    }
-
-    @Override
-    public List<TopicPo> selectPossibleTopicsByTitle(Set<String> keys) {
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        List<TopicPo> topics = new ArrayList<>();
-
-        try {
-            conn = dataSource.getConnection();
-            conn.setAutoCommit(false);
-            for (String key : keys) {
-                String sql = "SELECT * FROM topic WHERE title LIKE ?";
-                pstmt = conn.prepareStatement(sql);
-                pstmt.setString(1, "%" + key + "%");
-                rs = pstmt.executeQuery();
-                while (rs.next()) {
-                    topics.add(getTopic(rs));
-                }
-            }
-            conn.commit();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

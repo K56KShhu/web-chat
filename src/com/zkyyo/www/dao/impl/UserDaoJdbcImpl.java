@@ -1,11 +1,15 @@
 package com.zkyyo.www.dao.impl;
 
+import com.zkyyo.www.bean.po.UserPo;
 import com.zkyyo.www.dao.UserDao;
 import com.zkyyo.www.db.DbClose;
-import com.zkyyo.www.bean.po.UserPo;
 
 import javax.sql.DataSource;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -83,129 +87,6 @@ public class UserDaoJdbcImpl implements UserDao {
     }
 
     @Override
-    public List<UserPo> selectUsers() {
-        Connection conn = null;
-        Statement stmt = null;
-        ResultSet rs = null;
-        List<UserPo> users = new ArrayList<>();
-
-        try {
-            conn = dataSource.getConnection();
-            String sql = "SELECT * FROM user";
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery(sql);
-            while (rs.next()) {
-                users.add(getUser(rs));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            DbClose.close(conn, stmt, rs);
-        }
-        return users;
-    }
-
-    @Override
-    public List<UserPo> selectUsersByStatus(int status) {
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        List<UserPo> users = new ArrayList<>();
-
-        try {
-            conn = dataSource.getConnection();
-            String sql = "SELECT * FROM user WHERE status=?";
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, status);
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                users.add(getUser(rs));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            DbClose.close(conn, pstmt, rs);
-        }
-        return users;
-    }
-
-    @Override
-    public List<UserPo> selectUsersByStatus(int startIndex, int rowsOnePage, int status) {
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        List<UserPo> users = new ArrayList<>();
-
-        try {
-            conn = dataSource.getConnection();
-            String sql = "SELECT * FROM user WHERE status=? ORDER BY created DESC LIMIT ?, ?";
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, status);
-            pstmt.setInt(2, startIndex);
-            pstmt.setInt(3, rowsOnePage);
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                users.add(getUser(rs));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            DbClose.close(conn, pstmt, rs);
-        }
-        return users;
-    }
-
-    @Override
-    public List<UserPo> selectPossibleUsersByUsername(String username) {
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        List<UserPo> users = new ArrayList<>();
-
-        try {
-            conn = dataSource.getConnection();
-            String sql = "SELECT * FROM user WHERE username LIKE ?";
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, "%" + username + "%");
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                users.add(getUser(rs));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            DbClose.close(conn, pstmt, rs);
-        }
-        return users;
-    }
-
-    @Override
-    public List<UserPo> selectUsersByUsername(int startIndex, int rowsOnePage, String username) {
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        List<UserPo> users = new ArrayList<>();
-
-        try {
-            conn = dataSource.getConnection();
-            String sql = "SELECT * FROM user WHERE username LIKE ? LIMIT ?, ?";
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, "%" + username + "%");
-            pstmt.setInt(2, startIndex);
-            pstmt.setInt(3, rowsOnePage);
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                users.add(getUser(rs));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            DbClose.close(conn, pstmt, rs);
-        }
-        return users;
-    }
-
-    @Override
     public List<UserPo> selectUsersByUsername(int status, int startIndex, int rowsOnePage, String username) {
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -233,32 +114,7 @@ public class UserDaoJdbcImpl implements UserDao {
     }
 
     @Override
-    public List<UserPo> selectUsers(int startIndex, int rowsOnePage, int order, boolean isReverse) {
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        List<UserPo> users = new ArrayList<>();
-
-        try {
-            conn = dataSource.getConnection();
-            String sql = makeQuerySql(order, isReverse);
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, startIndex);
-            pstmt.setInt(2, rowsOnePage);
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                users.add(getUser(rs));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            DbClose.close(conn, pstmt, rs);
-        }
-        return users;
-    }
-
-    @Override
-    public List<UserPo> selectUsers(int status, int startIndex, int rowsOnePage, int order, boolean isReverse) {
+    public List<UserPo> selectUsersByOrder(int status, int startIndex, int rowsOnePage, int order, boolean isReverse) {
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -612,23 +468,6 @@ public class UserDaoJdbcImpl implements UserDao {
         } finally {
             DbClose.close(conn, pstmt);
         }
-    }
-
-    private String makeQuerySql(int order, boolean isReverse) {
-        String sql = "SELECT * FROM user";
-        if (ORDER_BY_SEX == order) {
-            sql += " ORDER BY sex";
-        } else if (ORDER_BY_CREATED == order) {
-            sql += " ORDER BY created";
-        } else if (ORDER_BY_STATUS == order) {
-            sql += " ORDER BY status";
-        } else {
-            sql += " ORDER BY created";
-        }
-        if (isReverse) {
-            sql += " DESC";
-        }
-        return sql + " LIMIT ?, ?";
     }
 
     private String makeQuerySql(boolean isSearch, int status, int order, boolean isReverse) {

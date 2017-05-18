@@ -8,7 +8,9 @@
 
 <%@ include file="/WEB-INF/header_user.jsp" %>
 
-<a href="topic_find_private.do">进入授权讨论区</a>
+<div style="text-align: right">
+    <a href="topic_find_private.do">进入授权讨论区</a>
+</div>
 
 <h1>公共讨论区</h1>
 

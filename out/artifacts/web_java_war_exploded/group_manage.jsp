@@ -8,11 +8,11 @@
 
 <%@ include file="/WEB-INF/header_admin.jsp" %>
 
-<h1>group manage</h1>
-
-<p>
+<div style="text-align: right">
     <a href="group_add.jsp">创建小组</a>
-</p>
+</div>
+
+<h1>group manage</h1>
 
 <table border="1">
     <tr>

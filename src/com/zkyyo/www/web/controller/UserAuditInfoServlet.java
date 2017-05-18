@@ -12,9 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+//暂时不使用该Servlet: UserManageServlet已有类似功能
 @WebServlet(
-        name = "UserAuditInfoServlet",
-        urlPatterns = {"/user_audit_info.do"}
+        name = "UserAuditInfoServlet"
+//        urlPatterns = {"/user_audit_info.do"}
 )
 public class UserAuditInfoServlet extends HttpServlet {
     private void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

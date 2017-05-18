@@ -10,7 +10,8 @@
 
 <h1>user manage</h1>
 
-<a href="user_audit_info.do">审核注册</a>
+<%--因为该界面集成了审核功能, 所以审核注册被移除--%>
+<%--<a href="user_audit_info.do">审核注册</a>--%>
 
 <form method="get" action="user_manage_info.do">
     <select name="statusSearch">

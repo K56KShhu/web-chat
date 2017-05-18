@@ -8,9 +8,11 @@
 
 <%@ include file="/WEB-INF/header_user.jsp" %>
 
-<h1>我的信息</h1>
+<div style="text-align: right">
+    <a href="<c:url value='user_update_info.do'/>">修改信息</a>&nbsp;
+</div>
 
-<a href="<c:url value='user_update_info.do'/>">修改信息</a>&nbsp;
+<h1>我的信息</h1>
 
 <h2>user info</h2>
 <table border="1">

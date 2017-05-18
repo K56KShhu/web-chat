@@ -9,9 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+//暂时不使用该Servlet: UserManageServlet已有类似功能
 @WebServlet(
-        name = "UserAuditServlet",
-        urlPatterns = {"/user_audit.do"}
+        name = "UserAuditServlet"
+//        urlPatterns = {"/user_audit.do"}
 )
 public class UserAuditServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

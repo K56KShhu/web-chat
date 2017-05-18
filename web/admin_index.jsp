@@ -1,16 +1,19 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>admin index</title>
+    <title>index</title>
 </head>
 <body>
 
-<h1>管理</h1>
+<%@ include file="/WEB-INF/header_user.jsp" %>
 
-<a href="user_manage_info.do">用户</a><br/>
-<a href="group_manage_info.do">小组</a><br/>
-<a href="topic_manage_info.do">讨论区</a><br/>
-<a href="report_manage_info.do">举报</a><br/>
+<div style="text-align: right">
+    <a href="topic_manage_info.do">讨论区</a>&nbsp;<br/>
+    <a href="group_manage_info.do">小组</a>&nbsp;<br/>
+    <a href="user_manage_info.do">用户</a>&nbsp;<br/>
+    <a href="report_manage_info.do">举报</a>&nbsp;<br/>
+    <a href="index.jsp">返回</a>&nbsp;<br/>
+</div>
 
 </body>
 </html>

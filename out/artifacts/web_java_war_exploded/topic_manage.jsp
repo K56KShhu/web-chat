@@ -8,6 +8,9 @@
 
 <%@ include file="/WEB-INF/header_admin.jsp" %>
 
+<div style="text-align: right">
+    <a href="topic_add.jsp">创建讨论区</a><br/>
+</div>
 
 <c:url value="topic_manage_info.do" var="replyAccountOderUrl">
     <c:param name="order" value="replyAccount"/>
@@ -31,8 +34,6 @@
 </c:url>
 
 <h1>topic manage</h1>
-
-<a href="topic_add.jsp">创建讨论区</a><br/>
 
 <form method="get" action="topic_manage_info.do">
     <select name="access">

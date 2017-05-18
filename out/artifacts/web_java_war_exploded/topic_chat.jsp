@@ -22,8 +22,10 @@
     <c:param name="shareType" value="image"/>
 </c:url>
 
-<a href="${imageUrl}">图片分享区</a>&nbsp;
-<a href="${fileUrl}">文件分享区</a>
+<div style="text-align: right">
+    <a href="${imageUrl}">图片分享区</a>&nbsp;<br/>
+    <a href="${fileUrl}">文件分享区</a>&nbsp;
+</div>
 
 <jsp:include page="WEB-INF/result.jsp">
     <jsp:param name="faile" value="发送失败, 原因如下:"/>

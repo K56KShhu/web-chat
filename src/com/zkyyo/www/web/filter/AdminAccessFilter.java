@@ -40,7 +40,6 @@ public class AdminAccessFilter extends GeneralAccessFilter {
     }
 
     protected boolean checkAccess(Access access) {
-        System.out.println("(AdminAccessFilter) checkAccess() invoked");
         //判断账号状态
         if (access.isNormal()) {
             //判断用户角色

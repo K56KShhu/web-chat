@@ -107,7 +107,7 @@ public class FileDaoJdbcImpl implements FileDao {
     }
 
     @Override
-    public int getTotalRow(int topicId) {
+    public int getTotalRow(int topicId, int apply) {
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -115,7 +115,14 @@ public class FileDaoJdbcImpl implements FileDao {
 
         try {
             conn = dataSource.getConnection();
-            String sql = "SELECT COUNT(*) FROM upload_file WHERE topic_id = ?";
+            String sql = "SELECT COUNT(*) FROM upload_file WHERE topic_id=?";
+            if (APPLY_IMAGE == apply) {
+                sql += " AND apply = 1";
+            } else if (APPLY_FILE == apply) {
+                sql += " AND apply = 2";
+            } else {
+                sql += "";
+            }
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, topicId);
             rs = pstmt.executeQuery();

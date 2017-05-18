@@ -72,7 +72,6 @@ public class GeneralAccessFilter implements Filter {
     }
 
     protected boolean checkAccess(Access access) {
-        System.out.println("(GeneralAccessFilter) checkAccess() invoked");
         return false;
     }
 }

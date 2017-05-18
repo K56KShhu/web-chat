@@ -14,14 +14,6 @@ public class GroupPo {
 
     }
 
-    public GroupPo(int groupId, String name, String description, int population, Timestamp created) {
-        this.groupId = groupId;
-        this.name = name;
-        this.description = description;
-        this.population = population;
-        this.created = created;
-    }
-
     public int getGroupId() {
         return groupId;
     }

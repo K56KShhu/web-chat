@@ -20,23 +20,6 @@ public class TopicVo {
 
     }
 
-    /*
-    public TopicVo(int topicId, String title, String description, int creatorId, String creatorUsername, int lastModifyId, String lastModifyUsername, int isPrivate, String isPrivateStr, int replyAccount, Timestamp lastTime, Timestamp created) {
-        this.topicId = topicId;
-        this.title = title;
-        this.description = description;
-        this.creatorId = creatorId;
-        this.creatorUsername = creatorUsername;
-        this.lastModifyId = lastModifyId;
-        this.lastModifyUsername = lastModifyUsername;
-        this.isPrivate = isPrivate;
-        this.isPrivateStr = isPrivateStr;
-        this.replyAccount = replyAccount;
-        this.lastTime = lastTime;
-        this.created = created;
-    }
-    */
-
     public int getTopicId() {
         return topicId;
     }

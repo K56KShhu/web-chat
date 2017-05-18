@@ -16,17 +16,6 @@ public class ReportVo {
 
     }
 
-    public ReportVo(int reportId, int userId, String username, int contentId, int contentType, String contentTypeStr, String reason, Timestamp created) {
-        this.reportId = reportId;
-        this.userId = userId;
-        this.username = username;
-        this.contentId = contentId;
-        this.contentType = contentType;
-        this.contentTypeStr = contentTypeStr;
-        this.reason = reason;
-        this.created = created;
-    }
-
     public int getReportId() {
         return reportId;
     }

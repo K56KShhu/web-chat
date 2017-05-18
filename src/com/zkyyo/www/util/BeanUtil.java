@@ -22,37 +22,56 @@ public class BeanUtil {
         int userId = replyPo.getUserId();
         String content = replyPo.getContent();
         int contentType = replyPo.getContentType();
+        String contentTypeStr;
         Timestamp created = replyPo.getCreated();
         String username = userPo.getUsername();
-        String contentTypeStr;
-        if (contentType == ReplyService.CONTENT_TEXT) {
+        if (ReplyService.CONTENT_TEXT == contentType) {
             contentTypeStr = "聊天文本";
-        } else if (contentType == ReplyService.CONTENT_IMAGE) {
+        } else if (ReplyService.CONTENT_IMAGE == contentType) {
             contentTypeStr = "聊天图片";
         } else {
-            contentTypeStr = "unknown";
+            return null;
         }
-        return new ReplyVo(replyId, topicId, userId, username, content, contentType, contentTypeStr, created);
+        ReplyVo replyVo = new ReplyVo();
+        replyVo.setReplyId(replyId);
+        replyVo.setTopicId(topicId);
+        replyVo.setUserId(userId);
+        replyVo.setContent(content);
+        replyVo.setContentType(contentType);
+        replyVo.setContentTypeStr(contentTypeStr);
+        replyVo.setCreated(created);
+        replyVo.setUsername(username);
+        return replyVo;
     }
 
     public static FileVo filePoToVo(FilePo filePo, UserPo userPo) {
         int fileId = filePo.getFileId();
         int apply = filePo.getApply();
+        String applyStr;
         int userId = filePo.getUserId();
+        String username = userPo.getUsername();
         int topicId = filePo.getTopicId();
         String path = filePo.getPath();
-        Timestamp created = filePo.getCreated();
-        String username = userPo.getUsername();
         String shortName = path.substring(path.indexOf("_") + 1);
-        String applyStr;
-        if (apply == FileService.APPLY_IMAGE) {
+        Timestamp created = filePo.getCreated();
+        if (FileService.APPLY_IMAGE == apply) {
             applyStr = "图片分享";
-        } else if (apply == FileService.APPLY_FILE) {
+        } else if (FileService.APPLY_FILE == apply) {
             applyStr = "文件分享";
         } else {
-            applyStr = "unknown";
+            return null;
         }
-        return new FileVo(fileId, apply, applyStr, userId, username, topicId, path, shortName, created);
+        FileVo fileVo = new FileVo();
+        fileVo.setFileId(fileId);
+        fileVo.setApply(apply);
+        fileVo.setApplyStr(applyStr);
+        fileVo.setUserId(userId);
+        fileVo.setUsername(username);
+        fileVo.setTopicId(topicId);
+        fileVo.setPath(path);
+        fileVo.setShortName(shortName);
+        fileVo.setCreated(created);
+        return fileVo;
     }
 
     public static ReportVo reportPoToVo(ReportPo reportPo, UserPo userPo) {
@@ -64,19 +83,28 @@ public class BeanUtil {
         String reason = reportPo.getReason();
         Timestamp created = reportPo.getCreated();
         String contentTypeStr;
-        if (contentType == ReportService.CONTENT_TYPE_REPLY) {
+        if (ReportService.CONTENT_TYPE_REPLY == contentType) {
             contentTypeStr = "发言";
-        } else if (contentType == ReportService.CONTENT_TYPE_SHARE_IMAGE) {
+        } else if (ReportService.CONTENT_TYPE_SHARE_IMAGE == contentType) {
             contentTypeStr = "分享图片";
-        } else if (contentType == ReportService.CONTENT_TYPE_SHARE_FILE) {
+        } else if (ReportService.CONTENT_TYPE_SHARE_FILE == contentType) {
             contentTypeStr = "分享文件";
         } else {
-            contentTypeStr = "unknown";
+            return null;
         }
-        return new ReportVo(reportId, userId, username, contentId, contentType, contentTypeStr, reason, created);
+        ReportVo reportVo = new ReportVo();
+        reportVo.setReportId(reportId);
+        reportVo.setUserId(userId);
+        reportVo.setUsername(username);
+        reportVo.setContentId(contentId);
+        reportVo.setContentType(contentType);
+        reportVo.setReason(reason);
+        reportVo.setCreated(created);
+        reportVo.setContentTypeStr(contentTypeStr);
+        return reportVo;
     }
 
-    public static TopicVo topicPotoVo(TopicPo topicPo, UserPo creator, UserPo modifier) {
+    public static TopicVo topicPoToVo(TopicPo topicPo, UserPo creator, UserPo modifier) {
         int topicId = topicPo.getTopicId();
         String title = topicPo.getTitle();
         String description = topicPo.getDescription();
@@ -111,12 +139,6 @@ public class BeanUtil {
     }
 
     public static <T, V> PageBean<V> pageBeanListTranslate(PageBean<T> initPage, List<V> newList) {
-//        PageBean<V> newPage = new PageBean<>();
-//        newPage.setCurrentPage(initPage.getCurrentPage());
-//        newPage.setTotalRow(initPage.getTotalRow());
-//        newPage.setRowsOnePage(initPage.getRowsOnePage());
-//        newPage.setTotalPage(initPage.getTotalPage());
-//        newPage.setList(newList);
         int currentPage = initPage.getCurrentPage();
         int totalRow = initPage.getTotalRow();
         int rowsOnePage = initPage.getRowsOnePage();

@@ -16,17 +16,6 @@ public class ReplyVo {
 
     }
 
-    public ReplyVo(int replyId, int topicId, int userId, String username, String content, int contentType, String contentTypeStr, Timestamp created) {
-        this.replyId = replyId;
-        this.topicId = topicId;
-        this.userId = userId;
-        this.username = username;
-        this.content = content;
-        this.contentType = contentType;
-        this.contentTypeStr = contentTypeStr;
-        this.created = created;
-    }
-
     public int getReplyId() {
         return replyId;
     }

@@ -8,6 +8,13 @@
 
 <%@ include file="/WEB-INF/header_user.jsp" %>
 
+<c:url value="topic_chat_info.do" var="chatUrl">
+    <c:param name="topicId" value="${requestScope.topicId}"/>
+</c:url>
+<div style="text-align: right">
+    <a href="${chatUrl}">返回</a>
+</div>
+
 <h1>img list</h1>
 
 <c:url value="file_upload.do" var="uploadUrl">

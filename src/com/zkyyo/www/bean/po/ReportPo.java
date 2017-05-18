@@ -16,15 +16,6 @@ public class ReportPo implements Serializable {
 
     }
 
-    public ReportPo(int reportId, int userId, int contentId, int contentType, String reason, Timestamp created) {
-        this.reportId = reportId;
-        this.userId = userId;
-        this.contentId = contentId;
-        this.contentType = contentType;
-        this.reason = reason;
-        this.created = created;
-    }
-
     public int getReportId() {
         return reportId;
     }

@@ -44,6 +44,7 @@ public class FileService {
         return fileDao.selectFile(fileId);
     }
 
+    /*
     public PageBean<FilePo> queryFiles(int currentPage, int order, boolean isReverse, int topicId, int apply) {
         PageBean<FilePo> pageBean = new PageBean<>(currentPage, fileDao.getTotalRow(topicId), ROWS_ONE_PAGE);
         int startIndex = (pageBean.getCurrentPage() - 1) * ROWS_ONE_PAGE;
@@ -61,6 +62,31 @@ public class FileService {
             return null;
         }
         pageBean.setList(files);
+        return pageBean;
+    }
+    */
+
+    public PageBean<FilePo> queryFiles(int currentPage, int order, boolean isReverse, int topicId, int apply) {
+        int orderType;
+        if (ORDER_BY_CREATED == order) {
+            orderType = FileDaoJdbcImpl.ORDER_BY_CREATED;
+        } else {
+            return null;
+        }
+        int applyType;
+        if (APPLY_IMAGE == apply) {
+            applyType = FileDaoJdbcImpl.APPLY_IMAGE;
+        } else if (APPLY_FILE == apply) {
+            applyType = FileDaoJdbcImpl.APPLY_FILE;
+        } else {
+            return null;
+        }
+
+        PageBean<FilePo> pageBean = new PageBean<>(currentPage, fileDao.getTotalRow(topicId, applyType), ROWS_ONE_PAGE);
+        int startIndex = (pageBean.getCurrentPage() - 1) * ROWS_ONE_PAGE;
+        List<FilePo> files = fileDao.selectFilesByTopicId(startIndex, ROWS_ONE_PAGE, orderType, isReverse, topicId, applyType);
+        pageBean.setList(files);
+        System.out.println("[FileService] totalRow: " + fileDao.getTotalRow(topicId, applyType));
         return pageBean;
     }
 }

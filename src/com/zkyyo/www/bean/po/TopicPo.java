@@ -19,18 +19,6 @@ public class TopicPo implements Serializable {
 
     }
 
-    public TopicPo(int topicId, String title, String description, int creatorId, int lastModifyId, int isPrivate, int replyAccount, Timestamp lastTime, Timestamp created) {
-        this.topicId = topicId;
-        this.title = title;
-        this.description = description;
-        this.creatorId = creatorId;
-        this.lastModifyId = lastModifyId;
-        this.isPrivate = isPrivate;
-        this.replyAccount = replyAccount;
-        this.lastTime = lastTime;
-        this.created = created;
-    }
-
     public int getTopicId() {
         return topicId;
     }

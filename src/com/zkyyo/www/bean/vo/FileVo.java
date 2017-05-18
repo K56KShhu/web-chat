@@ -17,18 +17,6 @@ public class FileVo {
 
     }
 
-    public FileVo(int fileId, int apply, String applyStr, int userId, String username, int topicId, String path, String shortName, Timestamp created) {
-        this.fileId = fileId;
-        this.apply = apply;
-        this.applyStr = applyStr;
-        this.userId = userId;
-        this.username = username;
-        this.topicId = topicId;
-        this.path = path;
-        this.shortName = shortName;
-        this.created = created;
-    }
-
     public int getFileId() {
         return fileId;
     }

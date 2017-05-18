@@ -69,24 +69,6 @@ public class FileListServlet extends HttpServlet {
 
         FileService fileService = (FileService) getServletContext().getAttribute("fileService");
         PageBean<FilePo> pageBeanPo = fileService.queryFiles(currentPage, FileService.ORDER_BY_CREATED, isReverse, tId, shareType);
-        /*
-        FileService fileService = (FileService) getServletContext().getAttribute("fileService");
-        PageBean<FilePo> pageBeanPo;
-        switch (shareType) {
-            case SHARE_IMAGE:
-                pageBeanPo = fileService.queryFiles(currentPage, FileService.ORDER_BY_CREATED, isReverse, tId, FileService.APPLY_IMAGE);
-                url = "image_list.jsp";
-                break;
-            case SHARE_FILE:
-                pageBeanPo = fileService.queryFiles(currentPage, FileService.ORDER_BY_CREATED, isReverse, tId, FileService.APPLY_FILE);
-                url = "file_list.jsp";
-                break;
-            default:
-                response.sendRedirect("index.jsp");
-                return;
-        }
-        */
-
         UserService userService = (UserService) getServletContext().getAttribute("userService");
         List<FilePo> filePos = pageBeanPo.getList();
         List<FileVo> fileVos = new ArrayList<>();

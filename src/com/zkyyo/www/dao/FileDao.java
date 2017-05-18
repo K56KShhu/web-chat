@@ -13,5 +13,7 @@ public interface FileDao {
 
     List<FilePo> selectFilesByTopicId(int currentPage, int rowsOnePage, int order, boolean isReverse, int topicId, int apply);
 
-    int getTotalRow(int topicId);
+//    int getTotalRow(int topicId);
+
+    int getTotalRow(int topicId, int apply);
 }

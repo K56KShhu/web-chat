@@ -22,25 +22,6 @@ public class UserPo implements Serializable {
         this.password = password;
     }
 
-    //注册用
-    public UserPo(String username, String password, String sex, String email) {
-        this.username = username;
-        this.password = password;
-        this.sex = sex;
-        this.email = email;
-    }
-
-    //获取数据
-    public UserPo(int userId, String username, String password, String sex, String email, int status, Timestamp created) {
-        this.userId = userId;
-        this.username = username;
-        this.password = password;
-        this.sex = sex;
-        this.email = email;
-        this.status = status;
-        this.created = created;
-    }
-
     public int getUserId() {
         return userId;
     }

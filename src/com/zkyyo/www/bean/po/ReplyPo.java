@@ -16,15 +16,6 @@ public class ReplyPo implements Serializable {
 
     }
 
-    public ReplyPo(int replyId, int topicId, int userId, String content, int contentType, Timestamp created) {
-        this.replyId = replyId;
-        this.topicId = topicId;
-        this.userId = userId;
-        this.content = content;
-        this.contentType = contentType;
-        this.created = created;
-    }
-
     public int getReplyId() {
         return replyId;
     }

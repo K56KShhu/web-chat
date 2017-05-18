@@ -16,15 +16,6 @@ public class FilePo implements Serializable {
 
     }
 
-    public FilePo(int fileId, int apply, int userId, int topicId, String path, Timestamp created) {
-        this.fileId = fileId;
-        this.apply = apply;
-        this.userId = userId;
-        this.topicId = topicId;
-        this.path = path;
-        this.created = created;
-    }
-
     public int getFileId() {
         return fileId;
     }

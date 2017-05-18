@@ -40,7 +40,7 @@ public class TopicDetailServlet extends HttpServlet {
         UserService userService = (UserService) getServletContext().getAttribute("userService");
         UserPo creator = userService.getUser(topicPo.getCreatorId());
         UserPo modifier = userService.getUser(topicPo.getLastModifyId());
-        TopicVo topicVo = BeanUtil.topicPotoVo(topicPo, creator, modifier);
+        TopicVo topicVo = BeanUtil.topicPoToVo(topicPo, creator, modifier);
 
         GroupService groupService = (GroupService) getServletContext().getAttribute("groupService");
         List<GroupPo> groups = groupService.queryGroupsByTopic(tId);

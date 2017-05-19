@@ -21,7 +21,7 @@ public class UserUpdateInfoServlet extends HttpServlet {
         int userId = access.getUserId();
 
         UserService userService = (UserService) getServletContext().getAttribute("userService");
-        UserPo user = userService.getUser(userId);
+        UserPo user = userService.findUser(userId);
         request.setAttribute("user", user);
         request.getRequestDispatcher("user_update.jsp").forward(request, response);
     }

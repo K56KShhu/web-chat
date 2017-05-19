@@ -32,7 +32,7 @@ public class UserDetailSelfServlet extends HttpServlet {
         //获得用户信息
         int userId = access.getUserId();
         UserService userService = (UserService) getServletContext().getAttribute("userService");
-        UserPo userPo = userService.getUser(userId);
+        UserPo userPo = userService.findUser(userId);
         UserVo userVo = BeanUtil.userPoToVo(userPo);
         //获得小组信息
         GroupService groupService = (GroupService) getServletContext().getAttribute("groupService");

@@ -24,7 +24,7 @@ public class AdminFindServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String username = request.getParameter("username");
         UserService userService = (UserService) getServletContext().getAttribute("userService");
-        UserPo userPo = userService.getUser(username);
+        UserPo userPo = userService.findUser(username);
         if (userPo != null) {
             if (userService.isUserInRole(userPo.getUserId(), "admin")) {
                 request.setAttribute("isAdmin", true);

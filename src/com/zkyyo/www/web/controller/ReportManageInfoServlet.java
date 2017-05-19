@@ -50,7 +50,7 @@ public class ReportManageInfoServlet extends HttpServlet {
         List<ReportPo> reportPos = pageBeanPo.getList();
         List<ReportVo> reportVos = new ArrayList<>();
         for (ReportPo reportPo : reportPos) {
-            UserPo userPo = userService.getUser(reportPo.getUserId());
+            UserPo userPo = userService.findUser(reportPo.getUserId());
             reportVos.add(BeanUtil.reportPoToVo(reportPo, userPo));
         }
         PageBean<ReportVo> pageBeanVo = BeanUtil.pageBeanListTranslate(pageBeanPo, reportVos);

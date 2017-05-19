@@ -64,7 +64,7 @@ public class UserDetailOtherServlet extends HttpServlet {
     private void processAllInfo(int userId, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //获得个人信息
         UserService userService = (UserService) getServletContext().getAttribute("userService");
-        UserPo userPo = userService.getUser(userId);
+        UserPo userPo = userService.findUser(userId);
         UserVo userVo = BeanUtil.userPoToVo(userPo);
         //获得小组信息
         GroupService groupService = (GroupService) getServletContext().getAttribute("groupService");
@@ -85,7 +85,7 @@ public class UserDetailOtherServlet extends HttpServlet {
     private void processLimitInfo(int userId, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //获得个人信息
         UserService userService = (UserService) getServletContext().getAttribute("userService");
-        UserPo userPo = userService.getUser(userId);
+        UserPo userPo = userService.findUser(userId);
         request.setAttribute("user", userPo);
         request.getRequestDispatcher("user_detail_other.jsp").forward(request, response);
     }

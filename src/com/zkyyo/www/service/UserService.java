@@ -17,33 +17,88 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class UserService {
+    /**
+     * 用户状态标识, 表示所有状态
+     */
     public static final int STATUS_ALL = 2;
+    /**
+     * 用户状态标识, 表示正常
+     */
     public static final int STATUS_NORMAL = 1;
+    /**
+     * 用户状态标识, 表示审核中
+     */
     public static final int STATUS_AUDIT = 0;
+    /**
+     * 用户状态标识, 表示审核不通过
+     */
     public static final int STATUS_NOT_APPROVED = -1;
+    /**
+     * 用户状态标识, 表示被封印
+     */
     public static final int STATUS_FORBIDDEN = -2;
 
+    /**
+     * 排序依据标识, 排序依据为性别
+     */
     public static final int ORDER_BY_SEX = 0;
+    /**
+     * 排序依据标识, 排序依据为注册时间
+     */
     public static final int ORDER_BY_CREATED = 1;
+    /**
+     * 排序依据标识, 排序依据为用户状态
+     */
     public static final int ORDER_BY_STATUS = 2;
 
+    /**
+     * 分页系统, 每一页的行数
+     */
     private static final int ROWS_ONE_PAGE = 15;
 
+    /**
+     * 用户唯一标识ID的最大长度
+     */
     private static final int MAX_ID_LENGTH = 10;
+    /**
+     * 用户名的最大长度
+     */
     private static final int MAX_USERNAME_LENGTH = 16;
+    /**
+     * 用户名的最小长度
+     */
     private static final int MIN_USERNAME_LENGTH = 3;
+    /**
+     * 密码的最大长度
+     */
     private static final int MAX_PASSWORD_LENGTH = 16;
+    /**
+     * 密码的最小长度
+     */
     private static final int MIN_PASSWORD_LENGTH = 3;
 
+    /**
+     * 数据库操作相关接口
+     */
     private UserDao userDao;
 
+    /**
+     * 构建对象
+     *
+     * @param userDao 传入的数据库操作接口
+     */
     public UserService(UserDao userDao) {
         this.userDao = userDao;
     }
 
+    /**
+     * 检查登录
+     * @param checkUser 待检查的用户对象
+     * @return true检查通过, false检查不通过
+     */
     public boolean checkLogin(UserPo checkUser) {
         if (checkUser.getUsername() != null && checkUser.getPassword() != null) {
-            UserPo user = getUser(checkUser.getUsername());
+            UserPo user = findUser(checkUser.getUsername());
             if (user != null) {
                 String correctPwd = user.getPassword();
                 try {
@@ -56,14 +111,30 @@ public class UserService {
         return false;
     }
 
+    /**
+     * 校验用户ID是否合法
+     * @param userId 待校验的用户ID
+     * @return true合法, false不合法
+     */
     public boolean isValidUserId(String userId) {
         return CheckUtil.isValidId(userId, MAX_ID_LENGTH);
     }
 
+    /**
+     * 校验用户名是否合法
+     * @param username 待校验的用户名
+     * @return true合法, false不合法
+     */
     public boolean isValidUsername(String username) {
         return CheckUtil.isValidString(username, MIN_USERNAME_LENGTH, MAX_USERNAME_LENGTH);
     }
 
+    /**
+     * 校验输入的密码是否合法, 同时校验二次输入密码是否相同
+     * @param pwd 第一次输入的密码
+     * @param cpwd 第二次输入的密码
+     * @return true合法且相同, 否则为false
+     */
     public boolean isValidPassword(String pwd, String cpwd) {
         if (pwd == null || cpwd == null) {
             return false;
@@ -76,6 +147,11 @@ public class UserService {
         return false;
     }
 
+    /**
+     * 校验邮箱是否合法
+     * @param email 待校验的邮箱
+     * @return true合法, false不合法
+     */
     public boolean isValidEmail(String email) {
         if (email == null) {
             return false;
@@ -86,12 +162,22 @@ public class UserService {
         return m.matches();
     }
 
+    /**
+     * 校验性别是否合法
+     * @param sex 待校验的性别
+     * @return true合法, false不合法
+     */
     public boolean isValidSex(String sex) {
         return "male".equals(sex)
                 || "female".equals(sex)
                 || "secret".equals(sex);
     }
 
+    /**
+     * 校验状态是否合法
+     * @param status 待校验的状态
+     * @return true合法, false不合法
+     */
     public boolean isValidStatus(String status) {
         return Integer.toString(STATUS_NORMAL).equals(status)
                 || Integer.toString(STATUS_AUDIT).equals(status)
@@ -99,14 +185,28 @@ public class UserService {
                 || Integer.toString(STATUS_FORBIDDEN).equals(status);
     }
 
+    /**
+     * 通过用户ID, 校验用户是否存在
+     * @param userId 待校验的用户ID
+     * @return true存在, false不存在
+     */
     public boolean isUserExisted(int userId) {
-        return getUser(userId) != null;
+        return findUser(userId) != null;
     }
 
+    /**
+     * 通过用户名, 校验用户是否存在
+     * @param username 待校验的用户名
+     * @return true存在, false不存在
+     */
     public boolean isUserExisted(String username) {
-        return getUser(username) != null;
+        return findUser(username) != null;
     }
 
+    /**
+     * 添加用户信息
+     * @param userPo 待添加的用户对象
+     */
     public void addUser(UserPo userPo) {
         String originalPwd = userPo.getPassword();
         try {
@@ -118,10 +218,17 @@ public class UserService {
         }
     }
 
+    /**
+     * 校验root密码后可提升用户为管理员
+     * @param rootId root用户ID
+     * @param rootPwd root密码
+     * @param userId 待提升的用户ID
+     * @return true提升成功, false密码错误
+     */
     public boolean addAdmin(int rootId, String rootPwd, int userId) {
-        UserPo root = getUser(rootId);
+        UserPo root = findUser(rootId);
         try {
-            boolean isRoot =  Pbkdf2Util.validatePassword(rootPwd, root.getPassword());
+            boolean isRoot = Pbkdf2Util.validatePassword(rootPwd, root.getPassword());
             if (isRoot) {
                 userDao.addRole(userId, UserDaoJdbcImpl.ROLE_ADMIN);
                 return true;
@@ -132,18 +239,40 @@ public class UserService {
         return false;
     }
 
+    /**
+     * 移除用户指定角色
+     * @param userId 用户ID
+     * @param role 待移除的角色
+     */
     public void removeRoleInUser(int userId, String role) {
         userDao.deleteRoleInUser(userId, role);
     }
 
-    public UserPo getUser(int userId) {
+    /**
+     * 通过用户ID, 精确查询用户信息
+     * @param userId 待查询的用户ID
+     * @return 存在返回用户对象, 不存在返回null
+     */
+    public UserPo findUser(int userId) {
         return userDao.selectUserByUserId(userId);
     }
 
-    public UserPo getUser(String username) {
+    /**
+     * 通过用户名, 精确查询用户信息
+     * @param username 待查询的用户名
+     * @return 存在返回用户对象, 不存在返回null
+     */
+    public UserPo findUser(String username) {
         return userDao.selectUserByUsername(username);
     }
 
+    /**
+     * 通过用户名, 模糊查询指定状态的用户, 同时进行分页
+     * @param status 用户状态
+     * @param currentPage 当前页数
+     * @param username 可能的用户名
+     * @return 封装的分页对象, 信息输入不合法时返回null
+     */
     public PageBean<UserPo> queryUsers(int status, int currentPage, String username) {
         int statusType;
         if (STATUS_ALL == status) {
@@ -168,6 +297,14 @@ public class UserService {
         return pageBean;
     }
 
+    /**
+     * 查询指定状态下的所有用户, 同时进行分页和排序
+     * @param status 用户状态
+     * @param currentPage 当前页数
+     * @param order 排序依据
+     * @param isReverse 是否降序
+     * @return 封装的分页对象, 信息输入不合法时返回null
+     */
     public PageBean<UserPo> queryUsers(int status, int currentPage, int order, boolean isReverse) {
         int statusType;
         if (STATUS_ALL == status) {
@@ -200,14 +337,30 @@ public class UserService {
         return pageBean;
     }
 
+    /**
+     * 查询拥有指定角色的所有用户
+     * @param role 指定的角色
+     * @return 返回一个size可为0的用户列表
+     */
     public List<UserPo> queryUsersByRole(String role) {
         return userDao.selectUsersByRole(role);
     }
 
+    /**
+     * 查询指定小组下的所有用户
+     * @param groupId 指定的小组ID
+     * @return 返回一个size可为0的用户列表
+     */
     public List<UserPo> queryUsersByGroup(int groupId) {
         return userDao.selectUsersByGroup(groupId);
     }
 
+    /**
+     * 校验用户是否拥有指定角色
+     * @param userId 用户ID
+     * @param role 指定角色
+     * @return true拥有, false不拥有
+     */
     public boolean isUserInRole(int userId, String role) {
         Set<String> roles = getRoles(userId);
         for (String r : roles) {
@@ -218,6 +371,12 @@ public class UserService {
         return false;
     }
 
+    /**
+     * 校验用户是否位于指定小组中
+     * @param userId 用户ID
+     * @param groupId 指定小组ID
+     * @return true位于, false不位于
+     */
     public boolean isUserInGroup(int userId, int groupId) {
         Set<Integer> groups = getGroups(userId);
         for (int group : groups) {
@@ -228,22 +387,47 @@ public class UserService {
         return false;
     }
 
+    /**
+     * 通过用户ID, 获取指定用户的所有角色
+     * @param userId 指定用户ID
+     * @return 一个size可为0的角色集合
+     */
     public Set<String> getRoles(int userId) {
         return userDao.selectRolesByUserId(userId);
     }
 
+    /**
+     * 通过用户名, 获取指定用户的所有角色
+     * @param username 指定用户名
+     * @return 一个size可为0的角色集合
+     */
     public Set<String> getRoles(String username) {
         return userDao.selectRolesByUsername(username);
     }
 
+    /**
+     * 通过用户ID, 获取指定用户所在的所有小组
+     * @param userId 指定用户ID
+     * @return 一个size可为0的小组ID集合
+     */
     public Set<Integer> getGroups(int userId) {
         return userDao.selectGroupsByUserId(userId);
     }
 
+    /**
+     * 通过用户名, 获取指定用户所在的所有小组
+     * @param username 指定用户名
+     * @return 一个size可为0的小组ID集合
+     */
     public Set<Integer> getGroups(String username) {
         return userDao.selectGroupsByUsername(username);
     }
 
+    /**
+     * 通过用户ID, 获取指定用户的所有权限, 包括角色和小组
+     * @param userId 指定用户ID
+     * @return 封装了用户权限的对象
+     */
     public Access getAccess(int userId) {
         UserPo user = userDao.selectUserByUserId(userId);
         Set<String> roles = getRoles(userId);
@@ -251,6 +435,11 @@ public class UserService {
         return new Access(userId, user.getUsername(), user.getStatus(), roles, groups);
     }
 
+    /**
+     * 通过用户名, 获取指定用户的所有权限, 包括角色和小组
+     * @param username 指定用户名
+     * @return 封装了用户权限的对象
+     */
     public Access getAccess(String username) {
         UserPo user = userDao.selectUserByUsername(username);
         Set<String> roles = getRoles(username);
@@ -258,7 +447,10 @@ public class UserService {
         return new Access(user.getUserId(), username, user.getStatus(), roles, groups);
     }
 
-    //用户修改信息
+    /**
+     * 更新用户信息
+     * @param userPo 包含最新信息的用户对象
+     */
     public void update(UserPo userPo) {
         try {
             UserPo initialUser = userDao.selectUserByUserId(userPo.getUserId());
@@ -281,6 +473,11 @@ public class UserService {
         }
     }
 
+    /**
+     * 更新用户状态
+     * @param userId 用户ID
+     * @param status 最新状态标识符
+     */
     public void updateStatus(int userId, int status) {
         UserPo user = new UserPo();
         user.setUserId(userId);

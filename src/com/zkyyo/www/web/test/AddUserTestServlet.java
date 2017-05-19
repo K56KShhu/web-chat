@@ -28,7 +28,7 @@ public class AddUserTestServlet extends HttpServlet {
         user.setSex("male");
         user.setEmail("z@o.com");
         userService.addUser(user);
-        userService.updateStatus(userService.getUser("101").getUserId(), UserService.STATUS_NORMAL);
+        userService.updateStatus(userService.findUser("101").getUserId(), UserService.STATUS_NORMAL);
 
         //小号
         for (int i = 0; i < 131; i++) {
@@ -38,7 +38,7 @@ public class AddUserTestServlet extends HttpServlet {
             user.setSex("male");
             user.setEmail("z@o.com");
             userService.addUser(user);
-            userService.updateStatus(userService.getUser("aaa12345" + i).getUserId(), UserService.STATUS_NORMAL);
+            userService.updateStatus(userService.findUser("aaa12345" + i).getUserId(), UserService.STATUS_NORMAL);
         }
         request.setAttribute("message", "finish");
         request.getRequestDispatcher("message.jsp").forward(request, response);

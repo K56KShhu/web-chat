@@ -61,7 +61,7 @@ public class TopicChatInfoServlet extends HttpServlet {
         List<ReplyVo> replyVos = new ArrayList<>();
         UserService userService = (UserService) getServletContext().getAttribute("userService");
         for (ReplyPo replyPo : replyPos) {
-            UserPo userPo = userService.getUser(replyPo.getUserId());
+            UserPo userPo = userService.findUser(replyPo.getUserId());
             replyVos.add(BeanUtil.replyPoToVo(replyPo, userPo));
         }
         PageBean<ReplyVo> pageBeanVo = BeanUtil.pageBeanListTranslate(pageBeanPo, replyVos);
@@ -88,7 +88,7 @@ public class TopicChatInfoServlet extends HttpServlet {
                 List<ReplyVo> replyVos = new ArrayList<>();
                 UserPo userPo;
                 for (ReplyPo replyPo : replyPos) {
-                    userPo = userService.getUser(replyPo.getUserId());
+                    userPo = userService.findUser(replyPo.getUserId());
                     replyVos.add(BeanUtil.replyPoToVo(replyPo, userPo));
                 }
                 PageBean<ReplyVo> pageBeanVo = BeanUtil.pageBeanListTranslate(pageBeanPo, replyVos);

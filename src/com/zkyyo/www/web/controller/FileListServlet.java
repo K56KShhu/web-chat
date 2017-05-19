@@ -73,7 +73,7 @@ public class FileListServlet extends HttpServlet {
         List<FilePo> filePos = pageBeanPo.getList();
         List<FileVo> fileVos = new ArrayList<>();
         for (FilePo filePo : filePos) {
-            UserPo userPo = userService.getUser(filePo.getUserId());
+            UserPo userPo = userService.findUser(filePo.getUserId());
             fileVos.add(BeanUtil.filePoToVo(filePo, userPo));
         }
         PageBean<FileVo> pageBeanVo = BeanUtil.pageBeanListTranslate(pageBeanPo, fileVos);

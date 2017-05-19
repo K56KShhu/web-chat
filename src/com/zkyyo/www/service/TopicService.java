@@ -13,13 +13,34 @@ import java.util.List;
 import java.util.Set;
 
 public class TopicService {
+    /**
+     * 讨论区类型的标识符, 表示公开讨论区
+     */
     public static final int ACCESS_PUBLIC = 0;
+    /**
+     * 讨论区类型的标识符, 表示授权讨论区
+     */
     public static final int ACCESS_PRIVATE = 1;
+    /**
+     * 讨论区类型的标识符, 表示所有讨论区
+     */
     public static final int ACCESS_ALL = 2;
 
+    /**
+     * 排序标识符, 排序依据为回复数量
+     */
     public static final int ORDER_BY_REPLY_ACCOUNT = 0;
+    /**
+     * 排序标识符, 排序依据为最后回复时间
+     */
     public static final int ORDER_BY_LAST_TIME = 1;
+    /**
+     * 排序标识符, 排序依据为创建时间
+     */
     public static final int ORDER_BY_CREATED = 2;
+    /**
+     * 排序标识符, 排序依据为讨论区类型
+     */
     public static final int ORDER_BY_ACCESS = 3;
 
     private static final int ROWS_ONE_PAGE = 10;
@@ -82,7 +103,7 @@ public class TopicService {
         Collections.addAll(keySet, keys.trim().split(regex));
 
         //分页系统
-        PageBean<TopicPo> pageBean = new PageBean<>(currentPage, topicDao.getTotalRowByTitle(keySet), ROWS_ONE_PAGE);
+        PageBean<TopicPo> pageBean = new PageBean<>(currentPage, topicDao.getTotalRowByTitle(type, keySet), ROWS_ONE_PAGE);
         int startIndex = (pageBean.getCurrentPage() - 1) * ROWS_ONE_PAGE;
         Set<TopicPo> topicSet = topicDao.selectTopicsByTitle(type, keySet, startIndex, ROWS_ONE_PAGE);
         List<TopicPo> topicList = new ArrayList<>(topicSet);

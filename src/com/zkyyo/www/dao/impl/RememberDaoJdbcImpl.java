@@ -9,13 +9,30 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * 通过JDBC实现RememberDao接口
+ */
 public class RememberDaoJdbcImpl implements RememberDao {
+    /**
+     * 数据库连接池
+     */
     private DataSource dataSource;
 
+    /**
+     * 构建对象
+     *
+     * @param dataSource 待传入的数据库连接池
+     */
     public RememberDaoJdbcImpl(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
+    /**
+     * 获取数据库中指定Cookie Value的用户名
+     *
+     * @param uuid 指定的Cookie Value
+     * @return 存在则返回用户名, 否则返回null;
+     */
     @Override
     public String selectUsername(String uuid) {
         Connection conn = null;
@@ -39,6 +56,12 @@ public class RememberDaoJdbcImpl implements RememberDao {
         return null;
     }
 
+    /**
+     * 向数据库中插入Cookie信息
+     *
+     * @param uuid     待插入的Cookie Value
+     * @param username 关联此Cookie的用户名
+     */
     @Override
     public void addRemember(String uuid, String username) {
         Connection conn = null;
@@ -58,6 +81,11 @@ public class RememberDaoJdbcImpl implements RememberDao {
         }
     }
 
+    /**
+     * 删除数据库中指定用户名的Cookie信息
+     *
+     * @param username 待删除的用户名
+     */
     @Override
     public void delete(String username) {
         Connection conn = null;

@@ -9,16 +9,38 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 通过JDBC实现ReplyDao接口
+ */
 public class ReplyDaoJdbcImpl implements ReplyDao {
+    /**
+     * 回复类型, 表示回复文本
+     */
     public static final int CONTENT_TYPE_TEXT = 0;
+    /**
+     * 回复类型, 表示回复图片
+     */
     public static final int CONTENT_TYPE_IMAGE = 1;
 
+    /**
+     * 数据库连接池
+     */
     private DataSource dataSource;
 
+    /**
+     * 构建对象
+     *
+     * @param dataSource 传入的数据库连接池
+     */
     public ReplyDaoJdbcImpl(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
+    /**
+     * 向数据库中插入回复信息
+     *
+     * @param replyPo 待插入的回复对象
+     */
     @Override
     public void addReply(ReplyPo replyPo) {
         Connection conn = null;
@@ -51,6 +73,14 @@ public class ReplyDaoJdbcImpl implements ReplyDao {
         }
     }
 
+    /**
+     * 获取数据库中指定讨论区ID的所有回复信息, 同时进行分页操作
+     *
+     * @param startIndex  起始下标
+     * @param rowsOnePage 获取的文件总数
+     * @param topicId     指定讨论区的ID
+     * @return 包含回复信息的列表, 不包含任何回复信息则返回一个size为0的列表
+     */
     @Override
     public List<ReplyPo> selectReplysByTopicId(int startIndex, int rowsOnePage, int topicId) {
         Connection conn = null;
@@ -77,6 +107,12 @@ public class ReplyDaoJdbcImpl implements ReplyDao {
         return replys;
     }
 
+    /**
+     * 获取数据库中指定回复ID的回复信息
+     *
+     * @param replyId 待获取的回复ID
+     * @return 存在返回回复对象, 否则返回null
+     */
     @Override
     public ReplyPo selectReplyByReplyId(int replyId) {
         Connection conn = null;
@@ -100,6 +136,11 @@ public class ReplyDaoJdbcImpl implements ReplyDao {
         return null;
     }
 
+    /**
+     * 删除数据库中指定回复ID的回复信息
+     *
+     * @param replyId 待删除的回复ID
+     */
     @Override
     public void deleteReply(int replyId) {
         Connection conn = null;
@@ -126,6 +167,12 @@ public class ReplyDaoJdbcImpl implements ReplyDao {
         }
     }
 
+    /**
+     * 获取数据库中指定讨论区ID的所有回复信息的行数
+     *
+     * @param topicId 指定讨论区的ID
+     * @return 回复数量
+     */
     @Override
     public int getTotalRow(int topicId) {
         Connection conn = null;
@@ -150,6 +197,13 @@ public class ReplyDaoJdbcImpl implements ReplyDao {
         return rows;
     }
 
+    /**
+     * 封装通过ResultSet构建回复对象的方法
+     *
+     * @param rs 当前位置的数据光标
+     * @return 回复对象
+     * @throws SQLException 数据库发生异常时抛出异常
+     */
     private ReplyPo getReply(ResultSet rs) throws SQLException {
         ReplyPo reply = new ReplyPo();
         reply.setReplyId(rs.getInt("reply_id"));

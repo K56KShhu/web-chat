@@ -15,22 +15,64 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * 通过JDBC实现TopicDao接口
+ */
 public class TopicDaoJdbcImpl implements TopicDao {
+    /**
+     * 作为排序的标识符, 排序依据为回复数量
+     */
     public static final int ORDER_BY_REPLY_ACCOUNT = 0;
+    /**
+     * 作为排序的标识符, 排序依据为最后回复时间
+     */
     public static final int ORDER_BY_LAST_TIME = 1;
+    /**
+     * 作为排序的标识符, 排序依据为创建时间
+     */
     public static final int ORDER_BY_CREATED = 2;
+    /**
+     * 作为排序的标识符, 排序依据为讨论区类型
+     */
     public static final int ORDER_BY_ACCESS = 3;
 
+    /**
+     * 讨论区类型, 表示公开讨论区
+     */
     public static final int ACCESS_PUBLIC = 0;
+    /**
+     * 讨论区类型, 表示授权讨论区
+     */
     public static final int ACCESS_PRIVATE = 1;
+    /**
+     * 讨论区类型, 表示所有讨论区
+     */
     public static final int ACCESS_ALL = 2;
 
+    /**
+     * 数据库连接池
+     */
     private DataSource dataSource;
 
+    /**
+     * 构建对象
+     *
+     * @param dataSource 传入的数据库连接池
+     */
     public TopicDaoJdbcImpl(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
+    /**
+     * 获取数据库中指定类型的多个讨论区信息, 同时进行分页和排序
+     *
+     * @param type          讨论区类型
+     * @param startIndex    起始下标
+     * @param ROWS_ONE_PAGE 获取总数
+     * @param order         排序依据
+     * @param isReverse     是否降序
+     * @return 包含多个讨论区信息的列表, 不包含任何讨论区则返回size为0的列表
+     */
     @Override
     public List<TopicPo> selectTopicsByOrder(int type, int startIndex, int ROWS_ONE_PAGE, int order, boolean isReverse) {
         Connection conn = null;
@@ -56,6 +98,12 @@ public class TopicDaoJdbcImpl implements TopicDao {
         return topics;
     }
 
+    /**
+     * 获取数据库中与指定小组关联的所有讨论区信息
+     *
+     * @param groupId 指定小组的ID
+     * @return 包含多个讨论区信息的列表, 不包含任何讨论区则返回size为0的列表
+     */
     @Override
     public List<TopicPo> selectTopicsByGroup(int groupId) {
         Connection conn = null;
@@ -80,6 +128,12 @@ public class TopicDaoJdbcImpl implements TopicDao {
         return topics;
     }
 
+    /**
+     * 获取数据库中与多个小组关联的所有讨论区信息
+     *
+     * @param groupIds 多个小组的ID集合
+     * @return 包含多个讨论区信息的集合, 不包含任何讨论区则返回size为0的集合
+     */
     @Override
     public Set<TopicPo> selectTopicsByGroups(Set<Integer> groupIds) {
         Connection conn = null;
@@ -103,9 +157,18 @@ public class TopicDaoJdbcImpl implements TopicDao {
         } finally {
             DbClose.close(conn, pstmt, rs);
         }
-        return  topics;
+        return topics;
     }
 
+    /**
+     * 获取数据库中指定类型, 且标题符合关键词的多个讨论区信息, 同时进行分页
+     *
+     * @param type        讨论区类型
+     * @param keys        关于标题的关键词集合
+     * @param startIndex  起始下标
+     * @param rowsOnePage 获取总数
+     * @return 包含多个讨论区信息的列表, 不包含任何讨论区则返回size为0的列表
+     */
     @Override
     public Set<TopicPo> selectTopicsByTitle(int type, Set<String> keys, int startIndex, int rowsOnePage) {
         Connection conn = null;
@@ -135,6 +198,12 @@ public class TopicDaoJdbcImpl implements TopicDao {
         return topics;
     }
 
+    /**
+     * 获取数据库中与指定讨论区有关的所有小组ID
+     *
+     * @param topicId 指定讨论区的ID
+     * @return 包含所有小组ID的集合, 不包含任何小组ID则返回size为0的集合
+     */
     @Override
     public Set<Integer> selectGroupsByTopicId(int topicId) {
         Connection conn = null;
@@ -159,8 +228,13 @@ public class TopicDaoJdbcImpl implements TopicDao {
         return groups;
     }
 
+    /**
+     * 删除数据库中指定讨论区ID的讨论区信息
+     *
+     * @param topicId 待删除的讨论区ID
+     */
     @Override
-    public TopicPo selectTopicByTopicId(int id) {
+    public TopicPo selectTopicByTopicId(int topicId) {
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -169,7 +243,7 @@ public class TopicDaoJdbcImpl implements TopicDao {
             conn = dataSource.getConnection();
             String sql = "SELECT * FROM topic WHERE topic_id=?";
             pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, id);
+            pstmt.setInt(1, topicId);
             rs = pstmt.executeQuery();
             if (rs.next()) {
                 return getTopic(rs);
@@ -182,6 +256,11 @@ public class TopicDaoJdbcImpl implements TopicDao {
         return null;
     }
 
+    /**
+     * 向数据库中插入讨论区信息
+     *
+     * @param topicPo 待插入的讨论区对象
+     */
     @Override
     public void addTopic(TopicPo topicPo) {
         Connection conn = null;
@@ -204,6 +283,11 @@ public class TopicDaoJdbcImpl implements TopicDao {
         }
     }
 
+    /**
+     * 删除数据库中指定讨论区ID的讨论区信息
+     *
+     * @param topicId 待删除的讨论区ID
+     */
     @Override
     public void deleteTopicByTopicId(int topicId) {
         Connection conn = null;
@@ -236,6 +320,11 @@ public class TopicDaoJdbcImpl implements TopicDao {
         }
     }
 
+    /**
+     * 更新数据库中讨论区信息
+     *
+     * @param topicPo 包含最新信息的讨论区对象
+     */
     @Override
     public void updateTopic(TopicPo topicPo) {
         Connection conn = null;
@@ -257,6 +346,12 @@ public class TopicDaoJdbcImpl implements TopicDao {
         }
     }
 
+    /**
+     * 获取数据库中指定讨论区类型的所有讨论区数量
+     *
+     * @param accessType 讨论区类型
+     * @return 总数量
+     */
     @Override
     public int getTotalRow(int accessType) {
         Connection conn = null;
@@ -285,8 +380,15 @@ public class TopicDaoJdbcImpl implements TopicDao {
         return rows;
     }
 
+    /**
+     * 获取数据库中指定讨论区类型, 且标题符合关键词的所有讨论区数量
+     *
+     * @param accessType 讨论区类型
+     * @param keys       关于标题的关键词集合
+     * @return 总数量
+     */
     @Override
-    public int getTotalRowByTitle(Set<String> keys) {
+    public int getTotalRowByTitle(int accessType, Set<String> keys) {
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -295,6 +397,13 @@ public class TopicDaoJdbcImpl implements TopicDao {
         try {
             conn = dataSource.getConnection();
             String sql = "SELECT topic_id FROM topic WHERE title LIKE ?";
+            if (ACCESS_PUBLIC == accessType) {
+                sql += " AND is_private = 0";
+            } else if (ACCESS_PRIVATE == accessType) {
+                sql += " AND is_private = 1";
+            } else if (ACCESS_ALL == accessType) {
+                sql += "";
+            }
             pstmt = conn.prepareStatement(sql);
             for (String key : keys) {
                 pstmt.setString(1, "%" + key + "%");
@@ -311,6 +420,13 @@ public class TopicDaoJdbcImpl implements TopicDao {
         return topics.size();
     }
 
+    /**
+     * 封装通过ResultSet构建讨论区对象的方法
+     *
+     * @param rs 当前位置的数据光标
+     * @return 文件对象
+     * @throws SQLException 数据库发生错误则抛出异常
+     */
     private TopicPo getTopic(ResultSet rs) throws SQLException {
         TopicPo topic = new TopicPo();
         topic.setTopicId(rs.getInt("topic_id"));
@@ -325,24 +441,16 @@ public class TopicDaoJdbcImpl implements TopicDao {
         return topic;
     }
 
+    /**
+     * 构建数据库检索语句
+     *
+     * @param isSearch  是否进行关于标题的关键词搜索
+     * @param type      讨论区类型
+     * @param order     排序依据
+     * @param isReverse 是否降序
+     * @return 构建完成的检索语句
+     */
     private String makeQuerySql(boolean isSearch, int type, int order, boolean isReverse) {
-        /*
-        String sql;
-        if (isSearch) {
-            sql = "SELECR * FROM topic WHERE title LIKE ? AND";
-        } else {
-            sql = "SELECT * FROM topic";
-        }
-        if (ACCESS_PUBLIC == type) {
-            sql += " WHERE is_private = 0";
-        } else if (ACCESS_PRIVATE == type) {
-            sql += " WHERE is_private = 1";
-        } else if (ACCESS_ALL == type) {
-            sql += "";
-        } else {
-            sql += "";
-        }
-        */
         String sql;
         if (isSearch) {
             sql = "SELECT * FROM topic WHERE title LIKE ?";
@@ -383,15 +491,4 @@ public class TopicDaoJdbcImpl implements TopicDao {
         }
         return sql + " LIMIT ?, ?";
     }
-
-    /*
-    public TopicDaoJdbcImpl() {
-
-    }
-
-    public static void main(String[] args) {
-        TopicDaoJdbcImpl topicDaoJdbc = new TopicDaoJdbcImpl();
-        System.out.println(topicDaoJdbc.makeQuerySql(ACCESS_PRIVATE, ORDER_BY_CREATED, true, true));
-    }
-    */
 }

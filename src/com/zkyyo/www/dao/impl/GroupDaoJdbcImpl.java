@@ -13,13 +13,29 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 通过JDBC实现GroupDao接口
+ */
 public class GroupDaoJdbcImpl implements GroupDao {
+    /**
+     * 数据库连接池
+     */
     private DataSource dataSource;
 
+    /**
+     * 构建对象
+     *
+     * @param dataSource 数据库连接池
+     */
     public GroupDaoJdbcImpl(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
+    /**
+     * 获取数据库中的所有小组
+     *
+     * @return 包含所有小组的列表, 不包含任何小组则返回size为0的列表
+     */
     @Override
     public List<GroupPo> selectGroups() {
         Connection conn = null;
@@ -43,6 +59,12 @@ public class GroupDaoJdbcImpl implements GroupDao {
         return groups;
     }
 
+    /**
+     * 获取数据库中指定小组ID的小组信息
+     *
+     * @param groupId 待获取的小组ID
+     * @return 存在则返回小组对象, 否则返回null
+     */
     @Override
     public GroupPo selectGroup(int groupId) {
         Connection conn = null;
@@ -66,6 +88,12 @@ public class GroupDaoJdbcImpl implements GroupDao {
         return null;
     }
 
+    /**
+     * 获取数据库中指定小组名的所有小组
+     *
+     * @param name 待获取的小组名
+     * @return 包含指定小组的列表, 不包含任何小组则返回size为0的列表
+     */
     @Override
     public List<GroupPo> selectGroupsByName(String name) {
         Connection conn = null;
@@ -90,6 +118,12 @@ public class GroupDaoJdbcImpl implements GroupDao {
         return groups;
     }
 
+    /**
+     * 获取数据库中指定讨论区ID的所有小组
+     *
+     * @param topicId 指定的讨论区ID
+     * @return 包含指定小组的列表, 不包含任何小组则返回size为0的列表
+     */
     @Override
     public List<GroupPo> selectGroupsByTopic(int topicId) {
         Connection conn = null;
@@ -114,6 +148,12 @@ public class GroupDaoJdbcImpl implements GroupDao {
         return groups;
     }
 
+    /**
+     * 向数据库中插入用户与小组的关联
+     *
+     * @param groupId 待关联的小组ID
+     * @param userId  待关联的用户ID
+     */
     @Override
     public void removeUserInGroup(int groupId, int userId) {
         Connection conn = null;
@@ -141,6 +181,12 @@ public class GroupDaoJdbcImpl implements GroupDao {
         }
     }
 
+    /**
+     * 向数据库中插入小组与讨论区的关联
+     *
+     * @param groupId 待关联的小组ID
+     * @param topicId 待关联的讨论区ID
+     */
     @Override
     public void removeGroupInTopic(int groupId, int topicId) {
         Connection conn = null;
@@ -160,6 +206,12 @@ public class GroupDaoJdbcImpl implements GroupDao {
         }
     }
 
+    /**
+     * 向数据库中插入用户与小组的关联
+     *
+     * @param groupId 待关联的小组ID
+     * @param userId  待关联的用户ID
+     */
     @Override
     public void addUserInGroup(int groupId, int userId) {
         Connection conn = null;
@@ -187,6 +239,11 @@ public class GroupDaoJdbcImpl implements GroupDao {
         }
     }
 
+    /**
+     * 删除数据库中的指定小组
+     *
+     * @param groupId 待删除的小组ID
+     */
     @Override
     public void deleteGroup(int groupId) {
         Connection conn = null;
@@ -221,6 +278,11 @@ public class GroupDaoJdbcImpl implements GroupDao {
         }
     }
 
+    /**
+     * 向数据库中插入小组
+     *
+     * @param groupPo 待插入的小组
+     */
     @Override
     public void addGroup(GroupPo groupPo) {
         Connection conn = null;
@@ -240,6 +302,12 @@ public class GroupDaoJdbcImpl implements GroupDao {
         }
     }
 
+    /**
+     * 向数据库中插入小组与讨论区的关联
+     *
+     * @param groupId 待关联的小组ID
+     * @param topicId 待关联的讨论区ID
+     */
     @Override
     public void addGroupInTopic(int groupId, int topicId) {
         Connection conn = null;
@@ -259,6 +327,13 @@ public class GroupDaoJdbcImpl implements GroupDao {
         }
     }
 
+    /**
+     * 封装通过ResultSet构建小组对象的方法
+     *
+     * @param rs 当前位置的数据光标
+     * @return 小组对象
+     * @throws SQLException 数据库发生错误时抛出异常
+     */
     private GroupPo getGroup(ResultSet rs) throws SQLException {
         GroupPo group = new GroupPo();
         group.setGroupId(rs.getInt("usergroup_id"));

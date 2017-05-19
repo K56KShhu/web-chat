@@ -20,8 +20,16 @@ import com.zkyyo.www.dao.impl.UserDaoJdbcImpl;
 import java.sql.Timestamp;
 import java.util.List;
 
+/**
+ * 该类封装了对象转换的方法
+ */
 public class BeanUtil {
-
+    /**
+     * 将replyPo转换为replyVo
+     * @param replyPo 原对象
+     * @param userPo 提供用户名信息的用户对象
+     * @return 新对象
+     */
     public static ReplyVo replyPoToVo(ReplyPo replyPo, UserPo userPo) {
         int replyId = replyPo.getReplyId();
         int topicId = replyPo.getTopicId();
@@ -50,6 +58,12 @@ public class BeanUtil {
         return replyVo;
     }
 
+    /**
+     * 将filePo转换为fileVo
+     * @param filePo 原文件对象
+     * @param userPo 辅助用户对象
+     * @return 新文件对象
+     */
     public static FileVo filePoToVo(FilePo filePo, UserPo userPo) {
         int fileId = filePo.getFileId();
         int apply = filePo.getApply();
@@ -80,6 +94,12 @@ public class BeanUtil {
         return fileVo;
     }
 
+    /**
+     * 将reportPo转换为reportVo
+     * @param reportPo 原举报对象
+     * @param userPo 辅助用户对象
+     * @return 新举报对象
+     */
     public static ReportVo reportPoToVo(ReportPo reportPo, UserPo userPo) {
         int reportId = reportPo.getReportId();
         int userId = reportPo.getUserId();
@@ -110,6 +130,13 @@ public class BeanUtil {
         return reportVo;
     }
 
+    /**
+     * 将topicPo转换为topicVo, 转换所有信息, 用于详细信息展示
+     * @param topicPo 原讨论区对象
+     * @param creator 辅助创建者用户对象
+     * @param modifier 辅助最后修改者用户对象
+     * @return 新讨论区对象
+     */
     public static TopicVo topicPoToVo(TopicPo topicPo, UserPo creator, UserPo modifier) {
         int topicId = topicPo.getTopicId();
         String title = topicPo.getTitle();
@@ -146,6 +173,11 @@ public class BeanUtil {
         return topicVo;
     }
 
+    /**
+     * 将topicPo转换为topicVo, 仅转换部分核心信息, 用于列表展示
+     * @param topicPo 原讨论区对象
+     * @return 新讨论区对象
+     */
     public static TopicVo topicPoToVoForList(TopicPo topicPo) {
         int topicId = topicPo.getTopicId();
         String title = topicPo.getTitle();
@@ -174,6 +206,11 @@ public class BeanUtil {
         return topicVo;
     }
 
+    /**
+     * 将userPo转换为userVo
+     * @param userPo 原用户对象
+     * @return 新用户对象
+     */
     public static UserVo userPoToVo(UserPo userPo) {
         int userId = userPo.getUserId();
         String username = userPo.getUsername();
@@ -213,6 +250,14 @@ public class BeanUtil {
         return userVo;
     }
 
+    /**
+     * 替换分页对象中的List类型
+     * @param initPage 原分页对象
+     * @param newList 待替换的新List
+     * @param <T> 原分页对象类型
+     * @param <V> 新分页对象类型
+     * @return 新分页对象
+     */
     public static <T, V> PageBean<V> pageBeanListTranslate(PageBean<T> initPage, List<V> newList) {
         int currentPage = initPage.getCurrentPage();
         int totalRow = initPage.getTotalRow();

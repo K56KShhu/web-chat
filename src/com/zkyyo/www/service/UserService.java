@@ -93,6 +93,7 @@ public class UserService {
 
     /**
      * 检查登录
+     *
      * @param checkUser 待检查的用户对象
      * @return true检查通过, false检查不通过
      */
@@ -113,6 +114,7 @@ public class UserService {
 
     /**
      * 校验用户ID是否合法
+     *
      * @param userId 待校验的用户ID
      * @return true合法, false不合法
      */
@@ -122,6 +124,7 @@ public class UserService {
 
     /**
      * 校验用户名是否合法
+     *
      * @param username 待校验的用户名
      * @return true合法, false不合法
      */
@@ -131,7 +134,8 @@ public class UserService {
 
     /**
      * 校验输入的密码是否合法, 同时校验二次输入密码是否相同
-     * @param pwd 第一次输入的密码
+     *
+     * @param pwd  第一次输入的密码
      * @param cpwd 第二次输入的密码
      * @return true合法且相同, 否则为false
      */
@@ -149,6 +153,7 @@ public class UserService {
 
     /**
      * 校验邮箱是否合法
+     *
      * @param email 待校验的邮箱
      * @return true合法, false不合法
      */
@@ -164,6 +169,7 @@ public class UserService {
 
     /**
      * 校验性别是否合法
+     *
      * @param sex 待校验的性别
      * @return true合法, false不合法
      */
@@ -175,6 +181,7 @@ public class UserService {
 
     /**
      * 校验状态是否合法
+     *
      * @param status 待校验的状态
      * @return true合法, false不合法
      */
@@ -187,6 +194,7 @@ public class UserService {
 
     /**
      * 通过用户ID, 校验用户是否存在
+     *
      * @param userId 待校验的用户ID
      * @return true存在, false不存在
      */
@@ -196,6 +204,7 @@ public class UserService {
 
     /**
      * 通过用户名, 校验用户是否存在
+     *
      * @param username 待校验的用户名
      * @return true存在, false不存在
      */
@@ -205,6 +214,7 @@ public class UserService {
 
     /**
      * 添加用户信息
+     *
      * @param userPo 待添加的用户对象
      */
     public void addUser(UserPo userPo) {
@@ -220,9 +230,10 @@ public class UserService {
 
     /**
      * 校验root密码后可提升用户为管理员
-     * @param rootId root用户ID
+     *
+     * @param rootId  root用户ID
      * @param rootPwd root密码
-     * @param userId 待提升的用户ID
+     * @param userId  待提升的用户ID
      * @return true提升成功, false密码错误
      */
     public boolean addAdmin(int rootId, String rootPwd, int userId) {
@@ -241,8 +252,9 @@ public class UserService {
 
     /**
      * 移除用户指定角色
+     *
      * @param userId 用户ID
-     * @param role 待移除的角色
+     * @param role   待移除的角色
      */
     public void removeRoleInUser(int userId, String role) {
         userDao.deleteRoleInUser(userId, role);
@@ -250,6 +262,7 @@ public class UserService {
 
     /**
      * 通过用户ID, 精确查询用户信息
+     *
      * @param userId 待查询的用户ID
      * @return 存在返回用户对象, 不存在返回null
      */
@@ -259,6 +272,7 @@ public class UserService {
 
     /**
      * 通过用户名, 精确查询用户信息
+     *
      * @param username 待查询的用户名
      * @return 存在返回用户对象, 不存在返回null
      */
@@ -268,9 +282,10 @@ public class UserService {
 
     /**
      * 通过用户名, 模糊查询指定状态的用户, 同时进行分页
-     * @param status 用户状态
+     *
+     * @param status      用户状态
      * @param currentPage 当前页数
-     * @param username 可能的用户名
+     * @param username    可能的用户名
      * @return 封装的分页对象, 信息输入不合法时返回null
      */
     public PageBean<UserPo> queryUsers(int status, int currentPage, String username) {
@@ -299,10 +314,11 @@ public class UserService {
 
     /**
      * 查询指定状态下的所有用户, 同时进行分页和排序
-     * @param status 用户状态
+     *
+     * @param status      用户状态
      * @param currentPage 当前页数
-     * @param order 排序依据
-     * @param isReverse 是否降序
+     * @param order       排序依据
+     * @param isReverse   是否降序
      * @return 封装的分页对象, 信息输入不合法时返回null
      */
     public PageBean<UserPo> queryUsers(int status, int currentPage, int order, boolean isReverse) {
@@ -339,6 +355,7 @@ public class UserService {
 
     /**
      * 查询拥有指定角色的所有用户
+     *
      * @param role 指定的角色
      * @return 返回一个size可为0的用户列表
      */
@@ -348,6 +365,7 @@ public class UserService {
 
     /**
      * 查询指定小组下的所有用户
+     *
      * @param groupId 指定的小组ID
      * @return 返回一个size可为0的用户列表
      */
@@ -357,8 +375,9 @@ public class UserService {
 
     /**
      * 校验用户是否拥有指定角色
+     *
      * @param userId 用户ID
-     * @param role 指定角色
+     * @param role   指定角色
      * @return true拥有, false不拥有
      */
     public boolean isUserInRole(int userId, String role) {
@@ -373,7 +392,8 @@ public class UserService {
 
     /**
      * 校验用户是否位于指定小组中
-     * @param userId 用户ID
+     *
+     * @param userId  用户ID
      * @param groupId 指定小组ID
      * @return true位于, false不位于
      */
@@ -389,6 +409,7 @@ public class UserService {
 
     /**
      * 通过用户ID, 获取指定用户的所有角色
+     *
      * @param userId 指定用户ID
      * @return 一个size可为0的角色集合
      */
@@ -398,6 +419,7 @@ public class UserService {
 
     /**
      * 通过用户名, 获取指定用户的所有角色
+     *
      * @param username 指定用户名
      * @return 一个size可为0的角色集合
      */
@@ -407,6 +429,7 @@ public class UserService {
 
     /**
      * 通过用户ID, 获取指定用户所在的所有小组
+     *
      * @param userId 指定用户ID
      * @return 一个size可为0的小组ID集合
      */
@@ -416,6 +439,7 @@ public class UserService {
 
     /**
      * 通过用户名, 获取指定用户所在的所有小组
+     *
      * @param username 指定用户名
      * @return 一个size可为0的小组ID集合
      */
@@ -425,6 +449,7 @@ public class UserService {
 
     /**
      * 通过用户ID, 获取指定用户的所有权限, 包括角色和小组
+     *
      * @param userId 指定用户ID
      * @return 封装了用户权限的对象
      */
@@ -437,6 +462,7 @@ public class UserService {
 
     /**
      * 通过用户名, 获取指定用户的所有权限, 包括角色和小组
+     *
      * @param username 指定用户名
      * @return 封装了用户权限的对象
      */
@@ -449,6 +475,7 @@ public class UserService {
 
     /**
      * 更新用户信息
+     *
      * @param userPo 包含最新信息的用户对象
      */
     public void update(UserPo userPo) {
@@ -475,6 +502,7 @@ public class UserService {
 
     /**
      * 更新用户状态
+     *
      * @param userId 用户ID
      * @param status 最新状态标识符
      */

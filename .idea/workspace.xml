@@ -27,59 +27,11 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="GroupDao.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/dao/GroupDao.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-856">
-              <caret line="22" column="9" lean-forward="false" selection-start-line="22" selection-start-column="9" selection-end-line="22" selection-end-column="9" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GroupDaoJdbcImpl.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/dao/impl/GroupDaoJdbcImpl.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="156">
-              <caret line="247" column="16" lean-forward="false" selection-start-line="247" selection-start-column="16" selection-end-line="247" selection-end-column="16" />
-              <folding>
-                <element signature="e#634#635#0" expanded="true" />
-                <element signature="e#678#679#0" expanded="true" />
-                <marker date="1495179258729" expanded="true" signature="1055:1078" ph="SELECT * FRO... usergroup" />
-                <marker date="1495179258729" expanded="true" signature="1787:1831" ph="SELECT * FRO... usergroup" />
-                <marker date="1495179258729" expanded="true" signature="2641:2682" ph="SELECT * FRO... usergroup" />
-                <marker date="1495179258729" expanded="true" signature="3521:3627" ph="SELECT * FRO... usergroup" />
-                <marker date="1495179258729" expanded="true" signature="3568:3626" ph="SELECT userg... topic_usergroup" />
-                <marker date="1495179258729" expanded="true" signature="4428:4489" ph="DELETE FROM " />
-                <marker date="1495179258729" expanded="true" signature="4700:4769" ph="UPDATE userg... " />
-                <marker date="1495179258729" expanded="true" signature="5411:5474" ph="DELETE FROM " />
-                <marker date="1495179258729" expanded="true" signature="6184:6248" ph="INSERT INTO user_usergroup... " />
-                <marker date="1495179258729" expanded="true" signature="6459:6528" ph="UPDATE userg... " />
-                <marker date="1495179258729" expanded="true" signature="7176:7218" ph="DELETE FROM " />
-                <marker date="1495179258729" expanded="true" signature="7399:7446" ph="DELETE FROM " />
-                <marker date="1495179258729" expanded="true" signature="7628:7676" ph="DELETE FROM " />
-                <marker date="1495179258729" expanded="true" signature="8259:8314" ph="INSERT INTO usergroup... " />
-                <marker date="1495179258729" expanded="true" signature="8992:9058" ph="INSERT INTO topic_usergroup... " />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="FileService.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/service/FileService.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-781">
-              <caret line="60" column="12" lean-forward="false" selection-start-line="60" selection-start-column="12" selection-end-line="60" selection-end-column="12" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="GroupService.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/service/GroupService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2450">
-              <caret line="8" column="2" lean-forward="false" selection-start-line="8" selection-start-column="2" selection-end-line="8" selection-end-column="2" />
+            <state relative-caret-position="500">
+              <caret line="165" column="6" lean-forward="false" selection-start-line="165" selection-start-column="6" selection-end-line="165" selection-end-column="6" />
               <folding />
             </state>
           </provider>
@@ -88,8 +40,8 @@
       <file leaf-file-name="RememberService.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/service/RememberService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-256">
-              <caret line="4" column="2" lean-forward="false" selection-start-line="4" selection-start-column="2" selection-end-line="4" selection-end-column="2" />
+            <state relative-caret-position="575">
+              <caret line="28" column="6" lean-forward="false" selection-start-line="28" selection-start-column="6" selection-end-line="28" selection-end-column="6" />
               <folding />
             </state>
           </provider>
@@ -98,8 +50,8 @@
       <file leaf-file-name="ReplyService.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/service/ReplyService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-231">
-              <caret line="69" column="29" lean-forward="false" selection-start-line="69" selection-start-column="29" selection-end-line="69" selection-end-column="29" />
+            <state relative-caret-position="550">
+              <caret line="94" column="6" lean-forward="false" selection-start-line="94" selection-start-column="6" selection-end-line="94" selection-end-column="6" />
               <folding />
             </state>
           </provider>
@@ -108,8 +60,8 @@
       <file leaf-file-name="ReportService.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/service/ReportService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2019">
-              <caret line="117" column="37" lean-forward="false" selection-start-line="117" selection-start-column="37" selection-end-line="117" selection-end-column="37" />
+            <state relative-caret-position="603">
+              <caret line="105" column="12" lean-forward="true" selection-start-line="105" selection-start-column="12" selection-end-line="105" selection-end-column="12" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -120,29 +72,67 @@
       <file leaf-file-name="TopicService.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/service/TopicService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1350">
-              <caret line="76" column="0" lean-forward="false" selection-start-line="76" selection-start-column="0" selection-end-line="76" selection-end-column="0" />
+            <state relative-caret-position="575">
+              <caret line="104" column="0" lean-forward="true" selection-start-line="104" selection-start-column="0" selection-end-line="104" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="UserService.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="UserService.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/service/UserService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="430" column="18" lean-forward="false" selection-start-line="430" selection-start-column="18" selection-end-line="430" selection-end-column="18" />
+            <state relative-caret-position="875">
+              <caret line="420" column="9" lean-forward="false" selection-start-line="420" selection-start-column="9" selection-end-line="420" selection-end-column="9" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GroupDeleteServlet.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/web/controller/GroupDeleteServlet.java">
+      <file leaf-file-name="BeanUtil.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/util/BeanUtil.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="475">
-              <caret line="26" column="25" lean-forward="false" selection-start-line="26" selection-start-column="25" selection-end-line="26" selection-end-column="25" />
-              <folding />
+              <caret line="97" column="26" lean-forward="false" selection-start-line="97" selection-start-column="26" selection-end-line="97" selection-end-column="26" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CheckUtil.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/util/CheckUtil.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="544">
+              <caret line="27" column="22" lean-forward="false" selection-start-line="27" selection-start-column="22" selection-end-line="27" selection-end-column="22" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CookieUtil.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/util/CookieUtil.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="694">
+              <caret line="45" column="33" lean-forward="false" selection-start-line="45" selection-start-column="33" selection-end-line="45" selection-end-column="33" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Pbkdf2Util.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/util/Pbkdf2Util.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="525">
+              <caret line="21" column="33" lean-forward="false" selection-start-line="21" selection-start-column="33" selection-end-line="21" selection-end-column="33" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -172,10 +162,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/com/zkyyo/www/web/controller/AdminManageInfoServlet.java" />
-        <option value="$PROJECT_DIR$/src/com/zkyyo/www/web/controller/AdminAddServlet.java" />
-        <option value="$PROJECT_DIR$/src/com/zkyyo/www/web/controller/GroupAddUserServlet.java" />
-        <option value="$PROJECT_DIR$/src/com/zkyyo/www/web/controller/AdminFindServlet.java" />
         <option value="$PROJECT_DIR$/web/admin_find.jsp" />
         <option value="$PROJECT_DIR$/src/com/zkyyo/www/web/controller/AdminDeleteServlet.java" />
         <option value="$PROJECT_DIR$/src/com/zkyyo/www/web/controller/GroupFindUserServlet.java" />
@@ -223,6 +209,10 @@
         <option value="$PROJECT_DIR$/src/com/zkyyo/www/service/ReportService.java" />
         <option value="$PROJECT_DIR$/src/com/zkyyo/www/service/TopicService.java" />
         <option value="$PROJECT_DIR$/src/com/zkyyo/www/service/UserService.java" />
+        <option value="$PROJECT_DIR$/src/com/zkyyo/www/util/BeanUtil.java" />
+        <option value="$PROJECT_DIR$/src/com/zkyyo/www/util/CheckUtil.java" />
+        <option value="$PROJECT_DIR$/src/com/zkyyo/www/util/CookieUtil.java" />
+        <option value="$PROJECT_DIR$/src/com/zkyyo/www/util/Pbkdf2Util.java" />
       </list>
     </option>
   </component>
@@ -437,28 +427,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="util" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="web-java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="web-java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="www" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1319,12 +1287,12 @@
       <workItem from="1495115796257" duration="11332000" />
       <workItem from="1495161018759" duration="11978000" />
       <workItem from="1495177668798" duration="8141000" />
-      <workItem from="1495189753729" duration="8883000" />
+      <workItem from="1495189753729" duration="12977000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="513455000" />
+    <option name="totallyTimeSpent" value="517549000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1393,94 +1361,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/web/controller/GroupManageInfoServlet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="24" column="44" lean-forward="false" selection-start-line="24" selection-start-column="44" selection-end-line="24" selection-end-column="44" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/web/controller/GroupRemoveTopicServlet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="16" column="13" lean-forward="false" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/web/controller/GroupRemoveUserServlet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="16" column="13" lean-forward="false" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/web/controller/GroupDetailServlet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="21" column="13" lean-forward="false" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/web/controller/ImageShowServlet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="16" column="13" lean-forward="false" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/web/controller/LoginServlet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="73" column="8" lean-forward="false" selection-start-line="73" selection-start-column="8" selection-end-line="73" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/web/controller/LogoutServlet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="18" column="13" lean-forward="false" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/web/controller/RegisterServlet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="18" column="13" lean-forward="false" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/web/controller/ReplyDeleteServlet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="17" column="13" lean-forward="false" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/web/controller/ReplyTextAddServlet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="22" column="13" lean-forward="false" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/web/controller/ReportAddServlet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="22" column="13" lean-forward="false" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/web/controller/TopicAddGroupServlet.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="650">
@@ -1667,101 +1547,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/dao/impl/TopicDaoJdbcImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="71" column="31" lean-forward="false" selection-start-line="71" selection-start-column="31" selection-end-line="71" selection-end-column="31" />
-          <folding>
-            <element signature="e#1322#1323#0" expanded="false" />
-            <element signature="e#1366#1367#0" expanded="false" />
-            <marker date="1495185840079" expanded="true" signature="2941:3038" ph="SELECT * FRO... topic" />
-            <marker date="1495185840079" expanded="true" signature="2980:3037" ph="SELECT topic... topic_usergroup" />
-            <marker date="1495185840079" expanded="true" signature="3881:3997" ph="SELECT * FRO... topic" />
-            <marker date="1495185840079" expanded="true" signature="3939:3996" ph="SELECT topic... topic_usergroup" />
-            <marker date="1495185840079" expanded="true" signature="6250:6307" ph="SELECT userg... topic_usergroup" />
-            <marker date="1495185840079" expanded="true" signature="7048:7084" ph="SELECT * FRO... topic" />
-            <marker date="1495185840079" expanded="true" signature="7755:7856" ph="INSERT INTO topic... " />
-            <marker date="1495185840079" expanded="true" signature="8727:8761" ph="DELETE FROM " />
-            <marker date="1495185840079" expanded="true" signature="8939:8973" ph="DELETE FROM " />
-            <marker date="1495185840079" expanded="true" signature="9152:9192" ph="DELETE FROM " />
-            <marker date="1495185840079" expanded="true" signature="9785:9859" ph="UPDATE topic... " />
-            <marker date="1495185840079" expanded="true" signature="10664:10690" ph="SELECT COUNT... topic" />
-            <marker date="1495185840079" expanded="true" signature="11706:11751" ph="SELECT topic... topic" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/dao/impl/ReportDaoJdbcImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="475">
-          <caret line="212" column="24" lean-forward="false" selection-start-line="212" selection-start-column="24" selection-end-line="212" selection-end-column="24" />
-          <folding>
-            <element signature="e#989#990#0" expanded="false" />
-            <element signature="e#1033#1034#0" expanded="false" />
-            <marker date="1495185840091" expanded="true" signature="1402:1440" ph="SELECT * FRO... report" />
-            <marker date="1495185840091" expanded="true" signature="2115:2197" ph="INSERT INTO report... " />
-            <marker date="1495185840091" expanded="true" signature="3928:3964" ph="DELETE FROM " />
-            <marker date="1495185840091" expanded="true" signature="4549:4576" ph="SELECT COUNT... report" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/dao/impl/ReplyDaoJdbcImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="100">
-          <caret line="14" column="13" lean-forward="false" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#685#686#0" expanded="false" />
-            <element signature="e#729#730#0" expanded="false" />
-            <marker date="1495180491628" expanded="true" signature="1086:1166" ph="INSERT INTO reply... " />
-            <marker date="1495180491628" expanded="true" signature="1539:1619" ph="UPDATE topic... " />
-            <marker date="1495180491628" expanded="true" signature="2598:2667" ph="SELECT * FRO... reply" />
-            <marker date="1495180491628" expanded="true" signature="3509:3545" ph="SELECT * FRO... reply" />
-            <marker date="1495180491628" expanded="true" signature="4287:4400" ph="UPDATE topic... " />
-            <marker date="1495180491628" expanded="true" signature="4356:4399" ph="SELECT topic... reply" />
-            <marker date="1495180491628" expanded="true" signature="4573:4607" ph="DELETE FROM " />
-            <marker date="1495180491628" expanded="true" signature="5274:5317" ph="SELECT COUNT... reply" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/dao/impl/RememberDaoJdbcImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="175">
-          <caret line="14" column="13" lean-forward="false" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#537#538#0" expanded="false" />
-            <element signature="e#581#582#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/dao/RememberDao.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="125">
-          <caret line="5" column="17" lean-forward="false" selection-start-line="5" selection-start-column="17" selection-end-line="5" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/dao/ReplyDao.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="175">
-          <caret line="9" column="17" lean-forward="false" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/dao/TopicDao.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="175">
-          <caret line="10" column="17" lean-forward="false" selection-start-line="10" selection-start-column="17" selection-end-line="10" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/db/DbClose.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
@@ -1778,13 +1563,27 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/test/Test.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="50">
+          <caret line="2" column="13" lean-forward="false" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/bean/po/FilePo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="175">
+          <caret line="9" column="13" lean-forward="false" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/dao/impl/GroupDaoJdbcImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="156">
-          <caret line="247" column="16" lean-forward="false" selection-start-line="247" selection-start-column="16" selection-end-line="247" selection-end-column="16" />
+        <state relative-caret-position="331">
+          <caret line="254" column="17" lean-forward="false" selection-start-line="254" selection-start-column="17" selection-end-line="254" selection-end-column="17" />
           <folding>
-            <element signature="e#634#635#0" expanded="true" />
-            <element signature="e#678#679#0" expanded="true" />
             <marker date="1495179258729" expanded="true" signature="1055:1078" ph="SELECT * FRO... usergroup" />
             <marker date="1495179258729" expanded="true" signature="1787:1831" ph="SELECT * FRO... usergroup" />
             <marker date="1495179258729" expanded="true" signature="2641:2682" ph="SELECT * FRO... usergroup" />
@@ -1804,69 +1603,268 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/dao/GroupDao.java">
+    <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/dao/impl/FileDaoJdbcImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-856">
-          <caret line="22" column="9" lean-forward="false" selection-start-line="22" selection-start-column="9" selection-end-line="22" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/service/ReportService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2019">
-          <caret line="117" column="37" lean-forward="false" selection-start-line="117" selection-start-column="37" selection-end-line="117" selection-end-column="37" />
+        <state relative-caret-position="325">
+          <caret line="23" column="14" lean-forward="false" selection-start-line="23" selection-start-column="14" selection-end-line="23" selection-end-column="14" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <marker date="1495185840059" expanded="true" signature="1202:1287" ph="INSERT INTO upload_file... " />
+            <marker date="1495185840059" expanded="true" signature="3229:3277" ph="SELECT * FRO... upload_file" />
+            <marker date="1495185840059" expanded="true" signature="3940:3986" ph="DELETE FROM " />
+            <marker date="1495185840059" expanded="true" signature="4657:4718" ph="SELECT COUNT... upload_file" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/service/ReplyService.java">
+    <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/dao/impl/RememberDaoJdbcImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-231">
-          <caret line="69" column="29" lean-forward="false" selection-start-line="69" selection-start-column="29" selection-end-line="69" selection-end-column="29" />
+        <state relative-caret-position="425">
+          <caret line="24" column="6" lean-forward="false" selection-start-line="24" selection-start-column="6" selection-end-line="24" selection-end-column="6" />
+          <folding>
+            <marker date="1495179258689" expanded="true" signature="960:1009" ph="SELECT usern... remember" />
+            <marker date="1495179258689" expanded="true" signature="1756:1814" ph="INSERT INTO remember... " />
+            <marker date="1495179258689" expanded="true" signature="2417:2454" ph="DELETE FROM " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/dao/impl/ReplyDaoJdbcImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="25" column="12" lean-forward="false" selection-start-line="25" selection-start-column="12" selection-end-line="25" selection-end-column="12" />
+          <folding>
+            <marker date="1495180491628" expanded="true" signature="1086:1166" ph="INSERT INTO reply... " />
+            <marker date="1495180491628" expanded="true" signature="1539:1619" ph="UPDATE topic... " />
+            <marker date="1495180491628" expanded="true" signature="2598:2667" ph="SELECT * FRO... reply" />
+            <marker date="1495180491628" expanded="true" signature="3509:3545" ph="SELECT * FRO... reply" />
+            <marker date="1495180491628" expanded="true" signature="4287:4400" ph="UPDATE topic... " />
+            <marker date="1495180491628" expanded="true" signature="4356:4399" ph="SELECT topic... reply" />
+            <marker date="1495180491628" expanded="true" signature="4573:4607" ph="DELETE FROM " />
+            <marker date="1495180491628" expanded="true" signature="5274:5317" ph="SELECT COUNT... reply" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/dao/impl/ReportDaoJdbcImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="210" column="23" lean-forward="false" selection-start-line="210" selection-start-column="23" selection-end-line="210" selection-end-column="23" />
+          <folding>
+            <marker date="1495185840091" expanded="true" signature="1402:1440" ph="SELECT * FRO... report" />
+            <marker date="1495185840091" expanded="true" signature="2115:2197" ph="INSERT INTO report... " />
+            <marker date="1495185840091" expanded="true" signature="3928:3964" ph="DELETE FROM " />
+            <marker date="1495185840091" expanded="true" signature="4549:4576" ph="SELECT COUNT... report" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/dao/impl/TopicDaoJdbcImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="350">
+          <caret line="67" column="5" lean-forward="false" selection-start-line="67" selection-start-column="5" selection-end-line="67" selection-end-column="5" />
+          <folding>
+            <marker date="1495185840079" expanded="true" signature="2941:3038" ph="SELECT * FRO... topic" />
+            <marker date="1495185840079" expanded="true" signature="2980:3037" ph="SELECT topic... topic_usergroup" />
+            <marker date="1495185840079" expanded="true" signature="3881:3997" ph="SELECT * FRO... topic" />
+            <marker date="1495185840079" expanded="true" signature="3939:3996" ph="SELECT topic... topic_usergroup" />
+            <marker date="1495185840079" expanded="true" signature="6250:6307" ph="SELECT userg... topic_usergroup" />
+            <marker date="1495185840079" expanded="true" signature="7048:7084" ph="SELECT * FRO... topic" />
+            <marker date="1495185840079" expanded="true" signature="7755:7856" ph="INSERT INTO topic... " />
+            <marker date="1495185840079" expanded="true" signature="8727:8761" ph="DELETE FROM " />
+            <marker date="1495185840079" expanded="true" signature="8939:8973" ph="DELETE FROM " />
+            <marker date="1495185840079" expanded="true" signature="9152:9192" ph="DELETE FROM " />
+            <marker date="1495185840079" expanded="true" signature="9785:9859" ph="UPDATE topic... " />
+            <marker date="1495185840079" expanded="true" signature="10664:10690" ph="SELECT COUNT... topic" />
+            <marker date="1495185840079" expanded="true" signature="11706:11751" ph="SELECT topic... topic" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/dao/impl/UserDaoJdbcImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="30" column="19" lean-forward="false" selection-start-line="30" selection-start-column="19" selection-end-line="30" selection-end-column="19" />
+          <folding>
+            <marker date="1495185840107" expanded="true" signature="2309:2345" ph="SELECT * FRO... user" />
+            <marker date="1495185840107" expanded="true" signature="3111:3146" ph="SELECT * FRO... user" />
+            <marker date="1495185840107" expanded="true" signature="6255:6335" ph="SELECT * FRO... user" />
+            <marker date="1495185840107" expanded="true" signature="6292:6334" ph="SELECT user_... user_role" />
+            <marker date="1495185840107" expanded="true" signature="7157:7250" ph="SELECT * FRO... user" />
+            <marker date="1495185840107" expanded="true" signature="7194:7249" ph="SELECT user_... user_usergroup" />
+            <marker date="1495185840107" expanded="true" signature="8052:8096" ph="SELECT role user_role" />
+            <marker date="1495185840107" expanded="true" signature="8938:9026" ph="SELECT role user_role" />
+            <marker date="1495185840107" expanded="true" signature="8982:9025" ph="SELECT user_... user" />
+            <marker date="1495185840107" expanded="true" signature="9856:9911" ph="SELECT userg... user_usergroup" />
+            <marker date="1495185840107" expanded="true" signature="10755:10854" ph="SELECT userg... user_usergroup" />
+            <marker date="1495185840107" expanded="true" signature="10812:10853" ph="SELECT user_... user" />
+            <marker date="1495185840107" expanded="true" signature="11632:11679" ph="SELECT COUNT... user" />
+            <marker date="1495185840107" expanded="true" signature="12431:12456" ph="SELECT COUNT... user" />
+            <marker date="1495185840107" expanded="true" signature="13620:13645" ph="SELECT COUNT... user" />
+            <marker date="1495185840107" expanded="true" signature="14401:14448" ph="SELECT COUNT... user" />
+            <marker date="1495185840107" expanded="true" signature="15678:15729" ph="INSERT INTO user_role... " />
+            <marker date="1495185840107" expanded="true" signature="16402:16471" ph="INSERT INTO user... " />
+            <marker date="1495185840107" expanded="true" signature="16815:16856" ph="SELECT user_... user" />
+            <marker date="1495185840107" expanded="true" signature="17161:17212" ph="INSERT INTO user_role... " />
+            <marker date="1495185840107" expanded="true" signature="17926:17974" ph="DELETE FROM " />
+            <marker date="1495185840107" expanded="true" signature="18833:18870" ph="UPDATE user " />
+            <marker date="1495185840107" expanded="true" signature="19197:19236" ph="UPDATE user " />
+            <marker date="1495185840107" expanded="true" signature="19568:19610" ph="UPDATE user " />
+            <marker date="1495185840107" expanded="true" signature="19943:19983" ph="UPDATE user " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/dao/FileDao.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="19" column="5" lean-forward="false" selection-start-line="19" selection-start-column="5" selection-end-line="19" selection-end-column="5" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/service/RememberService.java">
+    <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/dao/GroupDao.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-256">
-          <caret line="4" column="2" lean-forward="false" selection-start-line="4" selection-start-column="2" selection-end-line="4" selection-end-column="2" />
+        <state relative-caret-position="400">
+          <caret line="37" column="32" lean-forward="false" selection-start-line="37" selection-start-column="32" selection-end-line="37" selection-end-column="32" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/service/GroupService.java">
+    <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/dao/RememberDao.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2450">
-          <caret line="8" column="2" lean-forward="false" selection-start-line="8" selection-start-column="2" selection-end-line="8" selection-end-column="2" />
+        <state relative-caret-position="475">
+          <caret line="19" column="25" lean-forward="true" selection-start-line="19" selection-start-column="25" selection-end-line="19" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/dao/ReplyDao.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="500">
+          <caret line="22" column="19" lean-forward="false" selection-start-line="22" selection-start-column="19" selection-end-line="22" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/dao/ReportDao.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="475">
+          <caret line="21" column="6" lean-forward="false" selection-start-line="21" selection-start-column="6" selection-end-line="21" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/dao/TopicDao.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="550">
+          <caret line="25" column="6" lean-forward="false" selection-start-line="25" selection-start-column="6" selection-end-line="25" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/dao/UserDao.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="575">
+          <caret line="26" column="9" lean-forward="true" selection-start-line="26" selection-start-column="9" selection-end-line="26" selection-end-column="9" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/service/FileService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-781">
-          <caret line="60" column="12" lean-forward="false" selection-start-line="60" selection-start-column="12" selection-end-line="60" selection-end-column="12" />
+        <state relative-caret-position="575">
+          <caret line="88" column="19" lean-forward="false" selection-start-line="88" selection-start-column="19" selection-end-line="88" selection-end-column="19" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/service/GroupService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="500">
+          <caret line="165" column="6" lean-forward="false" selection-start-line="165" selection-start-column="6" selection-end-line="165" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/service/RememberService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="575">
+          <caret line="28" column="6" lean-forward="false" selection-start-line="28" selection-start-column="6" selection-end-line="28" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/service/ReplyService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="550">
+          <caret line="94" column="6" lean-forward="false" selection-start-line="94" selection-start-column="6" selection-end-line="94" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/service/ReportService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="603">
+          <caret line="105" column="12" lean-forward="true" selection-start-line="105" selection-start-column="12" selection-end-line="105" selection-end-column="12" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/service/TopicService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1350">
-          <caret line="76" column="0" lean-forward="false" selection-start-line="76" selection-start-column="0" selection-end-line="76" selection-end-column="0" />
+        <state relative-caret-position="575">
+          <caret line="104" column="0" lean-forward="true" selection-start-line="104" selection-start-column="0" selection-end-line="104" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/service/UserService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="430" column="18" lean-forward="false" selection-start-line="430" selection-start-column="18" selection-end-line="430" selection-end-column="18" />
+        <state relative-caret-position="875">
+          <caret line="420" column="9" lean-forward="false" selection-start-line="420" selection-start-column="9" selection-end-line="420" selection-end-column="9" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/util/CheckUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="544">
+          <caret line="27" column="22" lean-forward="false" selection-start-line="27" selection-start-column="22" selection-end-line="27" selection-end-column="22" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/util/CookieUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="694">
+          <caret line="45" column="33" lean-forward="false" selection-start-line="45" selection-start-column="33" selection-end-line="45" selection-end-column="33" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/util/BeanUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="475">
+          <caret line="97" column="26" lean-forward="false" selection-start-line="97" selection-start-column="26" selection-end-line="97" selection-end-column="26" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/zkyyo/www/util/Pbkdf2Util.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="525">
+          <caret line="21" column="33" lean-forward="false" selection-start-line="21" selection-start-column="33" selection-end-line="21" selection-end-column="33" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

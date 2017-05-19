@@ -463,6 +463,25 @@ public class UserDaoJdbcImpl implements UserDao {
     }
 
     @Override
+    public void deleteRoleInUser(int userId, String role) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            conn = dataSource.getConnection();
+            String sql = "DELETE FROM user_role WHERE user_id=? AND role=?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, userId);
+            pstmt.setString(2, role);
+            pstmt.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, pstmt);
+        }
+    }
+
+    @Override
     public void update(UserPo userPo, List<Integer> updatedTypes) {
         Connection conn = null;
         PreparedStatement pstmt = null;

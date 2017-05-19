@@ -1,5 +1,6 @@
 package com.zkyyo.www.web.controller;
 
+import com.zkyyo.www.dao.impl.UserDaoJdbcImpl;
 import com.zkyyo.www.service.UserService;
 import com.zkyyo.www.web.Access;
 
@@ -11,13 +12,16 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet(
-        name = "AdminAddServlet",
-        urlPatterns = {"/admin_add.do"}
+        name = "AdminDeleteServlet",
+        urlPatterns = {"/admin_delete.do"}
 )
-public class AdminAddServlet extends HttpServlet {
+public class AdminDeleteServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String userId = request.getParameter("userId");
-        String rootPwd = request.getParameter("root");
         Access access = (Access) request.getSession().getAttribute("access");
 
         UserService userService = (UserService) getServletContext().getAttribute("userService");
@@ -27,22 +31,9 @@ public class AdminAddServlet extends HttpServlet {
         }
 
         int uId = Integer.valueOf(userId);
-        String message;
-        if (userService.isUserInRole(uId, "admin")) {
-            message = "加冕失败, 该用户已是管理员";
-        } else {
-            boolean isAdded = userService.addAdmin(access.getUserId(), rootPwd, uId);
-            if (isAdded) {
-                message = "加冕成功";
-            } else {
-                message = "加冕失败, root输入有误";
-            }
+        if (access.getUserId() != uId) {
+            userService.removeRoleInUser(uId, UserDaoJdbcImpl.ROLE_ADMIN);
         }
-        request.setAttribute("message", message);
-        request.getRequestDispatcher("message.jsp").forward(request, response);
-    }
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        response.sendRedirect("admin_manage_info.do");
     }
 }

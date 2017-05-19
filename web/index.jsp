@@ -14,27 +14,6 @@
 
 <h1>公共讨论区</h1>
 
-<%--
-<c:url value="topic_find.do" var="privateTopicUrl">
-    <c:param name="type" value="private"/>
-</c:url>
-<c:url value="topic_find.do" var="publicTopicUrl">
-    <c:param name="type" value="public"/>
-</c:url>
-
-<c:choose><%@ include file="/WEB-INF/header_user.jsp" %>
-    <c:when test="${requestScope.type == 'private'}">
-        <h1>授权讨论区</h1>
-        <a href="${publicTopicUrl}">进入公共讨论区</a>
-    </c:when>
-    <c:otherwise>
-        <h1>公共讨论区</h1>
-        <a href="${privateTopicUrl}">进入授权讨论区</a>
-    </c:otherwise>
-</c:choose>
---%>
-
-
 <form method="get" action="topic_find.do">
     搜索讨论区: <input type="text" name="search" value="${requestScope.search}"/>
     <input type="submit"/>

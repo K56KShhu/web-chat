@@ -88,29 +88,32 @@
             <td>${user.email}</td>
             <td>${user.statusStr}</td>
             <td>${user.created}</td>
-            <c:if test="${user.status == 1}">
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td><a href="${userForbiddenUrl}">封印</a></td>
-                <td>&nbsp;</td>
-            </c:if>
-            <c:if test="${user.status == 0}">
-                <td><a href="${userNotApprovedUrl}">审核不通过</a></td>
-                <td><a href="${userNormalUrl}">审核通过</a></td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-            </c:if>
-            <c:if test="${user.status == -1}">
-                <td>&nbsp;</td>
-                <td><a href="${userNormalUrl}">审核通过</a></td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-            </c:if>
-            <c:if test="${user.status == -2}">
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td><a href="${userNormalUrl}">解除封印</a></td>
+            <%--页面层排除对本账号进行操作--%>
+            <c:if test="${sessionScope.access.userId != user.userId}">
+                <c:if test="${user.status == 1}">
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td><a href="${userForbiddenUrl}">封印</a></td>
+                    <td>&nbsp;</td>
+                </c:if>
+                <c:if test="${user.status == 0}">
+                    <td><a href="${userNotApprovedUrl}">审核不通过</a></td>
+                    <td><a href="${userNormalUrl}">审核通过</a></td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </c:if>
+                <c:if test="${user.status == -1}">
+                    <td>&nbsp;</td>
+                    <td><a href="${userNormalUrl}">审核通过</a></td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </c:if>
+                <c:if test="${user.status == -2}">
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td><a href="${userNormalUrl}">解除封印</a></td>
+                </c:if>
             </c:if>
         </tr>
     </c:forEach>

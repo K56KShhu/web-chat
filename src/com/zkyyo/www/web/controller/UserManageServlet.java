@@ -1,6 +1,7 @@
 package com.zkyyo.www.web.controller;
 
 import com.zkyyo.www.service.UserService;
+import com.zkyyo.www.web.Access;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -34,7 +35,15 @@ public class UserManageServlet extends HttpServlet {
             if (userService.isValidUserId(userId) && userService.isUserExisted(Integer.valueOf(userId))) {
                 int uStatus = Integer.valueOf(status);
                 int id = Integer.valueOf(userId);
-//                search = new String(search.getBytes("UTF-8"), "ISO-8859-1");
+
+                //代码层防止管理员对自己的账号进行操作
+                Access access = (Access) request.getSession().getAttribute("access");
+                if (access.getUserId() == id) {
+                    response.sendRedirect("admin_index.jsp");
+                    return;
+                }
+
+                //search = new String(search.getBytes("UTF-8"), "ISO-8859-1");
                 search = URLEncoder.encode(search, "UTF-8");
                 String url = "user_manage_info.do?search=" + search + "&order=" + order + "&page=" + page
                         + "&isReverse=" + isReverse + "&statusSearch=" + statusSearch;

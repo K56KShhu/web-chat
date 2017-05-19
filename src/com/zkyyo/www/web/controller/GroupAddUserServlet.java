@@ -30,7 +30,7 @@ public class GroupAddUserServlet extends HttpServlet {
             int gId = Integer.valueOf(groupId);
             int uId = Integer.valueOf(userId);
             if (groupService.isExisted(gId) && userService.isUserExisted(uId)) {
-                if (!userService.isUserInGroup(gId, uId)) {
+                if (!userService.isUserInGroup(uId, gId)) {
                     groupService.addUser(gId, uId);
                     message = "添加成功";
                 } else {

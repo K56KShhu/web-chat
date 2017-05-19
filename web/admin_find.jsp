@@ -6,15 +6,33 @@
 </head>
 <body>
 
+<%@ include file="/WEB-INF/header_admin.jsp" %>
+
+<div style="text-align: right">
+    <a href="admin_manage_info.do">返回</a>
+</div>
+
 <h1>admin find</h1>
 
 <form method="get" action="admin_find.do">
-    完整加冕者的完整用户名: <input type="text" name="username"/>
+    完整加冕者的完整用户名: <input type="text" name="username" value="${requestScope.username}"/>
     <input type="submit"/>
 </form>
 
 <c:if test="${requestScope.user != null}">
-    查询结果如下, 如若批准, 请输入root密码进行验证:
+    <c:choose>
+        <c:when test="${requestScope.isAdmin}">
+            该用户已成为管理员
+        </c:when>
+        <c:otherwise>
+            查询结果如下, 如若批准, 请输入root密码进行验证:
+            <form method="post" action="admin_add.do">
+                <input type="hidden" name="userId" value="${requestScope.user.userId}"/>
+                root: <input type="password" name="root"/>
+                <input type="submit"/>
+            </form>
+        </c:otherwise>
+    </c:choose>
     <table border="1">
         <tr>
             <th>username</th>
@@ -37,12 +55,6 @@
             <td>${requestScope.user.created}</td>
         </tr>
     </table>
-
-    <form method="post" action="admin_add.do">
-        <input type="hidden" name="userId" value="${requestScope.user.userId}"/>
-        root: <input type="password" name="root"/>
-        <input type="submit"/>
-    </form>
 </c:if>
 
 </body>

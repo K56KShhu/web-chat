@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 @WebServlet(
         name = "GroupFindUserServlet",
@@ -22,17 +21,6 @@ public class GroupFindUserServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        /*
-        String search = request.getParameter("search");
-
-        if (search != null && search.trim().length() > 0) {
-            UserService userService = (UserService) getServletContext().getAttribute("userService");
-            List<UserPo> users = userService.fuzzySearchUsers(search);
-            request.setAttribute("search", search);
-            request.setAttribute("users", users);
-        }
-        request.getRequestDispatcher("group_find_user.jsp").forward(request, response);
-        */
         String search = request.getParameter("search");
         String page = request.getParameter("page");
         String groupId = request.getParameter("groupId");
@@ -42,7 +30,6 @@ public class GroupFindUserServlet extends HttpServlet {
         }
         if (search != null && search.trim().length() > 0) {
             UserService userService = (UserService) getServletContext().getAttribute("userService");
-//            PageBean<UserPo> pageBean = userService.queryUsers(search, currentPage);
             PageBean<UserPo> pageBean = userService.queryUsers(UserService.STATUS_NORMAL, currentPage, search);
             request.setAttribute("pageBean", pageBean);
         }

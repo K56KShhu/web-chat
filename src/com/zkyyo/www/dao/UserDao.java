@@ -10,6 +10,8 @@ public interface UserDao {
 
     void addUser(UserPo userPo);
 
+    void deleteRoleInUser(int userId, String role);
+
     UserPo selectUserByUserId(int id);
 
     UserPo selectUserByUsername(String username);

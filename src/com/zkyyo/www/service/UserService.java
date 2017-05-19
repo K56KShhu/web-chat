@@ -130,6 +130,10 @@ public class UserService {
         return false;
     }
 
+    public void removeRoleInUser(int userId, String role) {
+        userDao.deleteRoleInUser(userId, role);
+    }
+
     public UserPo getUser(int userId) {
         return userDao.selectUserByUserId(userId);
     }
@@ -202,7 +206,17 @@ public class UserService {
         return userDao.selectUsersByGroup(groupId);
     }
 
-    public boolean isUserInGroup(int groupId, int userId) {
+    public boolean isUserInRole(int userId, String role) {
+        Set<String> roles = getRoles(userId);
+        for (String r : roles) {
+            if (role.equals(r)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isUserInGroup(int userId, int groupId) {
         Set<Integer> groups = getGroups(userId);
         for (int group : groups) {
             if (groupId == group) {

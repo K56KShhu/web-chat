@@ -26,9 +26,13 @@ public class AdminFindServlet extends HttpServlet {
         UserService userService = (UserService) getServletContext().getAttribute("userService");
         UserPo userPo = userService.getUser(username);
         if (userPo != null) {
+            if (userService.isUserInRole(userPo.getUserId(), "admin")) {
+                request.setAttribute("isAdmin", true);
+            }
             UserVo userVo = BeanUtil.userPoToVo(userPo);
             request.setAttribute("user", userVo);
         }
+        request.setAttribute("username", username);
         request.getRequestDispatcher("admin_find.jsp").forward(request, response);
     }
 }

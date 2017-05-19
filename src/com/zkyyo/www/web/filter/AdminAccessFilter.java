@@ -30,7 +30,41 @@ import java.io.IOException;
                 //用户操作
                 "/user_audit.jsp",
                 "/user_detail_admin.jsp",
-                "/user_manage.jsp"
+                "/user_manage.jsp",
+                //管理员操作
+                "/admin_manage.jsp"
+        },
+        servletNames = {
+                //文件操作
+                "FileDeleteServlet",
+                //小组操作
+                "GroupAddServlet",
+                "GroupAddUserServlet",
+                "GroupDeleteServlet",
+                "GroupDetailServlet",
+                "GroupFindUserServlet",
+                "GroupManageInfoServlet",
+                "GroupRemoveTopicServlet",
+                "GroupRemoveUserServlet",
+                //回复操作
+                "ReplyDeleteServlet",
+                //举报操作
+                "ReportContentDeleteServlet",
+                "ReportDeleteServlet",
+                "ReportDetailServlet",
+                "ReportManageInfoServlet",
+                //讨论区操作
+                "TopicAddGroupServlet",
+                "TopicAddServlet",
+                "TopicDeleteServlet",
+                "TopicDetailServlet",
+                "TopicFindGroupServlet",
+                "TopicManageInfoServlet",
+                "TopicUpdateInfoServlet",
+                "TopicUpdateServlet",
+                //用户操作
+                "UserAuditServlet",
+                "UserManageInfoServlet"
         }
 )
 public class AdminAccessFilter extends GeneralAccessFilter {

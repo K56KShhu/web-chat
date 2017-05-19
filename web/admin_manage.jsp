@@ -8,9 +8,11 @@
 
 <%@ include file="/WEB-INF/header_admin.jsp" %>
 
-<div style="text-align: right">
-    <a href="admin_find.jsp">加冕管理员</a>
-</div>
+<c:if test="${sessionScope.access.isUserInRole('root')}">
+    <div style="text-align: right">
+        <a href="admin_find.jsp">加冕管理员</a>
+    </div>
+</c:if>
 
 <h1>admin manage</h1>
 
@@ -25,20 +27,19 @@
         <th>status</th>
     </tr>
     <c:forEach var="user" items="${requestScope.users}">
-        <c:url value="admin_delete.do" var="deleteAdminUrl">
-            <c:param name="userId" value="${user.userId}"/>
-        </c:url>
         <tr>
             <td>${user.username}</td>
             <td>${user.sex}</td>
             <td>${user.statusStr}</td>
-            <c:if test="${sessionScope.access.userId != user.userId}">
+            <c:if test="${sessionScope.access.isUserInRole('root') && sessionScope.access.userId != user.userId}">
+                <c:url value="admin_delete.do" var="deleteAdminUrl">
+                    <c:param name="userId" value="${user.userId}"/>
+                </c:url>
                 <td><a href="${deleteAdminUrl}">撤销管理员</a></td>
             </c:if>
         </tr>
     </c:forEach>
 </table>
-
 
 </body>
 </html>

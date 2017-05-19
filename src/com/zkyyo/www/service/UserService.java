@@ -31,7 +31,9 @@ public class UserService {
 
     private static final int MAX_ID_LENGTH = 10;
     private static final int MAX_USERNAME_LENGTH = 16;
-    private static final int MIN_USERNAME_LENGTH = 8;
+    private static final int MIN_USERNAME_LENGTH = 3;
+    private static final int MAX_PASSWORD_LENGTH = 16;
+    private static final int MIN_PASSWORD_LENGTH = 3;
 
     private UserDao userDao;
 
@@ -62,12 +64,12 @@ public class UserService {
         return CheckUtil.isValidString(username, MIN_USERNAME_LENGTH, MAX_USERNAME_LENGTH);
     }
 
-    public boolean isValidPassword(String psw, String cpsw) {
-        if (psw == null || cpsw == null) {
+    public boolean isValidPassword(String pwd, String cpwd) {
+        if (pwd == null || cpwd == null) {
             return false;
         }
-        if (psw.length() >= 8 && psw.length() <= 16) {
-            if (psw.equals(cpsw)) {
+        if (CheckUtil.isValidString(pwd, MIN_PASSWORD_LENGTH, MAX_PASSWORD_LENGTH)) {
+            if (pwd.equals(cpwd)) {
                 return true;
             }
         }
@@ -298,11 +300,5 @@ public class UserService {
         updateTypes.add(UserDaoJdbcImpl.UPDATE_STATUS);
         userDao.update(user, updateTypes);
     }
-
-    /*
-    public List<UserPo> fuzzySearchUsers(String search) {
-        return userDao.selectPossibleUsersByUsername(search.trim());
-    }
-    */
 }
 

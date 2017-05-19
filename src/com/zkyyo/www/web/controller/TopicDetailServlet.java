@@ -17,6 +17,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * 该Servlet用于处理获取讨论区细节信息的请求
+ */
 @WebServlet(
         name = "TopicDetailServlet",
         urlPatterns = {"/topic_detail.do"}
@@ -27,22 +30,27 @@ public class TopicDetailServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String topicId = request.getParameter("topicId");
+        String topicId = request.getParameter("topicId"); //讨论区ID
 
         TopicService topicService = (TopicService) getServletContext().getAttribute("topicService");
+        //判断讨论区是否存在
         if (!topicService.isValidId(topicId) || !topicService.isExisted(Integer.valueOf(topicId))) {
             response.sendRedirect("index.jsp");
             return;
         }
 
         int tId = Integer.valueOf(topicId);
+        //获取讨论区信息
         TopicPo topicPo = topicService.findTopic(tId);
         UserService userService = (UserService) getServletContext().getAttribute("userService");
+        //获取创建者用户信息
         UserPo creator = userService.findUser(topicPo.getCreatorId());
+        //获取最后修改者用户信息
         UserPo modifier = userService.findUser(topicPo.getLastModifyId());
+        //将topicPo转换为topicVo
         TopicVo topicVo = BeanUtil.topicPoToVo(topicPo, creator, modifier);
-
         GroupService groupService = (GroupService) getServletContext().getAttribute("groupService");
+        //获取该讨论区授权的所有小组信息
         List<GroupPo> groups = groupService.queryGroupsByTopic(tId);
 
         request.setAttribute("topic", topicVo);

@@ -16,12 +16,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * 该Servlet用于处理用户登录的请求
+ */
 @WebServlet(
         name = "Login",
         urlPatterns = {"/login.do"}
 )
 public class LoginServlet extends HttpServlet {
+    /**
+     * 自动登录的Cookie Name
+     */
     private String LOGIN_COOKIE_NAME;
+    /**
+     * 自动登录持续时间
+     */
     private int STAY_LOGGED_TIME;
 
     public void init() throws ServletException {
@@ -30,62 +39,35 @@ public class LoginServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        /*
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-
-        List<String> errors = new ArrayList<>();
-        UserService userService = (UserService) getServletContext().getAttribute("userService");
-        //检查信息合法性
-        if (!userService.isValidUsername(username) || !userService.isValidPassword(password)) {
-            errors.add("用户名或密码输入有误");
-            request.setAttribute("errors", errors);
-            request.getRequestDispatcher("login.jsp").forward(request, response);
-            return;
-        }
-
-        //若信息输入合法, 开始比对数据库中信息
-        UserPo user = new UserPo(username, password);
-        if (userService.checkLogin(user)) {
-            Access access = userService.getAccess(username);
-            if (access.getStatus() == UserService.STATUS_NORMAL) {
-                request.getSession().setAttribute("access", access);
-                response.sendRedirect("index.jsp");
-                return;
-            } else if (access.getStatus() == UserService.STATUS_AUDIT) {
-                errors.add("该账号正在审核中");
-            } else if (access.getStatus() == UserService.STATUS_NOT_APPROVED) {
-                errors.add("该账号审核不通过");
-            } else if (access.getStatus() == UserService.STATUS_FORBIDDEN) {
-                errors.add("该账号已被封印");
-            }
-        } else {
-            errors.add("用户名或密码输入有误");
-        }
-        request.setAttribute("errors", errors);
-        request.getRequestDispatcher("login.jsp").forward(request, response);
-        */
-
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        boolean remember = "true".equals(request.getParameter("remember"));
+        String username = request.getParameter("username"); //输入的用户名
+        String password = request.getParameter("password"); //输入的密码
+        boolean remember = "true".equals(request.getParameter("remember")); //是否自动登录 true自动, false不自动
 
         UserService userService = (UserService) getServletContext().getAttribute("userService");
         RememberService rememberService = (RememberService) getServletContext().getAttribute("rememberService");
         List<String> errors = new ArrayList<>();
         UserPo user = new UserPo(username, password);
 
+        //判断用户输入用户名, 密码是否正确
         if (userService.checkLogin(user)) {
             Access access = userService.getAccess(username);
+            //判断账号状态
             if (access.getStatus() == UserService.STATUS_NORMAL) {
+                //状态正常
+                //判断是否自动登录
                 if (remember) {
                     String uuid = UUID.randomUUID().toString();
+                    //向数据库中保存Cookie Value和用户名
                     rememberService.save(uuid, username);
+                    //向响应中添加Cookie
                     CookieUtil.addCookie(response, LOGIN_COOKIE_NAME, uuid, STAY_LOGGED_TIME);
                 } else {
+                    //删除数据库中储存的Cookie Value和用户名
                     rememberService.delete(username);
+                    //设置客户机自动登录相关Cookie存活期为内存时间
                     CookieUtil.removeCookie(response, LOGIN_COOKIE_NAME);
                 }
+                //保存权限
                 request.getSession().setAttribute("access", access);
                 response.sendRedirect("index.jsp");
                 return;

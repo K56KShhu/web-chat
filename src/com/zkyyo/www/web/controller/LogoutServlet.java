@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+/**
+ * 该Servlet用于处理用户注销, 取消自动登录的请求
+ */
 @WebServlet(
         name = "LogoutServlet",
         urlPatterns = {"/logout.do"}

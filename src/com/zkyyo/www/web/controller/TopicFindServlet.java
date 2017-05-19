@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * 该Servlet用于简单查询讨论区的请求
+ */
 @WebServlet(
         name = "TopicFindServlet",
         urlPatterns = {"/topic_find.do"}
@@ -21,19 +24,17 @@ public class TopicFindServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String search = request.getParameter("search");
-        String page = request.getParameter("page");
-        String orderStr = request.getParameter("order");
-        String isReverseStr = request.getParameter("isReverse");
+        String search = request.getParameter("search"); //查询内容
+        String page = request.getParameter("page"); //请求页数
+        String orderStr = request.getParameter("order"); //排序依据
+        boolean isReverse = "true".equals(request.getParameter("isReverse")); //是否倒序, true倒序, false升序
 
         //处理页数
         int currentPage = 1;
         if (page != null) {
             currentPage = Integer.valueOf(page);
         }
-        //升降序依据
-        boolean isReverse = "true".equals(isReverseStr);
-        //排序依据
+        //判断排序依据
         int order;
         if ("replyAccount".equals(orderStr)) {
             order = TopicService.ORDER_BY_REPLY_ACCOUNT;
@@ -45,13 +46,14 @@ public class TopicFindServlet extends HttpServlet {
             order = TopicService.ORDER_BY_CREATED;
         }
 
-        //获得数据
         TopicService topicService = (TopicService) getServletContext().getAttribute("topicService");
         PageBean<TopicPo> pageBeanPo;
         //判断搜索方式
-        if (search != null && search.trim().length() > 0) { //根据关键词搜索, 无法进行排序
+        if (search != null && search.trim().length() > 0) {
+            //通过关键字查询, 无法进行排序
             pageBeanPo = topicService.queryTopics(TopicService.ACCESS_PUBLIC, currentPage, search);
-        } else { //根据排序搜索
+        } else {
+            //通过排序搜索
             pageBeanPo = topicService.queryTopics(TopicService.ACCESS_PUBLIC, currentPage, order, isReverse);
         }
 

@@ -16,16 +16,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 该Servlet用于处理添加举报的请求
+ */
 @WebServlet(
         name = "ReportAddServlet",
         urlPatterns = {"/report_add.do"}
 )
 public class ReportAddServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String contentId = request.getParameter("contentId");
-        String contentType = request.getParameter("contentType");
-        String reason = request.getParameter("reason");
-        Access access = (Access) request.getSession().getAttribute("access");
+        String contentId = request.getParameter("contentId"); //举报内容ID
+        String contentType = request.getParameter("contentType"); //举报类型
+        String reason = request.getParameter("reason"); //举报原因
+        Access access = (Access) request.getSession().getAttribute("access"); //操作者权限对象
         int userId = access.getUserId();
 
         ReportService reportService = (ReportService) getServletContext().getAttribute("reportService");
@@ -33,7 +36,10 @@ public class ReportAddServlet extends HttpServlet {
         FileService fileService = (FileService) getServletContext().getAttribute("fileService");
         int id;
         int type;
+        //判断举报类型
         if ("reply".equals(contentType)) {
+            //举报回复信息
+            //判断回复是否存在
             if (!replyService.isValidId(contentId) || !replyService.isExisted(Integer.valueOf(contentId))) {
                 response.sendRedirect("index.jsp");
                 return;
@@ -42,6 +48,8 @@ public class ReportAddServlet extends HttpServlet {
                 type = ReportDaoJdbcImpl.CONTENT_TYPE_REPLY;
             }
         } else if ("image".equals(contentType)) {
+            //举报分享区图片
+            //判断分享区图片是否存在
             if (!fileService.isValidId(contentId) || !fileService.isExisted(Integer.valueOf(contentId))) {
                 response.sendRedirect("index.jsp");
                 return;
@@ -50,6 +58,8 @@ public class ReportAddServlet extends HttpServlet {
                 type = ReportDaoJdbcImpl.CONTENT_TYPE_SHARE_IMAGE;
             }
         } else if ("file".equals(contentType)) {
+            //举报分享区文件
+            //判断分享区文件是否存在
             if (!fileService.isValidId(contentId) || !fileService.isExisted(Integer.valueOf(contentId))) {
                 response.sendRedirect("index.jsp");
                 return;
@@ -63,9 +73,11 @@ public class ReportAddServlet extends HttpServlet {
         }
 
         List<String> errors = new ArrayList<>();
+        //判断举报原因是否合法
         if (!reportService.isValidReason(reason)) {
             errors.add("bad reason");
         }
+        //判断输入是否有误
         if (errors.isEmpty()) {
             ReportPo report = new ReportPo();
             report.setContentId(id);

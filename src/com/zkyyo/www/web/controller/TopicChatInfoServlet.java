@@ -21,14 +21,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * 该Servlet用于获取讨论区聊天信息的请求
+ */
 @WebServlet(
         name = "TopicChatInfoServlet",
         urlPatterns = {"/topic_chat_info.do"}
 )
 public class TopicChatInfoServlet extends HttpServlet {
     private void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String topicId = request.getParameter("topicId");
-        String page = request.getParameter("page");
+        String topicId = request.getParameter("topicId"); //讨论区ID
+        String page = request.getParameter("page"); //请求页数
         if (topicId == null) {
             topicId = (String) request.getAttribute("topicId");
         }
@@ -37,7 +40,7 @@ public class TopicChatInfoServlet extends HttpServlet {
             currentPage = Integer.valueOf(page);
         }
 
-        //检查讨论区是否存在
+        //判断讨论区是否存在
         TopicService topicService = (TopicService) getServletContext().getAttribute("topicService");
         if (!topicService.isValidDescription(topicId) || !topicService.isExisted(Integer.valueOf(topicId))) {
             response.sendRedirect("index.jsp");
@@ -45,18 +48,20 @@ public class TopicChatInfoServlet extends HttpServlet {
         }
         int tId = Integer.valueOf(topicId);
 
-        //验证用户权限
+        //验证用户权限, 允许的权限为admin或位于授权的小组中
         Access access = (Access) request.getSession().getAttribute("access");
         Set<Integer> groups = topicService.getGroups(tId);
         if (topicService.isPrivate(tId) && !access.isUserApprovedInTopic("admin", groups)) {
             response.sendRedirect("index.jsp");
             return;
         }
+
         //获取讨论区信息
         TopicPo topic = topicService.findTopic(Integer.valueOf(topicId));
-        //获取回复信息
         ReplyService replyService = (ReplyService) getServletContext().getAttribute("replyService");
+        //获取封装回复信息的分页对象
         PageBean<ReplyPo> pageBeanPo = replyService.findReplys(tId, currentPage);
+        //将ReplyPo转换为ReplyVo
         List<ReplyPo> replyPos = pageBeanPo.getList();
         List<ReplyVo> replyVos = new ArrayList<>();
         UserService userService = (UserService) getServletContext().getAttribute("userService");
@@ -64,42 +69,12 @@ public class TopicChatInfoServlet extends HttpServlet {
             UserPo userPo = userService.findUser(replyPo.getUserId());
             replyVos.add(BeanUtil.replyPoToVo(replyPo, userPo));
         }
+        //重构分页对象
         PageBean<ReplyVo> pageBeanVo = BeanUtil.pageBeanListTranslate(pageBeanPo, replyVos);
+
         request.setAttribute("topic", topic);
         request.setAttribute("pageBean", pageBeanVo);
         request.getRequestDispatcher("topic_chat.jsp").forward(request, response);
-
-        /*
-        if (topicService.isValidId(topicId)) {
-            int tId = Integer.valueOf(topicId);
-            Access access = (Access) request.getSession().getAttribute("access");
-            Set<Integer> groups = topicService.getGroups(tId);
-            if (!access.isUserApprovedInTopic("admin", groups)) {
-                response.sendRedirect("index.jsp");
-                return;
-            }
-
-            if (topicService.isExisted(tId)) {
-                //获取主题信息
-                TopicPo topic = topicService.findTopic(Integer.valueOf(topicId));
-                //获取回复信息
-                PageBean<ReplyPo> pageBeanPo = replyService.findReplys(tId, currentPage);
-                List<ReplyPo> replyPos = pageBeanPo.getList();
-                List<ReplyVo> replyVos = new ArrayList<>();
-                UserPo userPo;
-                for (ReplyPo replyPo : replyPos) {
-                    userPo = userService.findUser(replyPo.getUserId());
-                    replyVos.add(BeanUtil.replyPoToVo(replyPo, userPo));
-                }
-                PageBean<ReplyVo> pageBeanVo = BeanUtil.pageBeanListTranslate(pageBeanPo, replyVos);
-                request.setAttribute("topic", topic);
-                request.setAttribute("pageBean", pageBeanVo);
-                request.getRequestDispatcher("topic_chat.jsp").forward(request, response);
-            }
-        } else {
-            response.sendRedirect("index.jsp");
-        }
-        */
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

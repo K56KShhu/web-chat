@@ -11,11 +11,17 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * 该Servlet用于处理删除指定文件的请求
+ */
 @WebServlet(
         name = "FileDeleteServlet",
         urlPatterns = {"/file_delete.do"}
 )
 public class FileDeleteServlet extends HttpServlet {
+    /**
+     * 存放讨论区文件的根目录
+     */
     private String TOPIC_DIR;
 
     public void init() throws ServletException {
@@ -31,9 +37,10 @@ public class FileDeleteServlet extends HttpServlet {
 
         FileService fileService = (FileService) getServletContext().getAttribute("fileService");
         String message = "文件不存在";
-        //检测文件ID是否合法且存在
+        //检测文件ID是否合法
         if (fileService.isValidId(fileId)) {
             int fId = Integer.valueOf(fileId);
+            //检查文件是否存在
             if (fileService.isExisted(fId)) {
                 FilePo file = fileService.findFile(fId);
                 String relativePath = file.getPath();

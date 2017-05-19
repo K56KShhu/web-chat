@@ -15,6 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * 该Servlet用于处理获取小组细节信息的请求
+ */
 @WebServlet(
         name = "GroupDetailServlet",
         urlPatterns = {"/group_detail.do"}
@@ -25,16 +28,20 @@ public class GroupDetailServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String groupId = request.getParameter("groupId");
+        String groupId = request.getParameter("groupId"); //小组ID
 
         GroupService groupService = (GroupService) getServletContext().getAttribute("groupService");
         UserService userService = (UserService) getServletContext().getAttribute("userService");
         TopicService topicService = (TopicService) getServletContext().getAttribute("topicService");
+        //判断小组ID是否合法
         if (groupService.isValidId(groupId)) {
             int gId = Integer.valueOf(groupId);
+            //判断小组是否存在
             if (groupService.isExisted(gId)) {
                 GroupPo group = groupService.findGroup(gId);
+                //获取该小组下所有用户的信息
                 List<UserPo> users = userService.queryUsersByGroup(gId);
+                //获取授权该小组的所有讨论区信息
                 List<TopicPo> topics = topicService.queryTopicsByGroup(gId);
                 request.setAttribute("group", group);
                 request.setAttribute("users", users);

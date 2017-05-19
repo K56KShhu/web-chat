@@ -14,6 +14,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 该Servlet用于获取角色为admin的用户信息
+ */
 @WebServlet(
         name = "AdminManageInfoServlet",
         urlPatterns = {"/admin_manage_info.do"}
@@ -28,6 +31,7 @@ public class AdminManageInfoServlet extends HttpServlet {
         List<UserPo> userPos = userService.queryUsersByRole("admin");
         List<UserVo> userVos = new ArrayList<>();
         for (UserPo userPo : userPos) {
+            //将userPo转化为userVo
             userVos.add(BeanUtil.userPoToVo(userPo));
         }
         request.setAttribute("users", userVos);

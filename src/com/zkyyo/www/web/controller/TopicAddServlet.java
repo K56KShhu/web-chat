@@ -14,20 +14,24 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 该Servlet用于处理创建讨论区的请求
+ */
 @WebServlet(
         name = "TopicAddServlet",
         urlPatterns = {"/topic_add.do"}
 )
 public class TopicAddServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String title = request.getParameter("title");
-        String description = request.getParameter("description");
-        String typeStr = request.getParameter("type");
-        Access access = (Access) request.getSession().getAttribute("access");
+        String title = request.getParameter("title"); //标题
+        String description = request.getParameter("description"); //描述
+        String typeStr = request.getParameter("type"); //讨论区类型
+        Access access = (Access) request.getSession().getAttribute("access"); //操作者权限对象
         int userId = access.getUserId();
 
         TopicService topicService = (TopicService) getServletContext().getAttribute("topicService");
         List<String> errors = new ArrayList<>();
+        //判断讨论区类型是否合法
         int type = TopicDaoJdbcImpl.ACCESS_PUBLIC;
         if ("public".equals(typeStr)) {
             type = TopicDaoJdbcImpl.ACCESS_PUBLIC;
@@ -36,13 +40,16 @@ public class TopicAddServlet extends HttpServlet {
         } else {
             errors.add("bad type");
         }
+        //判断讨论区标题是否合法
         if (!topicService.isValidTitle(title)) {
             errors.add("bad title");
         }
+        //判断讨论区描述是否合法
         if (!topicService.isValidDescription(description)) {
             errors.add("bad description");
         }
 
+        //判断输入是否合法
         if (errors.isEmpty()) {
             TopicPo topic = new TopicPo();
             topic.setTitle(title);

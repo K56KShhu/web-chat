@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * 该Servlet用于处理获取举报内容位置的请求
+ */
 @WebServlet(
         name = "ReportDetailServlet",
         urlPatterns = {"/report_detail.do"}
@@ -26,24 +29,31 @@ public class ReportDetailServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String contentId = request.getParameter("contentId");
-        String contentType = request.getParameter("contentType");
+        String contentId = request.getParameter("contentId"); //举报内容ID
+        String contentType = request.getParameter("contentType"); //举报类型
 
         ReplyService replyService = (ReplyService) getServletContext().getAttribute("replyService");
         FileService fileService = (FileService) getServletContext().getAttribute("fileService");
+        //判断举报类型
         if (DETAIL_REPLY.equals(contentType)) {
+            //举报回复
+            //判断回复是否存在
             if (replyService.isValidId(contentId) && replyService.isExisted(Integer.valueOf(contentId))) {
                 ReplyPo replyPo = replyService.findReply(Integer.valueOf(contentId));
                 response.sendRedirect("topic_chat_info.do?topicId=" + replyPo.getTopicId());
                 return;
             }
         } else if (DETAIL_SHARE_IMAGE.equals(contentType)) {
+            //举报分享区图片
+            //判断分享区图片是否存在
             if (fileService.isValidId(contentId) && fileService.isExisted(Integer.valueOf(contentId))) {
                 FilePo filePo = fileService.findFile(Integer.valueOf(contentId));
                 response.sendRedirect("file_list.do?topicId=" + filePo.getTopicId() + "&shareType=image");
                 return;
             }
         } else if (DETAIL_SHARE_FILE.equals(contentType)) {
+            //判断分享区文件
+            //判断分享区文件是否存在
             if (fileService.isValidId(contentId) && fileService.isExisted(Integer.valueOf(contentId))) {
                 FilePo filePo = fileService.findFile(Integer.valueOf(contentId));
                 response.sendRedirect("file_list.do?topicId=" + filePo.getTopicId() + "&shareType=file");
@@ -51,58 +61,5 @@ public class ReportDetailServlet extends HttpServlet {
             }
         }
         response.sendRedirect("index.jsp");
-
-        /*
-        if (contentId == null) {
-            response.sendRedirect("index.jsp");
-            return;
-        }
-        if (DETAIL_REPLY.equals(contentType)) {
-            response.sendRedirect("topic_chat_info.do?topicId=" + contentId);
-        } else if (DETAIL_SHARE_IMAGE.equals(contentType)) {
-            response.sendRedirect("file_list.do?topicId=" + contentId + "&shareType=image");
-        } else if (DETAIL_SHARE_FILE.equals(contentType)) {
-            response.sendRedirect("file_list.do?topicId=" + contentId + "&shareType=file");
-        } else {
-            response.sendRedirect("index.jsp");
-        }
-        */
-        /*
-        //待修改!!!!
-        if (reportService.isValidId(contentId) && reportService.isValidContentType(contentType)) {
-            int id = Integer.valueOf(contentId);
-            int type = Integer.valueOf(contentType);
-            int topicId;
-            ReplyPo reply;
-            FilePo file;
-            ReplyService replyService;
-            FileService fileService;
-            switch (type) {
-                case DETAIL_CHAT:
-                    replyService = (ReplyService) getServletContext().getAttribute("replyService");
-                    reply = replyService.findReply(id);
-                    topicId = reply.getTopicId();
-                    response.sendRedirect("topic_chat_info.do?topicId=" + topicId);
-                    break;
-                case DETAIL_SHARE_IMAGE:
-                    fileService = (FileService) getServletContext().getAttribute("fileService");
-                    file = fileService.findFile(id);
-                    topicId = file.getTopicId();
-                    response.sendRedirect("file_list.do?topicId=" + topicId + "&shareType=image");
-                    break;
-                case DETAIL_SHARE_FILE:
-                    fileService = (FileService) getServletContext().getAttribute("fileService");
-                    file = fileService.findFile(id);
-                    topicId = file.getTopicId();
-                    response.sendRedirect("file_list.do?topicId=" + topicId + "&shareType=file");
-                    break;
-                default:
-                    response.sendRedirect("index.jsp");
-                    break;
-            }
-        } else {
-            response.sendRedirect("index.jsp");
-        }
-        */
     }
 }

@@ -12,44 +12,52 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 该Servlet用于处理注册的请求
+ */
 @WebServlet(
         name = "RegisterServlet",
         urlPatterns = {"/register.do"}
 )
 public class RegisterServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        String confirmedPsw = request.getParameter("confirmedPsw");
-        String sex = request.getParameter("sex");
-        String email = request.getParameter("email");
+        String username = request.getParameter("username"); //用户名
+        String password = request.getParameter("password"); //密码
+        String confirmedPsw = request.getParameter("confirmedPsw"); //二次密码
+        String sex = request.getParameter("sex"); //性别
+        String email = request.getParameter("email"); //邮箱
 
         UserService userService = (UserService) getServletContext().getAttribute("userService");
         List<String> errors = new ArrayList<>();
+        //判断用户名是否合法
         if (!userService.isValidUsername(username)) {
             errors.add("bad username");
         } else {
+            //判断用户名是否存在
             if (userService.isUserExisted(username)) {
                 errors.add("username occupied");
             }
         }
+        //判断密码是否合法且二次密码是否相同
         if (!userService.isValidPassword(password, confirmedPsw)) {
             errors.add("bad password");
         }
+        //判断性别是否合法
         if (!userService.isValidSex(sex)) {
             errors.add("bad sex");
         }
+        //判断邮箱是否合法
         if (!userService.isValidEmail(email)) {
             errors.add("bad email");
         }
 
+        //判断是否输入有误
         if (errors.isEmpty()) {
             UserPo user = new UserPo();
             user.setUsername(username);
             user.setPassword(password);
             user.setSex(sex);
             user.setEmail(email);
-//            user.setStatus(UserService.STATUS_AUDIT); //待审核状态
             userService.addUser(user);
         } else {
             request.setAttribute("username", username);

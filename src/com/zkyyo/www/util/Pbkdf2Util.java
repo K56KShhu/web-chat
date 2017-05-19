@@ -61,14 +61,14 @@ public class Pbkdf2Util {
      */
     private static String createHash(char[] password)
             throws NoSuchAlgorithmException, InvalidKeySpecException {
-        // Generate a random salt
+        //创建随机盐
         SecureRandom random = new SecureRandom();
         byte[] salt = new byte[SALT_BYTE_SIZE];
         random.nextBytes(salt);
 
-        // Hash the password
+        //Hash
         byte[] hash = pbkdf2(password, salt, PBKDF2_ITERATIONS, HASH_BYTE_SIZE);
-        // format iterations:salt:hash
+        //构造 iterations:salt:hash
         return PBKDF2_ITERATIONS + ":" + toHex(salt) + ":" + toHex(hash);
     }
 
@@ -93,16 +93,14 @@ public class Pbkdf2Util {
      */
     private static boolean validatePassword(char[] password, String correctHash)
             throws NoSuchAlgorithmException, InvalidKeySpecException {
-        // Decode the hash into its parameters
+        //解析构造的字符串
         String[] params = correctHash.split(":");
         int iterations = Integer.parseInt(params[ITERATION_INDEX]);
         byte[] salt = fromHex(params[SALT_INDEX]);
         byte[] hash = fromHex(params[PBKDF2_INDEX]);
-        // Compute the hash of the provided password, using the same salt,
-        // iteration count, and hash length
+        //使用同样的加密参数
         byte[] testHash = pbkdf2(password, salt, iterations, hash.length);
-        // Compare the hashes in constant time. The password is correct if
-        // both hashes match.
+        //比较
         return slowEquals(hash, testHash);
     }
 

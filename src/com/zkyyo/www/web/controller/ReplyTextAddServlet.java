@@ -16,30 +16,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * 该Servlet用于处理添加文本回复的请求
+ */
 @WebServlet(
         name = "ReplyTextAddServlet",
         urlPatterns = {"/reply_text_add.do"}
 )
 public class ReplyTextAddServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String topicId = request.getParameter("topicId");
-        String content = request.getParameter("content");
-        Access access = (Access) request.getSession().getAttribute("access");
+        String topicId = request.getParameter("topicId"); //讨论区ID
+        String content = request.getParameter("content"); //文本回复内容
+        Access access = (Access) request.getSession().getAttribute("access"); //操作者权限对象
         int userId = access.getUserId();
 
-        /*
-        String page = "index.jsp";
-        List<String> errors = new ArrayList<>();
-        TopicService topicService = (TopicService) getServletContext().getAttribute("topicService");
-        ReplyService replyService = (ReplyService) getServletContext().getAttribute("replyService");
-        //检测主题是否存在
-        if (!topicService.isExisted(Integer.valueOf(topicId))) { //不存在
-            response.sendRedirect(page);
-            return;
-        } else { //存在
-            page = "topic_chat_info.do?topicId=" + topicId; // 主题有效
-        }
-        */
         List<String> errors = new ArrayList<>();
         TopicService topicService = (TopicService) getServletContext().getAttribute("topicService");
         ReplyService replyService = (ReplyService) getServletContext().getAttribute("replyService");
@@ -50,7 +40,7 @@ public class ReplyTextAddServlet extends HttpServlet {
             return;
         }
 
-        //检查用户是否有权限发表回复(admin或受小组授权)
+        //检查用户是否有权限发表回复(admin或受小组授权则有权限)
         int tId = Integer.valueOf(topicId);
         Set<Integer> groups = topicService.getGroups(tId);
         if (topicService.isPrivate(tId) && !access.isUserApprovedInTopic("admin", groups)) {
@@ -58,10 +48,11 @@ public class ReplyTextAddServlet extends HttpServlet {
             return;
         }
 
-        //检查输入是否合法
+        //检查回复文本是否合法
         if (!replyService.isValidContent(content)) {
             errors.add("bad content");
         }
+        //判断输入是否有误
         if (errors.isEmpty()) {
             ReplyPo reply = new ReplyPo();
             reply.setUserId(userId);

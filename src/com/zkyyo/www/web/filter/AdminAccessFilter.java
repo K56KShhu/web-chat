@@ -62,7 +62,6 @@ import java.io.IOException;
                 "TopicUpdateInfoServlet",
                 "TopicUpdateServlet",
                 //用户操作
-                "UserAuditServlet",
                 "UserManageInfoServlet"
         }
 )

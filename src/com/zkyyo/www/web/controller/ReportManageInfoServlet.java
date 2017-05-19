@@ -27,7 +27,7 @@ public class ReportManageInfoServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String page = request.getParameter("page");
-        String orderStr = request.getParameter("orderStr");
+        String orderStr = request.getParameter("order");
         boolean isReverse = "true".equals(request.getParameter("isReverse"));
 
         int currentPage = 1;

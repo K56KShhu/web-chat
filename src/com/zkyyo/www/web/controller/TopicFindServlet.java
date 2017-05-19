@@ -2,9 +2,7 @@ package com.zkyyo.www.web.controller;
 
 import com.zkyyo.www.bean.PageBean;
 import com.zkyyo.www.bean.po.TopicPo;
-import com.zkyyo.www.bean.vo.TopicVo;
 import com.zkyyo.www.service.TopicService;
-import com.zkyyo.www.util.BeanUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,8 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 @WebServlet(
         name = "TopicFindServlet",

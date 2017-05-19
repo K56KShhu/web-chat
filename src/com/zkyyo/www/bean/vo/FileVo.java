@@ -2,16 +2,19 @@ package com.zkyyo.www.bean.vo;
 
 import java.sql.Timestamp;
 
+/**
+ * 用于页面显示的类, 将一些用于数据库储存的内容转换为合适内容
+ */
 public class FileVo {
-    private int fileId;
-    private int apply; // 0图片分享 1文件分享
-    private String applyStr; //vo
-    private int userId;
-    private String username; //vo
-    private int topicId;
-    private String path;
-    private String shortName; //vo
-    private Timestamp created;
+    private int fileId; //文件ID
+    private int apply; //文件类型 0图片分享 1文件分享
+    private String applyStr; //vo特有 文件类型的字符串表示
+    private int userId; //文件上传者ID
+    private String username; //vo特有 文件上传者用户名
+    private int topicId; //讨论区ID
+    private String path; //相对路径
+    private String shortName; //vo特有 文件名
+    private Timestamp created; //上传时间
 
     public FileVo() {
 

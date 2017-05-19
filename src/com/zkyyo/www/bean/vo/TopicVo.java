@@ -2,19 +2,22 @@ package com.zkyyo.www.bean.vo;
 
 import java.sql.Timestamp;
 
+/**
+ * 用于页面显示的类, 将一些用于数据库储存的内容转换为合适内容
+ */
 public class TopicVo {
-    private int topicId;
-    private String title;
-    private String description;
-    private int creatorId;
-    private String creatorUsername;
-    private int lastModifyId;
-    private String lastModifyUsername;
-    private int isPrivate;
-    private String isPrivateStr;
-    private int replyAccount;
-    private Timestamp lastTime;
-    private Timestamp created;
+    private int topicId; //讨论区ID
+    private String title; //讨论区名字
+    private String description; //描述
+    private int creatorId; //创建者ID
+    private String creatorUsername; //vo特有 创建者用户名
+    private int lastModifyId; //最后修改者ID
+    private String lastModifyUsername; //vo特有 最后修改者用户名
+    private int isPrivate; //是否为授权讨论区 0不是, 1是
+    private String isPrivateStr; //vo特有 讨论区类型的字符串表示
+    private int replyAccount; //回复总数
+    private Timestamp lastTime; //最后回复时间
+    private Timestamp created; //创建时间
 
     public TopicVo() {
 

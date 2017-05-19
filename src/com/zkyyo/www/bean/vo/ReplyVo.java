@@ -2,15 +2,18 @@ package com.zkyyo.www.bean.vo;
 
 import java.sql.Timestamp;
 
+/**
+ * 用于页面显示的类, 将一些用于数据库储存的内容转换为合适内容
+ */
 public class ReplyVo {
-    private int replyId;
-    private int topicId;
-    private int userId;
-    private String username; //vo
-    private String content;
-    private int contentType; // 0文本 1图片
-    private String contentTypeStr; // 0文本 1图片
-    private Timestamp created;
+    private int replyId; //回复ID
+    private int topicId; //讨论区ID
+    private int userId; //用户ID
+    private String username; //vo特有 用户名
+    private String content; //回复内容
+    private int contentType; //回复类型 0文本 1图片
+    private String contentTypeStr; //vo特有 回复类型的字符串表示
+    private Timestamp created; //回复时间
 
     public ReplyVo() {
 

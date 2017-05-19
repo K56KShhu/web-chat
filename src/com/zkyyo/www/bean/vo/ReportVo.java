@@ -3,14 +3,14 @@ package com.zkyyo.www.bean.vo;
 import java.sql.Timestamp;
 
 public class ReportVo {
-    private int reportId;
-    private int userId;
-    private String username; //vo
-    private int contentId;
-    private int contentType; // 0举报发言, 1举报分享图片, 3举报分享文件
-    private String contentTypeStr; //vo
-    private String reason;
-    private Timestamp created;
+    private int reportId; //举报ID
+    private int userId; //举报者ID
+    private String username; //vo特有 举报者用户名
+    private int contentId; //举报内容ID
+    private int contentType; //举报类型 0举报发言, 1举报分享图片, 3举报分享文件
+    private String contentTypeStr; //vo特有 举报类型的字符串表示
+    private String reason; //举报原因
+    private Timestamp created; //举报时间
 
     public ReportVo() {
 

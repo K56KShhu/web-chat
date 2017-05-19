@@ -3,12 +3,15 @@ package com.zkyyo.www.bean.po;
 import java.sql.Timestamp;
 import java.util.Objects;
 
+/**
+ * 实体类, 对应于数据库中的usergroup
+ */
 public class GroupPo {
-    private int groupId;
-    private String name;
-    private String description;
-    private int population;
-    private Timestamp created;
+    private int groupId; //小组ID
+    private String name; //小组名
+    private String description; //描述
+    private int population; //人数
+    private Timestamp created; //创建时间
 
     public GroupPo() {
 

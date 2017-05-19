@@ -4,13 +4,16 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
+/**
+ * 实体类, 对应于数据库中的reply
+ */
 public class ReplyPo implements Serializable {
-    private int replyId;
-    private int topicId;
-    private int userId;
-    private String content;
-    private int contentType; // 0文本 1图片
-    private Timestamp created;
+    private int replyId; //回复ID
+    private int topicId; //讨论区ID
+    private int userId; //用户ID
+    private String content; //内容
+    private int contentType; //回复类型, 0文本 1图片
+    private Timestamp created; //建立时间
 
     public ReplyPo() {
 

@@ -36,5 +36,4 @@ public class RootAccessFilter extends GeneralAccessFilter {
         }
         return false;
     }
-
 }

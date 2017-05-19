@@ -28,7 +28,6 @@ import java.io.IOException;
                 "/topic_manage.jsp",
                 "/topic_update.jsp",
                 //用户操作
-                "/user_audit.jsp",
                 "/user_detail_admin.jsp",
                 "/user_manage.jsp",
                 //管理员操作

@@ -4,14 +4,17 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
+/**
+ * 实体类, 对应于数据中的user
+ */
 public class UserPo implements Serializable {
-    private int userId;
-    private String username;
-    private String password;
-    private String sex;
-    private String email;
-    private int status; // -1审核不通过 0待审核 1审核通过
-    private Timestamp created;
+    private int userId; //用户ID
+    private String username; //用户名
+    private String password; //密码
+    private String sex; //性别 male男, female女, secret秘密
+    private String email; //邮箱
+    private int status; //账号状态 -2被封印, -1审核不通过 0待审核 1正常
+    private Timestamp created; //注册时间
 
     public UserPo() {
 

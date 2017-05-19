@@ -4,13 +4,16 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
+/**
+ * 实体类, 对应于数据库中的report
+ */
 public class ReportPo implements Serializable {
-    private int reportId;
-    private int userId;
-    private int contentId;
+    private int reportId; //举报ID
+    private int userId; //举报者ID
+    private int contentId; //举报内容ID
     private int contentType; // 0举报发言, 1举报分享图片, 3举报分享文件
-    private String reason;
-    private Timestamp created;
+    private String reason; //原因
+    private Timestamp created; //举报时间
 
     public ReportPo() {
 

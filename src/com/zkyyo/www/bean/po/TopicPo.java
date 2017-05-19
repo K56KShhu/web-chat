@@ -4,16 +4,19 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
+/**
+ * 实体类, 对应于数据库中的topic
+ */
 public class TopicPo implements Serializable {
-    private int topicId;
-    private String title;
-    private String description;
-    private int creatorId;
-    private int lastModifyId;
-    private int isPrivate;
-    private int replyAccount;
-    private Timestamp lastTime;
-    private Timestamp created;
+    private int topicId; //讨论区ID
+    private String title; //讨论区名
+    private String description; //描述
+    private int creatorId; //创建者ID
+    private int lastModifyId; //最新修改者ID
+    private int isPrivate; //是否为授权讨论区 0不是, 1是
+    private int replyAccount; //回复数量
+    private Timestamp lastTime; //最后回复时间
+    private Timestamp created; //讨论区创建时间
 
     public TopicPo() {
 

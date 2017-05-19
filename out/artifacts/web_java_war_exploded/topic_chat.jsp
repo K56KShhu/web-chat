@@ -78,7 +78,7 @@
     <c:choose>
         <%--文本信息--%>
         <c:when test="${reply.contentType == 0}">
-            <c:out value="${reply.content}"/><br/>
+            <pre><c:out value="${reply.content}"/></pre>
         </c:when>
         <%--图片信息--%>
         <c:when test="${reply.contentType == 1}">

@@ -4,13 +4,16 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
+/**
+ * 实体类, 对应于数据库中的user
+ */
 public class FilePo implements Serializable {
-    private int fileId;
-    private int apply; // 0图片分享 1文件分享
-    private int userId;
-    private int topicId;
-    private String path;
-    private Timestamp created;
+    private int fileId; //文件ID
+    private int apply; // 文件类型, 0图片分享 1文件分享
+    private int userId; //文件上传者ID
+    private int topicId; //讨论区ID
+    private String path; //相对路径
+    private Timestamp created; //发布时间
 
     public FilePo() {
 

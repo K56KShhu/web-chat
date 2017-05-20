@@ -29,6 +29,21 @@
         <param-name>IMAGE_DIR</param-name>
         <param-value>/WEB-INF/image</param-value>
     </context-param>
+    <context-param>
+        <description>the running interval (millisecond) of the cleaner</description>
+        <param-name>CLEAN_INTERVAL</param-name>
+        <param-value>86400000</param-value>
+    </context-param>
+    <context-param>
+        <description>to clean the topic whose date of the last reply is bigger than this appoint day</description>
+        <param-name>MAX_LAST_REPLY_DAY</param-name>
+        <param-value>30</param-value>
+    </context-param>
+    <context-param>
+        <description>the work time of the cleaner, please user the format: hour:min:second </description>
+        <param-name>CLEAN_TIME</param-name>
+        <param-value>3:00:00</param-value>
+    </context-param>
 
     <session-config>
         <session-timeout>15</session-timeout>

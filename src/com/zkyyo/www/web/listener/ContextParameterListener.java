@@ -21,14 +21,22 @@ public class ContextParameterListener implements ServletContextListener,
 
     public void contextInitialized(ServletContextEvent sce) {
         ServletContext context = sce.getServletContext();
+
         String loginCookieName = context.getInitParameter("LOGIN_COOKIE_NAME");
         int stayLoggedTime = Integer.valueOf(context.getInitParameter("STAY_LOGGED_TIME"));
         String topicDir = context.getInitParameter("TOPIC_DIR");
         String imageDir = context.getInitParameter("IMAGE_DIR");
+        long cleanInterval = Long.valueOf(context.getInitParameter("CLEAN_INTERVAL"));
+        int maxLastReplyDay = Integer.valueOf(context.getInitParameter("MAX_LAST_REPLY_DAY"));
+        String cleanTime = context.getInitParameter("CLEAN_TIME");
+
         context.setAttribute("loginCookieName", loginCookieName);
         context.setAttribute("stayLoggedTime", stayLoggedTime);
         context.setAttribute("topicDir", topicDir);
         context.setAttribute("imageDir", imageDir);
+        context.setAttribute("cleanInterval", cleanInterval);
+        context.setAttribute("maxLastReplyDay", maxLastReplyDay);
+        context.setAttribute("cleanTime", cleanTime);
     }
 
     public void contextDestroyed(ServletContextEvent sce) {

@@ -249,6 +249,22 @@ public class TopicService {
         return topicDao.selectTopicsByGroups(groupIds);
     }
 
+    public List<Integer> queryTopicsBeforeDaysAboutLastReply(int type, int days) {
+        //根据讨论区类型查询
+        int accessType;
+        if (ACCESS_PUBLIC == type) {
+            accessType = TopicDaoJdbcImpl.ACCESS_PUBLIC;
+        } else if (ACCESS_PRIVATE == type) {
+            accessType = TopicDaoJdbcImpl.ACCESS_PRIVATE;
+        } else if (ACCESS_ALL == type) {
+            accessType = TopicDaoJdbcImpl.ACCESS_ALL;
+        } else {
+            return null;
+        }
+
+        return topicDao.selectTopicsBeforeDaysAboutLastReply(accessType, days);
+    }
+
     /**
      * 更新讨论区信息
      *

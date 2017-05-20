@@ -34,6 +34,7 @@ public class ContextServiceListener implements ServletContextListener,
             Context envContext = (Context) initContext.lookup("java:/comp/env");
 //            DataSource dataSource = (DataSource) envContext.lookup("jdbc/temp");
             DataSource dataSource = (DataSource) envContext.lookup(database);
+
             context.setAttribute("userService", new UserService(new UserDaoJdbcImpl(dataSource)));
             context.setAttribute("topicService", new TopicService(new TopicDaoJdbcImpl(dataSource)));
             context.setAttribute("replyService", new ReplyService(new ReplyDaoJdbcImpl(dataSource)));

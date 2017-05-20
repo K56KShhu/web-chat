@@ -3,6 +3,7 @@ package com.zkyyo.www.dao.impl;
 import com.zkyyo.www.dao.TopicDao;
 import com.zkyyo.www.db.DbClose;
 import com.zkyyo.www.bean.po.TopicPo;
+import com.zkyyo.www.service.RememberService;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -151,6 +152,37 @@ public class TopicDaoJdbcImpl implements TopicDao {
                 while (rs.next()) {
                     topics.add(getTopic(rs));
                 }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, pstmt, rs);
+        }
+        return topics;
+    }
+
+    @Override
+    public List<Integer> selectTopicsBeforeDaysAboutLastReply(int accessType, int days) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        List<Integer> topics = new ArrayList<>();
+
+        try {
+            conn = dataSource.getConnection();
+            String sql = "SELECT topic_id FROM topic WHERE TO_DAYS(NOW()) - TO_DAYS(last_time) >= ?";
+            if (ACCESS_PUBLIC == accessType) {
+                sql += " AND is_private = 0";
+            } else if (ACCESS_PRIVATE == accessType) {
+                sql += " AND is_private = 1";
+            } else if (ACCESS_ALL == accessType) {
+                sql += "";
+            }
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, days);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                topics.add(rs.getInt("topic_id"));
             }
         } catch (SQLException e) {
             e.printStackTrace();

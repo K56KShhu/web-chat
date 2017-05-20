@@ -71,6 +71,14 @@ public interface TopicDao {
     Set<TopicPo> selectTopicsByGroups(Set<Integer> groupIds);
 
     /**
+     * 获取数据库中指定类型讨论区中, 最后回复时间距离现在多于特定天数的讨论区ID
+     * @param accessType 指定类型
+     * @param days 相隔天数
+     * @return 包含符合条件的所有讨论区ID的集合, 不包含任何讨论区ID则返回size为0的列表
+     */
+    List<Integer> selectTopicsBeforeDaysAboutLastReply(int accessType, int days);
+
+    /**
      * 获取数据库中与指定讨论区有关的所有小组ID
      *
      * @param topicId 指定讨论区的ID

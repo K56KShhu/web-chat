@@ -86,10 +86,10 @@ public class FileUploadServlet extends HttpServlet {
             return;
         }
 
-        //判断用户是否授权访问讨论区
+        //检查用户是否有权限上传文件, 以下用户有权限: 位于授权小组的普通用户, admin, root
         int tId = Integer.valueOf(topicId);
         Set<Integer> groups = topicService.getGroups(tId);
-        if (topicService.isPrivate(tId) && !access.isUserApprovedInTopic("admin", groups)) {
+        if (topicService.isPrivate(tId) && !access.isUserApproved(groups, "admin", "root")) {
             response.sendRedirect("index.jsp");
             return;
         }
@@ -262,6 +262,7 @@ public class FileUploadServlet extends HttpServlet {
 
     /**
      * 根据相对路径, 构建出本机硬盘上的绝对路径
+     *
      * @param relativePath 相对路径
      * @return 构建完成的绝对路径
      */

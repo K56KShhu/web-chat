@@ -12,6 +12,9 @@ import javax.servlet.annotation.WebInitParam;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
+/**
+ * 该过滤器用于权限验证, 只有权限为user, admin, root可以通过
+ */
 @WebFilter(
         filterName = "LoginAccessFilter",
         urlPatterns = {"/*"},
@@ -41,13 +44,14 @@ public class LoginAccessFilter extends GeneralAccessFilter {
     }
 
     protected boolean checkAccess(Access access) {
-        System.out.println("(LoginAccessFilter) checkAccess() invoked");
         //判断账号状态
         if (access.isNormal()) {
             //判断用户角色
             if (access.isUserInRole("user")) {
                 return true;
             } else if (access.isUserInRole("admin")) {
+                return true;
+            } else if (access.isUserInRole("root")) {
                 return true;
             }
         }

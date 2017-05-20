@@ -40,13 +40,19 @@ public class ReplyTextAddServlet extends HttpServlet {
             return;
         }
 
-        //检查用户是否有权限发表回复(admin或受小组授权则有权限)
+        //检查用户是否有权限发表回复, 以下用户有权限: 位于授权小组的普通用户, admin, root
         int tId = Integer.valueOf(topicId);
         Set<Integer> groups = topicService.getGroups(tId);
-        if (topicService.isPrivate(tId) && !access.isUserApprovedInTopic("admin", groups)) {
+        if (topicService.isPrivate(tId) && !access.isUserApproved(groups, "admin", "root")) {
             response.sendRedirect("index.jsp");
             return;
         }
+        /*
+        if (topicService.isPrivate(tId) && !access.isUserApproved("admin", groups)) {
+            response.sendRedirect("index.jsp");
+            return;
+        }
+        */
 
         //检查回复文本是否合法
         if (!replyService.isValidContent(content)) {

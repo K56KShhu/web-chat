@@ -10,6 +10,9 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
+/**
+ * 该过滤器用于过滤请求的编码设置
+ */
 @WebFilter(
         filterName = "EncodingFilter",
         urlPatterns = {"/*"}
@@ -20,6 +23,7 @@ public class EncodingFilter implements Filter {
 
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest request = (HttpServletRequest) req;
+        //判断请求方法
         if ("GET".equals(request.getMethod())) {
 //            chrome浏览器下默认按UTF-8编码
 //            request = new EncodingWrapper(request, "UTF-8");

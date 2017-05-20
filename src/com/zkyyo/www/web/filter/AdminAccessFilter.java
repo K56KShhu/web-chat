@@ -9,6 +9,9 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import java.io.IOException;
 
+/**
+ * 该过滤器用于权限验证, 只有权限为admin, root的用户可以通过
+ */
 @WebFilter(
         filterName = "AdminAccessFilter",
         urlPatterns = {
@@ -76,6 +79,8 @@ public class AdminAccessFilter extends GeneralAccessFilter {
         if (access.isNormal()) {
             //判断用户角色
             if (access.isUserInRole("admin")) {
+                return true;
+            } else if (access.isUserInRole("root")) {
                 return true;
             }
         }

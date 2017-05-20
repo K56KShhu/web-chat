@@ -10,11 +10,17 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+/**
+ * 该Servlet用于处理客户端显示图片的请求
+ */
 @WebServlet(
         name = "ImageShowServlet",
         urlPatterns = {"/image_show.do"}
 )
 public class ImageShowServlet extends HttpServlet {
+    /**
+     * 存放讨论区文件的根目录
+     */
     private String TOPIC_DIR;
 
     public void init() throws ServletException {
@@ -26,9 +32,9 @@ public class ImageShowServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String relativePath = request.getParameter("relativePath");
+        String relativePath = request.getParameter("relativePath"); //图片的相对路径
         String bathPath = getServletContext().getRealPath(TOPIC_DIR);
-        String absolutePath = bathPath + relativePath;
+        String absolutePath = bathPath + relativePath; //图片在硬盘上的绝对路径
         File file = new File(absolutePath);
 
         FileInputStream fileInputStream = new FileInputStream(file);

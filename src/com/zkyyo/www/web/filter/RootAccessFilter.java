@@ -9,6 +9,9 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import java.io.IOException;
 
+/**
+ * 该过滤器用于权限验证, 只有权限为root可以通过
+ */
 @WebFilter(
         filterName = "RootAccessFilter",
         urlPatterns = {

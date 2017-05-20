@@ -9,6 +9,9 @@ import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
+/**
+ * 该监听器用于在web应用上设置通用属性
+ */
 @WebListener()
 public class ContextParameterListener implements ServletContextListener,
         HttpSessionListener, HttpSessionAttributeListener {

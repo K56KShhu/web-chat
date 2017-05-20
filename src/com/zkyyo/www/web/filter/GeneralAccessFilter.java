@@ -16,9 +16,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * 通用权限过滤器, 不对特定权限进行过滤
+ * 但可以扩展该类, 覆盖checkAccess方法实现特定过滤功能
+ */
 @WebFilter(filterName = "GeneralAccessFilter")
 public class GeneralAccessFilter implements Filter {
+    /**
+     * 自动登录Cookie Name
+     */
     private String LOGIN_COOKIE_NAME;
+    /**
+     * 自动登录持续时间
+     */
     private int STAY_LOGGED_TIME;
 
     public void destroy() {
@@ -71,6 +81,11 @@ public class GeneralAccessFilter implements Filter {
         STAY_LOGGED_TIME = (int) config.getServletContext().getAttribute("stayLoggedTime");
     }
 
+    /**
+     * 验证权限, 使用该功能需继承此类并覆盖该方法
+     * @param access 权限对象
+     * @return 永远是true
+     */
     protected boolean checkAccess(Access access) {
         return false;
     }

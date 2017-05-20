@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * 该Servlet用于处理简单查找用户的请求
+ */
 @WebServlet(
         name = "GroupFindUserServlet",
         urlPatterns = {"/group_find_user.do"}
@@ -21,13 +24,14 @@ public class GroupFindUserServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String search = request.getParameter("search");
-        String page = request.getParameter("page");
-        String groupId = request.getParameter("groupId");
+        String search = request.getParameter("search"); //查询内容
+        String page = request.getParameter("page"); //请求页数
+        String groupId = request.getParameter("groupId"); //小组ID
         int currentPage = 1;
         if (page != null) {
             currentPage = Integer.valueOf(page);
         }
+        //判断是否关键字搜索
         if (search != null && search.trim().length() > 0) {
             UserService userService = (UserService) getServletContext().getAttribute("userService");
             PageBean<UserPo> pageBean = userService.queryUsers(UserService.STATUS_NORMAL, currentPage, search);

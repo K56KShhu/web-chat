@@ -16,6 +16,9 @@ import javax.servlet.http.HttpSessionListener;
 import javax.servlet.http.HttpSessionBindingEvent;
 import javax.sql.DataSource;
 
+/**
+ * 该监听器用于获取数据库连接, 在web应用上提供service类的单例
+ */
 @WebListener()
 public class ContextServiceListener implements ServletContextListener,
         HttpSessionListener, HttpSessionAttributeListener {
@@ -25,10 +28,12 @@ public class ContextServiceListener implements ServletContextListener,
 
     public void contextInitialized(ServletContextEvent sce) {
         try {
+            ServletContext context = sce.getServletContext();
+            String database = context.getInitParameter("DATABASE");
             Context initContext = new InitialContext();
             Context envContext = (Context) initContext.lookup("java:/comp/env");
-            DataSource dataSource = (DataSource) envContext.lookup("jdbc/temp");
-            ServletContext context = sce.getServletContext();
+//            DataSource dataSource = (DataSource) envContext.lookup("jdbc/temp");
+            DataSource dataSource = (DataSource) envContext.lookup(database);
             context.setAttribute("userService", new UserService(new UserDaoJdbcImpl(dataSource)));
             context.setAttribute("topicService", new TopicService(new TopicDaoJdbcImpl(dataSource)));
             context.setAttribute("replyService", new ReplyService(new ReplyDaoJdbcImpl(dataSource)));

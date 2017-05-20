@@ -48,10 +48,10 @@ public class TopicChatInfoServlet extends HttpServlet {
         }
         int tId = Integer.valueOf(topicId);
 
-        //验证用户权限, 允许的权限为admin或位于授权的小组中
+        //检查用户是否有权限访问文件列表, 以下用户有权限: 位于授权小组的普通用户, admin, root
         Access access = (Access) request.getSession().getAttribute("access");
         Set<Integer> groups = topicService.getGroups(tId);
-        if (topicService.isPrivate(tId) && !access.isUserApprovedInTopic("admin", groups)) {
+        if (topicService.isPrivate(tId) && !access.isUserApproved(groups, "admin", "root")) {
             response.sendRedirect("index.jsp");
             return;
         }

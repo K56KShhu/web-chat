@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Set;
 
+/**
+ * 该Servlet用于处理操作者获取授权讨论区的请求
+ */
 @WebServlet(
         name = "TopicFindPrivateServlet",
         urlPatterns = {"/topic_find_private.do"}
@@ -22,7 +25,7 @@ public class TopicFindPrivateServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Access access = (Access) request.getSession().getAttribute("access");
+        Access access = (Access) request.getSession().getAttribute("access"); //权限对象
         Set<Integer> groups = access.getGroups();
 
         TopicService topicService = (TopicService) getServletContext().getAttribute("topicService");

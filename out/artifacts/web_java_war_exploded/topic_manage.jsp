@@ -15,7 +15,7 @@
 <%@ include file="/WEB-INF/header_admin.jsp" %>
 
 <div style="text-align: right">
-    <a href="topic_add.jsp">创建讨论区</a><br/>
+    <a href="topic_add.jsp">创建讨论区</a>&nbsp;
 </div>
 
 <c:url value="topic_manage_info.do" var="replyAccountOderUrl">
@@ -77,7 +77,7 @@
             <c:param name="topicId" value="${topic.topicId}"/>
         </c:url>
         <tr>
-            <td><a href="${topicUrl}">${topic.title}</a><br/>${topic.description}</td>
+            <td><a href="${topicUrl}">${topic.title}</a></td>
             <td>${topic.isPrivateStr}</td>
             <td>${topic.replyAccount}</td>
             <td>${topic.lastTime}</td>

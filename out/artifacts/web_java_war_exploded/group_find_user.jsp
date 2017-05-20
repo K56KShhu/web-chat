@@ -25,17 +25,21 @@
 <c:if test="${requestScope.pageBean != null}">
     <table border="1" align="center">
         <tr>
-            <th>username</th>
-            <th>sex</th>
-            <th>created</th>
+            <th>用户名</th>
+            <th>性别</th>
+            <th>注册时间</th>
         </tr>
         <c:forEach var="user" items="${requestScope.pageBean.list}">
             <c:url value="group_add_user.do" var="addUserUrl">
                 <c:param name="groupId" value="${requestScope.groupId}"/>
                 <c:param name="userId" value="${user.userId}"/>
             </c:url>
+            <%--用户个人信息--%>
+            <c:url value="user_detail_other.do" var="userInfoUrl">
+                <c:param name="userId" value="${user.userId}"/>
+            </c:url>
             <tr>
-                <td>${user.username}</td>
+                <td><a href="${userInfoUrl}"><c:out value="${user.username}"/></a></td>
                 <td>${user.sex}</td>
                 <td>${user.created}</td>
                 <td><a href="${addUserUrl}">add</a></td>

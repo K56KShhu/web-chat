@@ -23,8 +23,8 @@
 <form method="post" action="topic_add.do">
     标题: <input type="text" name="title" value="${requestScope.title}"/><br/>
     描述: <textarea name="description" rows="15" cols="80">${requestScope.description}</textarea><br/>
-    <input type="radio" name="type" value="public" ${requestScope.type == "public" ? "checked" : ""}>public
-    <input type="radio" name="type" value="private" ${requestScope.type == "private" ? "checked" : ""}>private
+    <input type="radio" name="type" value="public" ${requestScope.type == "public" ? "checked" : ""}>公开
+    <input type="radio" name="type" value="private" ${requestScope.type == "private" ? "checked" : ""}>授权
     <br/><br/>
     <input type="submit" value="发布"/>
 </form>

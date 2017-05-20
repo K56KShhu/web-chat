@@ -18,7 +18,7 @@
     <c:param name="topicId" value="${requestScope.topicId}"/>
 </c:url>
 <div style="text-align: right">
-    <a href="${chatUrl}">返回</a>
+    <a href="${chatUrl}">返回</a>&nbsp;
 </div>
 
 <h1>图片分享区</h1>
@@ -35,9 +35,9 @@
 
 <table border="1" align="center">
     <tr>
-        <th>image</th>
-        <th>username</th>
-        <th>created</th>
+        <th>图片</th>
+        <th>上传者</th>
+        <th>上传时间</th>
     </tr>
     <c:forEach var="image" items="${requestScope.pageBean.list}">
         <%--显示图片URL--%>
@@ -49,9 +49,13 @@
             <c:param name="contentType" value="image"/>
             <c:param name="contentId" value="${image.fileId}"/>
         </c:url>
+        <%--用户信息--%>
+        <c:url value="user_detail_other.do" var="userInfoUrl">
+            <c:param name="userId" value="${image.userId}"/>
+        </c:url>
         <tr>
             <td><img src="${imageUrl}"></td>
-            <td><c:out value="${image.username}"/></td>
+            <td><a href="${userInfoUrl}"><c:out value="${image.username}"/></a></td>
             <td><c:out value="${image.created}"/></td>
             <td><a href="${reportUrl}">举报</a></td>
                 <%--[管理员]删除图片--%>

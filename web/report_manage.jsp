@@ -49,8 +49,12 @@
             <c:param name="page" value="${requestScope.pageBean.currentPage}"/>
             <c:param name="isReverse" value="${requestScope.isReverse}"/>
         </c:url>
+        <%--用户个人信息--%>
+        <c:url value="user_detail_other.do" var="userInfoUrl">
+            <c:param name="userId" value="${report.userId}"/>
+        </c:url>
         <tr>
-            <td>${report.username}</td>
+            <td><a href="${userInfoUrl}"><c:out value="${report.username}"/></a></td>
             <td>${report.contentTypeStr}</td>
             <td>${report.reason}</td>
             <td>${report.created}</td>

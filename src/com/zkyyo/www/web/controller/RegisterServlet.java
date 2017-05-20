@@ -26,6 +26,7 @@ public class RegisterServlet extends HttpServlet {
         String confirmedPsw = request.getParameter("confirmedPsw"); //二次密码
         String sex = request.getParameter("sex"); //性别
         String email = request.getParameter("email"); //邮箱
+        boolean isAgreed = "true".equals(request.getParameter("isAgreed")); //是否同意条约 true同意, false不同意
 
         UserService userService = (UserService) getServletContext().getAttribute("userService");
         List<String> errors = new ArrayList<>();
@@ -49,6 +50,9 @@ public class RegisterServlet extends HttpServlet {
         //判断邮箱是否合法
         if (!userService.isValidEmail(email)) {
             errors.add("邮箱格式有误");
+        }
+        if (!isAgreed) {
+            errors.add("我们的约定呢?");
         }
 
         //判断是否输入有误

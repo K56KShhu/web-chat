@@ -18,7 +18,7 @@
     <c:param name="topicId" value="${requestScope.topicId}"/>
 </c:url>
 <div style="text-align: right">
-    <a href="${chatUrl}">返回</a>
+    <a href="${chatUrl}">返回</a>&nbsp;
 </div>
 
 <h1>文件分享区</h1>
@@ -35,9 +35,9 @@
 
 <table border="1" align="center">
     <tr>
-        <th>short name</th>
-        <th>username</th>
-        <th>created</th>
+        <th>文件名</th>
+        <th>上传者</th>
+        <th>上传时间</th>
     </tr>
     <c:forEach var="file" items="${requestScope.pageBean.list}">
         <%--举报文件URL--%>
@@ -49,9 +49,13 @@
         <c:url value="file_download.do" var="downUrl">
             <c:param name="relativePath" value="${file.path}"/>
         </c:url>
+        <%--用户信息--%>
+        <c:url value="user_detail_other.do" var="userInfoUrl">
+            <c:param name="userId" value="${file.userId}"/>
+        </c:url>
         <tr>
             <td><c:out value="${file.shortName}"/></td>
-            <td><c:out value="${file.username}"/></td>
+            <td><a href="${userInfoUrl}"><c:out value="${file.username}"/></a></td>
             <td><c:out value="${file.created}"/></td>
             <td><a href="${downUrl}">下载</a></td>
             <td><a href="${reportUrl}">举报</a></td>

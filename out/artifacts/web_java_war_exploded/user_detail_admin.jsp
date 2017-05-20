@@ -52,7 +52,7 @@
             <td>${group.key.description}</td>
         </tr>
         <tr>
-            <th></th>
+            <th>授权访问</th>
             <td>
                 <table border="1" align="center">
                     <tr>
@@ -60,8 +60,12 @@
                         <th>created</th>
                     </tr>
                     <c:forEach var="topic" items="${group.value}">
+                        <%--参与讨论区--%>
+                        <c:url value="topic_chat_info.do" var="topicUrl">
+                            <c:param name="topicId" value="${topic.topicId}"/>
+                        </c:url>
                         <tr>
-                            <td>${topic.title}</td>
+                            <td><a href="${topicUrl}">${topic.title}</a></td>
                             <td>${topic.created}</td>
                         </tr>
                     </c:forEach>

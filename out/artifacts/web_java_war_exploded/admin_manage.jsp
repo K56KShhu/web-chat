@@ -16,7 +16,7 @@
 
 <c:if test="${sessionScope.access.isUserInRole('root')}">
     <div style="text-align: right">
-        <a href="admin_find.jsp">加冕管理员</a>
+        <a href="admin_find.jsp">加冕管理员</a>&nbsp;
     </div>
 </c:if>
 

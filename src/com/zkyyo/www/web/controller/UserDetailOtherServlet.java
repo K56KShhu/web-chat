@@ -38,21 +38,24 @@ public class UserDetailOtherServlet extends HttpServlet {
         Access access = (Access) request.getSession().getAttribute("access"); //操作者权限对象
 
         UserService userService = (UserService) getServletContext().getAttribute("userService");
-        //判断用户ID是否合法
-        if (userService.isValidUserId(userId)) {
-            int uId = Integer.valueOf(userId);
-            //根据查询者的角色分配请求
-            if (access.isUserInRole("admin")) {
-                //admin操作
-                processAllInfo(uId, request, response);
+        //判断用户是否存在
+        if (!userService.isValidUserId(userId) || !userService.isUserExisted(Integer.valueOf(userId))) {
+            response.sendRedirect("index.jsp");
+            return;
+        }
+
+        int uId = Integer.valueOf(userId);
+        //根据查询者的角色分配请求
+        if (access.isUserInRole("admin")) {
+            //admin操作
+            processAllInfo(uId, request, response);
+        } else {
+            //普通用户操作
+            //判断是否查看本人信息
+            if (uId == access.getUserId()) {
+                response.sendRedirect("user_detail_self.do");
             } else {
-                //普通用户操作
-                //判断是否查看本人信息
-                if (uId == access.getUserId()) {
-                    response.sendRedirect("user_detail_self.do");
-                } else {
-                    processLimitInfo(uId, request, response);
-                }
+                processLimitInfo(uId, request, response);
             }
         }
     }

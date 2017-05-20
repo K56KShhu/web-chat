@@ -35,7 +35,6 @@ public class ImageShowWebsiteServlet extends HttpServlet {
         String relativePath = request.getParameter("relativePath"); //图片的相对路径
         String bathPath = getServletContext().getRealPath(IMAGE_DIR);
         String absolutePath = bathPath + relativePath; //图片在硬盘上的绝对路径
-        System.out.println(absolutePath);
         File file = new File(absolutePath);
 
         FileInputStream fileInputStream = new FileInputStream(file);

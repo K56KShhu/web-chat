@@ -15,7 +15,7 @@
 <%@ include file="/WEB-INF/header_user.jsp" %>
 
 <div style="text-align: right">
-    <a href="topic_find.do">进入公共讨论区</a>
+    <a href="topic_find.do">进入公共讨论区</a>&nbsp;
 </div>
 
 <h1>授权讨论区</h1>
@@ -31,7 +31,7 @@
             <c:param name="topicId" value="${topic.topicId}"/>
         </c:url>
         <tr>
-            <td><a href="${topicUrl}">${topic.title}</a><br/>${topic.description}</td>
+            <td><a href="${topicUrl}">${topic.title}</a><br/></td>
             <td>${topic.replyAccount}</td>
             <td>${topic.lastTime}</td>
         </tr>

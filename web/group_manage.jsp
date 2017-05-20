@@ -15,7 +15,7 @@
 <%@ include file="/WEB-INF/header_admin.jsp" %>
 
 <div style="text-align: right">
-    <a href="group_add.jsp">创建小组</a>
+    <a href="group_add.jsp">创建小组</a>&nbsp;
 </div>
 
 <h1>小组管理</h1>
@@ -23,7 +23,6 @@
 <table border="1" align="center">
     <tr>
         <th>小组名</th>
-        <th>描述</th>
         <th>人数</th>
         <th>创建时间</th>
     </tr>
@@ -42,7 +41,6 @@
         </c:url>
         <tr>
             <td>${group.name}</td>
-            <td>${group.description}</td>
             <td>${group.population}</td>
             <td>${group.created}</td>
             <td><a href="${groupDetailUrl}">档案</a></td>

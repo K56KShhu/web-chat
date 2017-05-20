@@ -27,7 +27,7 @@
     <input type="radio" name="sex" value="female" ${requestScope.sex == "female" ? "checked" : ""}/>female
     <input type="radio" name="sex" value="secret" ${requestScope.sex == "secret" ? "checked" : ""}/>secret<br/>
     邮箱: <input type="text" name="email" value="${requestScope.email != null ? requestScope.email : ""}"/><br/>
-    <input type="checkbox" name="agree" value="true" checked/>阅读并接受<a href="rule.jsp">《咱部落用户协议》</a><br/>
+    <input type="checkbox" name="isAgreed" value="true" checked/>阅读并接受<a href="rule.jsp">《咱部落用户协议》</a><br/>
     <input type="submit" value="submit"/>
 </form>
 

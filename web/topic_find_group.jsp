@@ -14,33 +14,35 @@
 
 <%@ include file="/WEB-INF/header_admin.jsp" %>
 
-<h1>查赵小组</h1>
+<h1>查找小组</h1>
 
 <form method="get" action="topic_find_group.do">
     <input type="hidden" name="topicId" value="${param.topicId}"/>
-    搜索: <input type="text" name="search" value="${requestScope.search}"/>
+    搜索小组: <input type="text" name="search" value="${requestScope.search}"/>
     <input type="submit"/>
 </form>
 
 <c:if test="${requestScope.groups != null}">
     <table border="1" align="center">
         <tr>
-            <th>name</th>
-            <th>description</th>
-            <th>population</th>
-            <th>created</th>
+            <th>小组名</th>
+            <th>人数</th>
+            <th>创建日期</th>
         </tr>
         <c:forEach var="group" items="${requestScope.groups}">
+            <%--小组详细信息--%>
+            <c:url value="group_detail.do" var="groupDetailUrl">
+                <c:param name="groupId" value="${group.groupId}"/>
+            </c:url>
             <c:url value="topic_add_group.do" var="addGroupUrl">
                 <c:param name="topicId" value="${param.topicId}"/>
                 <c:param name="groupId" value="${group.groupId}"/>
             </c:url>
             <tr>
-                <td>${group.name}</td>
-                <td>${group.description}</td>
+                <td><a href="${groupDetailUrl}">${group.name}</a></td>
                 <td>${group.population}</td>
                 <td>${group.created}</td>
-                <td><a href="${addGroupUrl}">add</a></td>
+                <td><a href="${addGroupUrl}">授权</a></td>
             </tr>
         </c:forEach>
     </table>

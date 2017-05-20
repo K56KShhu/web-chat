@@ -11,13 +11,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * 该Servlet用于处理从小组移除讨论区的请求
+ * 该Servlet用于处理从讨论区移除小组的请求
  */
 @WebServlet(
-        name = "GroupRemoveTopicServlet",
-        urlPatterns = {"/group_remove_topic.do"}
+        name = "TopicRemoveGroupServlet",
+        urlPatterns = {"/topic_remove_group.do"}
 )
-public class GroupRemoveTopicServlet extends HttpServlet {
+public class TopicRemoveGroupServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
@@ -35,7 +35,7 @@ public class GroupRemoveTopicServlet extends HttpServlet {
             int tId = Integer.valueOf(topicId);
             //判断小组是否存在
             if (groupService.isExisted(gId)) {
-                url = "group_detail.do?groupId=" + groupId;
+                url = "topic_detail.do?topicId=" + topicId;
                 //判断讨论区是否存在
                 if (topicService.isExisted(tId)) {
                     groupService.removeTopic(gId, tId);

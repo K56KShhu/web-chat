@@ -15,7 +15,7 @@
 <%@ include file="/WEB-INF/header_admin.jsp" %>
 
 <div style="text-align: right">
-    <a href="admin_manage_info.do">返回</a>
+    <a href="admin_manage_info.do">返回</a>&nbsp;
 </div>
 
 <h1>查找用户</h1>

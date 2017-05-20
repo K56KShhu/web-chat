@@ -39,7 +39,7 @@
 
 <%--主题信息--%>
 <h1><c:out value="${requestScope.topic.title}"/></h1>
-<p><c:out value="${requestScope.topic.description}"/></p>
+<pre><c:out value="${requestScope.topic.description}"/></pre>
 
 <%--输入文本内容--%>
 <form method="post" action="reply_text_add.do">

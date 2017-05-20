@@ -15,7 +15,7 @@
 <%@ include file="/WEB-INF/header_user.jsp" %>
 
 <div style="text-align: right">
-    <a href="topic_find_private.do">进入授权讨论区</a>
+    <a href="topic_find_private.do">进入授权讨论区</a>&nbsp;
 </div>
 
 <h1>咱部落</h1>
@@ -53,7 +53,7 @@
             <c:param name="topicId" value="${topic.topicId}"/>
         </c:url>
         <tr>
-            <td><a href="${topicUrl}">${topic.title}</a><br/>${topic.description}</td>
+            <td><a href="${topicUrl}">${topic.title}</a><br/></td>
             <td>${topic.replyAccount}</td>
             <td>${topic.lastTime}</td>
                 <%--[管理员]权限--%>

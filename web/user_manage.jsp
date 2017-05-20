@@ -15,7 +15,7 @@
 <%@ include file="/WEB-INF/header_admin.jsp" %>
 
 <div style="text-align: right">
-    <a href="admin_manage_info.do">admin管理</a>
+    <a href="admin_manage_info.do">admin管理</a>&nbsp;
 </div>
 
 <h1>用户管理</h1>
@@ -53,12 +53,12 @@
 
 <table border="1" align="center">
     <tr>
-        <th>username</th>
-        <th><a href="${sexOrderUrl}">sex</a></th>
-        <th>email</th>
+        <th>用户名</th>
+        <th><a href="${sexOrderUrl}">性别</a></th>
+        <th>邮箱</th>
         <%--<th><a href="${statusOrderUrl}">status</a></th>--%>
-        <th>status</th>
-        <th><a href="${createdOrderUrl}">created</a></th>
+        <th>状态</th>
+        <th><a href="${createdOrderUrl}">注册时间</a></th>
     </tr>
     <c:forEach var="user" items="${requestScope.pageBean.list}">
         <c:url value="user_manage.do" var="userNormalUrl">
@@ -88,8 +88,12 @@
             <c:param name="isReverse" value="${requestScope.isReverse}"/>
             <c:param name="statusSearch" value="${requestScope.statusSearch}"/>
         </c:url>
+        <%--用户信息--%>
+        <c:url value="user_detail_other.do" var="userInfoUrl">
+            <c:param name="userId" value="${user.userId}"/>
+        </c:url>
         <tr>
-            <td>${user.username}</td>
+            <td><a href="${userInfoUrl}"><c:out value="${user.username}"/></a></td>
             <td>${user.sex}</td>
             <td>${user.email}</td>
             <td>${user.statusStr}</td>

@@ -47,12 +47,6 @@ public class ReplyTextAddServlet extends HttpServlet {
             response.sendRedirect("index.jsp");
             return;
         }
-        /*
-        if (topicService.isPrivate(tId) && !access.isUserApproved("admin", groups)) {
-            response.sendRedirect("index.jsp");
-            return;
-        }
-        */
 
         //检查回复文本是否合法
         if (!replyService.isValidContent(content)) {

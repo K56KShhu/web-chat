@@ -2,7 +2,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>message</title>
+    <title>消息</title>
+    <style type="text/css">
+        body {
+            margin: auto;
+            text-align: center
+        }
+    </style>
 </head>
 <body>
 

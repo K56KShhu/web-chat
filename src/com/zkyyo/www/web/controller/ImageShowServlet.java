@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 /**
- * 该Servlet用于处理客户端显示图片的请求
+ * 该Servlet用于处理显示与讨论区相关图片的请求
  */
 @WebServlet(
         name = "ImageShowServlet",

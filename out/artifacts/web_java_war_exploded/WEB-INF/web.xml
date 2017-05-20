@@ -20,9 +20,14 @@
         <param-value>604800</param-value>
     </context-param>
     <context-param>
-        <description>the relative path to store all the topics</description>
+        <description>the relative path to store the sources of the topics</description>
         <param-name>TOPIC_DIR</param-name>
         <param-value>/WEB-INF/topics</param-value>
+    </context-param>
+    <context-param>
+        <description>the relative path to store images of the website</description>
+        <param-name>IMAGE_DIR</param-name>
+        <param-value>/WEB-INF/image</param-value>
     </context-param>
 
     <session-config>

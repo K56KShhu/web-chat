@@ -3,6 +3,12 @@
 <html>
 <head>
     <title>admin find</title>
+    <style type="text/css">
+        body {
+            margin: auto;
+            text-align: center
+        }
+    </style>
 </head>
 <body>
 
@@ -12,7 +18,7 @@
     <a href="admin_manage_info.do">返回</a>
 </div>
 
-<h1>admin find</h1>
+<h1>查找用户</h1>
 
 <form method="get" action="admin_find.do">
     完整加冕者的完整用户名: <input type="text" name="username" value="${requestScope.username}"/>
@@ -33,7 +39,7 @@
             </form>
         </c:otherwise>
     </c:choose>
-    <table border="1">
+    <table border="1" align="center">
         <tr>
             <th>username</th>
             <td>${requestScope.user.username}</td>

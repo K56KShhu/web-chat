@@ -2,23 +2,28 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>topic find group</title>
+    <title>查找小组</title>
+    <style type="text/css">
+        body {
+            margin: auto;
+            text-align: center
+        }
+    </style>
 </head>
 <body>
 
 <%@ include file="/WEB-INF/header_admin.jsp" %>
 
-<h1>topic find group</h1>
+<h1>查赵小组</h1>
 
-搜索小组:
 <form method="get" action="topic_find_group.do">
     <input type="hidden" name="topicId" value="${param.topicId}"/>
-    <input type="text" name="search" value="${requestScope.search}"/>
+    搜索: <input type="text" name="search" value="${requestScope.search}"/>
     <input type="submit"/>
 </form>
 
 <c:if test="${requestScope.groups != null}">
-    <table border="1">
+    <table border="1" align="center">
         <tr>
             <th>name</th>
             <th>description</th>

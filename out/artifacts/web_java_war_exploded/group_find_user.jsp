@@ -2,23 +2,28 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>group add user</title>
+    <title>查找用户</title>
+    <style type="text/css">
+        body {
+            margin: auto;
+            text-align: center
+        }
+    </style>
 </head>
 <body>
 
 <%@ include file="/WEB-INF/header_admin.jsp" %>
 
-<h1>group add user</h1>
+<h1>查找用户</h1>
 
-搜索用户
 <form method="get" action="group_find_user.do">
     <input type="hidden" name="groupId" value="${param.groupId}"/>
-    <input type="text" name="search" value="${requestScope.search}"/>
+    搜索用户: <input type="text" name="search" value="${requestScope.search}"/>
     <input type="submit"/>
 </form>
 
 <c:if test="${requestScope.pageBean != null}">
-    <table border="1">
+    <table border="1" align="center">
         <tr>
             <th>username</th>
             <th>sex</th>

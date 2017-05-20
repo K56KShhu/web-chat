@@ -2,7 +2,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>topic manage</title>
+    <title>讨论区管理</title>
+    <style type="text/css">
+        body {
+            margin: auto;
+            text-align: center
+        }
+    </style>
 </head>
 <body>
 
@@ -33,7 +39,7 @@
     <c:param name="access" value="${requestScope.access}"/>
 </c:url>
 
-<h1>topic manage</h1>
+<h1>讨论区管理</h1>
 
 <form method="get" action="topic_manage_info.do">
     <select name="access">
@@ -45,13 +51,13 @@
     <input type="submit"/>
 </form>
 
-<table border="1">
+<table border="1" align="center">
     <tr>
-        <th>title</th>
-        <th><a href="${accessOrderUrl}">isPrivate</a></th>
-        <th><a href="${replyAccountOderUrl}">reply</a></th>
-        <th><a href="${lastTimeOrderUrl}">last</a></th>
-        <th><a href="${createdOrderUrl}">created</a></th>
+        <th>讨论区</th>
+        <th><a href="${accessOrderUrl}">类型</a></th>
+        <th><a href="${replyAccountOderUrl}">回复</a></th>
+        <th><a href="${lastTimeOrderUrl}">最后回复</a></th>
+        <th><a href="${createdOrderUrl}">创建时间</a></th>
     </tr>
     <c:forEach var="topic" items="${requestScope.pageBean.list}">
         <%--参与讨论区--%>

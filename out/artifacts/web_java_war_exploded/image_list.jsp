@@ -2,7 +2,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>img list</title>
+    <title>图片分享区</title>
+    <style type="text/css">
+        body {
+            margin: auto;
+            text-align: center
+        }
+    </style>
 </head>
 <body>
 
@@ -15,19 +21,19 @@
     <a href="${chatUrl}">返回</a>
 </div>
 
-<h1>img list</h1>
+<h1>图片分享区</h1>
 
 <c:url value="file_upload.do" var="uploadUrl">
     <c:param name="topicId" value="${param.topicId}"/>
     <c:param name="shareType" value="image"/>
 </c:url>
 <form method="post" enctype="multipart/form-data" action="${uploadUrl}">
-    file: <input type="file" name="uploadFile"/><br/>
-    <input type="submit" value="upload your image"/>
+    image: <input type="file" name="uploadFile"/>
+    <input type="submit" value="share your image"/>
 </form>
 <br/><br/>
 
-<table border="1">
+<table border="1" align="center">
     <tr>
         <th>image</th>
         <th>username</th>

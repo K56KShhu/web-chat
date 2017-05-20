@@ -1,13 +1,19 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>group add</title>
+    <title>创建小组</title>
+    <style type="text/css">
+        body {
+            margin: auto;
+            text-align: center
+        }
+    </style>
 </head>
 <body>
 
 <%@ include file="/WEB-INF/header_admin.jsp" %>
 
-<h1>group add</h1>
+<h1>创建小组</h1>
 
 <jsp:include page="WEB-INF/result.jsp">
     <jsp:param name="success" value="小组创建成功"/>

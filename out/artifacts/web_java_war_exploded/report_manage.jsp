@@ -2,13 +2,19 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>report manage</title>
+    <title>举报管理</title>
+    <style type="text/css">
+        body {
+            margin: auto;
+            text-align: center
+        }
+    </style>
 </head>
 <body>
 
 <%@ include file="/WEB-INF/header_admin.jsp" %>
 
-<h1>report manage</h1>
+<h1>举报管理</h1>
 
 <c:url value="report_manage_info.do" var="contentTypeOrderUrl">
     <c:param name="order" value="contentType"/>
@@ -19,7 +25,7 @@
     <c:param name="isReverse" value="${requestScope.isReverse == true ? 'false' : 'true'}"/>
 </c:url>
 
-<table border="1">
+<table border="1" align="center">
     <tr>
         <th>举报者用户名</th>
         <th><a href="${contentTypeOrderUrl}">举报类型</a></th>

@@ -23,10 +23,12 @@ public class ContextParameterListener implements ServletContextListener,
         ServletContext context = sce.getServletContext();
         String loginCookieName = context.getInitParameter("LOGIN_COOKIE_NAME");
         int stayLoggedTime = Integer.valueOf(context.getInitParameter("STAY_LOGGED_TIME"));
-        String topicPath = context.getInitParameter("TOPIC_DIR");
+        String topicDir = context.getInitParameter("TOPIC_DIR");
+        String imageDir = context.getInitParameter("IMAGE_DIR");
         context.setAttribute("loginCookieName", loginCookieName);
         context.setAttribute("stayLoggedTime", stayLoggedTime);
-        context.setAttribute("topicDir", topicPath);
+        context.setAttribute("topicDir", topicDir);
+        context.setAttribute("imageDir", imageDir);
     }
 
     public void contextDestroyed(ServletContextEvent sce) {

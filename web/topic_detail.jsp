@@ -2,16 +2,22 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>topic detail</title>
+    <title>讨论区档案</title>
+    <style type="text/css">
+        body {
+            margin: auto;
+            text-align: center
+        }
+    </style>
 </head>
 <body>
 
 <%@ include file="/WEB-INF/header_admin.jsp" %>
 
-<h1>topic detail</h1>
+<h1>讨论区档案</h1>
 
 <h2>topic info</h2>
-<table border="1">
+<table border="1" align="center">
     <tr>
         <th>title</th>
         <td>${requestScope.topic.title}</td>
@@ -48,7 +54,7 @@
 </table>
 
 <h2>group info</h2>
-<table border="1">
+<table border="1" align="center">
     <tr>
         <th>name</th>
         <th>desc</th>

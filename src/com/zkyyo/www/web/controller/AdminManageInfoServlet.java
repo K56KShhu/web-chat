@@ -31,7 +31,7 @@ public class AdminManageInfoServlet extends HttpServlet {
         List<UserPo> userPos = userService.queryUsersByRole("admin");
         List<UserVo> userVos = new ArrayList<>();
         for (UserPo userPo : userPos) {
-            //将userPo转化为userVo
+            //将UserPo转化为UserVo
             userVos.add(BeanUtil.userPoToVo(userPo));
         }
         request.setAttribute("users", userVos);

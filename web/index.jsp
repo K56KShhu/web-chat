@@ -2,7 +2,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>index</title>
+    <title>咱部落</title>
+    <style type="text/css">
+        body {
+            margin: auto;
+            text-align: center
+        }
+    </style>
 </head>
 <body>
 
@@ -12,10 +18,10 @@
     <a href="topic_find_private.do">进入授权讨论区</a>
 </div>
 
-<h1>公共讨论区</h1>
+<h1>咱部落</h1>
 
 <form method="get" action="topic_find.do">
-    搜索讨论区: <input type="text" name="search" value="${requestScope.search}"/>
+    搜索讨论区: <input type="text" name="search" value="${requestScope.search}" maxlength="1024" size="40"/>
     <input type="submit"/>
 </form>
 
@@ -36,11 +42,11 @@
     <c:param name="isReverse" value="${requestScope.isReverse == true ? 'false' : 'true'}"/>
 </c:url>
 
-<table border="1">
+<table border="1" align="center">
     <tr>
-        <th>title</th>
-        <th><a href="${replyAccountOderUrl}">reply</a></th>
-        <th><a href="${lastTimeOrderUrl}">last</a></th>
+        <th>讨论区</th>
+        <th><a href="${replyAccountOderUrl}">回复</a></th>
+        <th><a href="${lastTimeOrderUrl}">最后回复</a></th>
     </tr>
     <c:forEach var="topic" items="${requestScope.pageBean.list}">
         <c:url value="topic_chat_info.do" var="topicUrl">

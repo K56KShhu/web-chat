@@ -2,7 +2,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>user manage</title>
+    <title>用户管理</title>
+    <style type="text/css">
+        body {
+            margin: auto;
+            text-align: center
+        }
+    </style>
 </head>
 <body>
 
@@ -12,7 +18,7 @@
     <a href="admin_manage_info.do">admin管理</a>
 </div>
 
-<h1>user manage</h1>
+<h1>用户管理</h1>
 
 <%--因为该界面集成了审核功能, 所以审核注册被移除--%>
 <%--<a href="user_audit_info.do">审核注册</a>--%>
@@ -45,7 +51,7 @@
 <%--<c:param name="isReverse" value="${requestScope.isReverse == true ? 'false' : 'true'}"/>--%>
 <%--</c:url>--%>
 
-<table border="1">
+<table border="1" align="center">
     <tr>
         <th>username</th>
         <th><a href="${sexOrderUrl}">sex</a></th>

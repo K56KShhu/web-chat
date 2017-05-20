@@ -2,7 +2,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>admin manage</title>
+    <title>管理员</title>
+    <style type="text/css">
+        body {
+            margin: auto;
+            text-align: center
+        }
+    </style>
 </head>
 <body>
 
@@ -14,13 +20,13 @@
     </div>
 </c:if>
 
-<h1>admin manage</h1>
+<h1>管理员列表</h1>
 
 <c:if test="${requestScope.users == null}">
     <c:redirect url="admin_manage_info.do"/>
 </c:if>
 
-<table border="1">
+<table border="1" align="center">
     <tr>
         <th>username</th>
         <th>sex</th>

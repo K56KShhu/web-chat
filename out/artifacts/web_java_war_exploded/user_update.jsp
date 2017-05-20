@@ -2,13 +2,19 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>user update</title>
+    <title>修改个人信息</title>
+    <style type="text/css">
+        body {
+            margin: auto;
+            text-align: center
+        }
+    </style>
 </head>
 <body>
 
 <%@ include file="/WEB-INF/header_user.jsp" %>
 
-<h1>user update</h1>
+<h1>修改个人信息</h1>
 
 <jsp:include page="WEB-INF/result.jsp">
     <jsp:param name="success" value="信息更新成功"/>
@@ -16,16 +22,15 @@
 </jsp:include>
 
 <form method="post" action="user_update.do">
-    password: <input type="password" name="password"/><br/>
-    confirmed password: <input type="password" name="confirmedPsw"/><br/>
-    sex: <input type="radio" name="sex" value="male" ${requestScope.user.sex == "male" ? "checked" : ""}/>male
+    密码: <input type="password" name="password"/><br/>
+    重复密码: <input type="password" name="confirmedPsw"/><br/>
+    性别: <input type="radio" name="sex" value="male" ${requestScope.user.sex == "male" ? "checked" : ""}/>male
     <input type="radio" name="sex" value="female" ${requestScope.user.sex == "female" ? "checked" : ""}/>female
     <input type="radio" name="sex" value="secret" ${requestScope.user.sex == "secret" ? "checked" : ""}/>secret<br/>
-    email: <input type="text" name="email"
-                  value="${requestScope.user.email != null ? requestScope.user.email : ""}"/><br/>
+    邮箱: <input type="text" name="email"
+                  value="${requestScope.user.email != null ? requestScope.user.email : ""}"/><br/><br/>
     <input type="submit" value="submit"/>
 </form>
-<br/><br/>
 
 </body>
 </html>

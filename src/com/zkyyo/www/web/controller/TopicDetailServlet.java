@@ -47,7 +47,7 @@ public class TopicDetailServlet extends HttpServlet {
         UserPo creator = userService.findUser(topicPo.getCreatorId());
         //获取最后修改者用户信息
         UserPo modifier = userService.findUser(topicPo.getLastModifyId());
-        //将topicPo转换为topicVo
+        //将TopicPo转换为TopicVo
         TopicVo topicVo = BeanUtil.topicPoToVo(topicPo, creator, modifier);
         GroupService groupService = (GroupService) getServletContext().getAttribute("groupService");
         //获取该讨论区授权的所有小组信息

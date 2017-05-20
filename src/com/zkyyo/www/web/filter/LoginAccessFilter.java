@@ -19,24 +19,30 @@ import java.io.IOException;
         filterName = "LoginAccessFilter",
         urlPatterns = {"/*"},
         initParams = {
+                @WebInitParam(name = "PATH_ROLE", value = "/temp/rule.jsp"),
                 @WebInitParam(name = "PATH_LOGIN_FORM", value = "/temp/login.jsp"),
                 @WebInitParam(name = "PATH_LOGIN_PROCESS", value = "/temp/login.do"),
                 @WebInitParam(name = "PATH_REGISTER_FORM", value = "/temp/register.jsp"),
-                @WebInitParam(name = "PATH_REGISTER_PROCESS", value = "/temp/register.do")
+                @WebInitParam(name = "PATH_REGISTER_PROCESS", value = "/temp/register.do"),
+                @WebInitParam(name = "PATH_IMAGE_SHOW_WEBSITE", value = "/temp/image_show_website.do")
         }
 )
 public class LoginAccessFilter extends GeneralAccessFilter {
+    private String pathRole;
     private String pathLoginForm;
     private String pathLoginProcess;
     private String pathRegisterForm;
     private String pathRegisterProcess;
+    private String pathImageShowWebsite;
 
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
         String path = ((HttpServletRequest) req).getRequestURI();
-        if (path.startsWith(pathLoginForm)
+        if (path.startsWith(pathRole)
+                || path.startsWith(pathLoginForm)
                 || path.startsWith(pathLoginProcess)
                 || path.startsWith(pathRegisterForm)
-                || path.startsWith(pathRegisterProcess)) {
+                || path.startsWith(pathRegisterProcess)
+                || path.startsWith(pathImageShowWebsite)) {
             chain.doFilter(req, resp);
         } else {
             super.doFilter(req, resp, chain);
@@ -59,10 +65,12 @@ public class LoginAccessFilter extends GeneralAccessFilter {
     }
 
     public void init(FilterConfig config) throws ServletException {
+        pathRole = config.getInitParameter("PATH_ROLE");
         pathLoginForm = config.getInitParameter("PATH_LOGIN_FORM");
         pathLoginProcess = config.getInitParameter("PATH_LOGIN_PROCESS");
         pathRegisterForm = config.getInitParameter("PATH_REGISTER_FORM");
         pathRegisterProcess = config.getInitParameter("PATH_REGISTER_PROCESS");
+        pathImageShowWebsite = config.getInitParameter("PATH_IMAGE_SHOW_WEBSITE");
         super.init(config);
     }
 }

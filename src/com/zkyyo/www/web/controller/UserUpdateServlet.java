@@ -34,7 +34,7 @@ public class UserUpdateServlet extends HttpServlet {
         if (password != null && password.length() > 0) {
             //判断密码是否合法, 且二次密码是否相同
             if (!userService.isValidPassword(password, confirmedPsw)) {
-                errors.add("bad password");
+                errors.add("密码不合法");
             } else {
                 updatedUser.setPassword(password);
             }
@@ -43,7 +43,7 @@ public class UserUpdateServlet extends HttpServlet {
         if (sex != null && sex.length() > 0) {
             //判断性别是否合法
             if (!userService.isValidSex(sex)) {
-                errors.add("bad sex");
+                errors.add("性别输入有误");
             } else {
                 updatedUser.setSex(sex);
             }
@@ -52,7 +52,7 @@ public class UserUpdateServlet extends HttpServlet {
         if (email != null && email.length() > 0) {
             //判断邮箱是否合法
             if (!userService.isValidEmail(email)) {
-                errors.add("bad email");
+                errors.add("邮箱格式有误");
             } else {
                 updatedUser.setEmail(email);
             }

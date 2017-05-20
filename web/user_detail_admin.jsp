@@ -3,6 +3,12 @@
 <html>
 <head>
     <title>${requestScope.user.username}的档案</title>
+    <style type="text/css">
+        body {
+            margin: auto;
+            text-align: center
+        }
+    </style>
 </head>
 <body>
 
@@ -10,45 +16,45 @@
 
 <h1>${requestScope.user.username}的档案</h1>
 
-<h2>user info</h2>
-<table border="1">
+<h2>个人</h2>
+<table border="1" align="center">
     <tr>
-        <th>username</th>
+        <th>用户名</th>
         <td>${requestScope.user.username}</td>
     </tr>
     <tr>
-        <th>sex</th>
+        <th>性别</th>
         <td>${requestScope.user.sex}</td>
     </tr>
     <tr>
-        <th>email</th>
+        <th>邮箱</th>
         <td>${requestScope.user.email}</td>
     </tr>
     <tr>
-        <th>status</th>
+        <th>状态</th>
         <td>${requestScope.user.statusStr}</td>
     </tr>
     <tr>
-        <th>created</th>
+        <th>注册时间</th>
         <td>${requestScope.user.created}</td>
     </tr>
 </table>
 
-<h2>group info</h2>
+<h2>小组</h2>
 <c:forEach var="group" items="${requestScope.groups}">
-    <table border="1">
+    <table border="1" align="center">
         <tr>
-            <th>name</th>
+            <th>小组名</th>
             <td>${group.key.name}</td>
         </tr>
         <tr>
-            <th>description</th>
+            <th>描述</th>
             <td>${group.key.description}</td>
         </tr>
         <tr>
-            <th>access</th>
+            <th></th>
             <td>
-                <table border="1">
+                <table border="1" align="center">
                     <tr>
                         <th>title</th>
                         <th>created</th>
@@ -65,6 +71,5 @@
     </table>
     <br/>
 </c:forEach>
-</table>
 </body>
 </html>

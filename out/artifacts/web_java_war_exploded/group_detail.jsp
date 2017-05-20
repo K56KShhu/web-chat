@@ -2,13 +2,19 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>group detail</title>
+    <title>小组档案</title>
+    <style type="text/css">
+        body {
+            margin: auto;
+            text-align: center
+        }
+    </style>
 </head>
 <body>
 
 <%@ include file="/WEB-INF/header_admin.jsp" %>
 
-<h1>group detail</h1>
+<h1>小组档案</h1>
 
 <c:url value="group_find_user.jsp" var="addUserUrl">
     <c:param name="groupId" value="${requestScope.group.groupId}"/>
@@ -16,7 +22,7 @@
 
 <h2>小组信息</h2>
 <a href="${addUserUrl}">add user</a>
-<table border="1">
+<table border="1" align="center">
     <tr>
         <th>name</th>
         <td>${requestScope.group.name}</td>

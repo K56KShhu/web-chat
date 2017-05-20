@@ -2,7 +2,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>topic private</title>
+    <title>授权讨论区</title>
+    <style type="text/css">
+        body {
+            margin: auto;
+            text-align: center
+        }
+    </style>
 </head>
 <body>
 
@@ -14,12 +20,11 @@
 
 <h1>授权讨论区</h1>
 
-<table border="1">
+<table border="1" align="center">
     <tr>
-        <th>title</th>
-        <th>reply</th>
-        <th>last</th>
-        <th>created</th>
+        <th>讨论区</th>
+        <th>回复数</th>
+        <th>最后回复时间</th>
     </tr>
     <c:forEach var="topic" items="${requestScope.topics}">
         <c:url value="topic_chat_info.do" var="topicUrl">
@@ -29,7 +34,6 @@
             <td><a href="${topicUrl}">${topic.title}</a><br/>${topic.description}</td>
             <td>${topic.replyAccount}</td>
             <td>${topic.lastTime}</td>
-            <td>${topic.created}</td>
         </tr>
     </c:forEach>
 </table>

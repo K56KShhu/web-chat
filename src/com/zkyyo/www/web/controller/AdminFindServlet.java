@@ -34,7 +34,7 @@ public class AdminFindServlet extends HttpServlet {
             if (userService.isUserInRole(userPo.getUserId(), "admin")) {
                 request.setAttribute("isAdmin", true);
             }
-            //将userPo转换为userVo
+            //将UserPo转换为UserVo
             UserVo userVo = BeanUtil.userPoToVo(userPo);
             request.setAttribute("user", userVo);
         }

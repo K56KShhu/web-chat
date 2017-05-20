@@ -31,24 +31,24 @@ public class RegisterServlet extends HttpServlet {
         List<String> errors = new ArrayList<>();
         //判断用户名是否合法
         if (!userService.isValidUsername(username)) {
-            errors.add("bad username");
+            errors.add("用户名不符合格式, 长度至少3位");
         } else {
             //判断用户名是否存在
             if (userService.isUserExisted(username)) {
-                errors.add("username occupied");
+                errors.add("用户名已被注册");
             }
         }
         //判断密码是否合法且二次密码是否相同
         if (!userService.isValidPassword(password, confirmedPsw)) {
-            errors.add("bad password");
+            errors.add("密码不符合格式");
         }
         //判断性别是否合法
         if (!userService.isValidSex(sex)) {
-            errors.add("bad sex");
+            errors.add("性别输入有误");
         }
         //判断邮箱是否合法
         if (!userService.isValidEmail(email)) {
-            errors.add("bad email");
+            errors.add("邮箱格式有误");
         }
 
         //判断是否输入有误

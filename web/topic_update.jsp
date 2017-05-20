@@ -2,13 +2,19 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>topic update</title>
+    <title>更新讨论区</title>
+    <style type="text/css">
+        body {
+            margin: auto;
+            text-align: center
+        }
+    </style>
 </head>
 <body>
 
 <%@ include file="/WEB-INF/header_admin.jsp" %>
 
-<h1>topic update</h1>
+<h1>更新讨论区</h1>
 
 <jsp:include page="WEB-INF/result.jsp">
     <jsp:param name="success" value="讨论区更新成功"/>

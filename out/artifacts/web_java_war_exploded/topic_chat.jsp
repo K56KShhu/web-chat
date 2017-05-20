@@ -2,7 +2,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>topic chat</title>
+    <title><c:out value="${requestScope.topic.title}"/></title>
+    <style type="text/css">
+        body {
+            margin: auto;
+            text-align: center
+        }
+    </style>
 </head>
 <body>
 
@@ -37,9 +43,9 @@
 
 <%--输入文本内容--%>
 <form method="post" action="reply_text_add.do">
-    文本:<textarea name="content" rows="5" cols="60">${requestScope.content}</textarea>
+    text:<textarea name="content" rows="5" cols="60">${requestScope.content}</textarea>
     <input type="hidden" name="topicId" value="${requestScope.topic.topicId}"/>
-    <input type="submit" value="reply"/>
+    <input type="submit" value="send"/>
 </form>
 
 <%--输入图片内容--%>
@@ -48,8 +54,8 @@
     <c:param name="shareType" value="chat"/>
 </c:url>
 <form method="post" enctype="multipart/form-data" action="${uploadUrl}">
-    图片: <input type="file" name="uploadFile"/>
-    <input type="submit" value="发送图片"/>
+    image: <input type="file" name="uploadFile"/>
+    <input type="submit" value="send image"/>
 </form>
 <br/><br/>
 

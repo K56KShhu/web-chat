@@ -75,7 +75,7 @@ public class TopicManageInfoServlet extends HttpServlet {
             pageBeanPo = topicService.queryTopics(access, currentPage, order, isReverse);
         }
 
-        //将topicPo转换为topicVo
+        //将TopicPo转换为TopicVo
         List<TopicPo> topicPos = pageBeanPo.getList();
         List<TopicVo> topicVos = new ArrayList<>();
         for (TopicPo topicPo : topicPos) {

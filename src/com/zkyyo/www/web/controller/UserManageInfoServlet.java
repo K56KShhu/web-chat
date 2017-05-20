@@ -76,7 +76,7 @@ public class UserManageInfoServlet extends HttpServlet {
             pageBeanPo = userService.queryUsers(status, currentPage, order, isReverse);
         }
 
-        //将userPo转换为userVo
+        //将UserPo转换为UserVo
         List<UserPo> userPos = pageBeanPo.getList();
         List<UserVo> userVos = new ArrayList<>();
         for (UserPo userPo : userPos) {

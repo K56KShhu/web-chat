@@ -47,7 +47,7 @@
         <option value="public" ${requestScope.access == 'public' ? 'selected': ''}>公共讨论区</option>
         <option value="private" ${requestScope.access == 'private' ? 'selected' : ''}>授权讨论区</option>
     </select>
-    搜索: <input type="text" name="search"/>
+    搜索: <input type="text" maxlength="1024" size="40" name="search"/>
     <input type="submit"/>
 </form>
 

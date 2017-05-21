@@ -21,7 +21,7 @@
 <h1>查找用户</h1>
 
 <form method="get" action="admin_find.do">
-    完整加冕者的完整用户名: <input type="text" name="username" value="${requestScope.username}"/>
+    完整加冕者的完整用户名: <input type="text" maxlength="1024" name="username" value="${requestScope.username}"/>
     <input type="submit"/>
 </form>
 
@@ -34,30 +34,30 @@
             查询结果如下, 如若批准, 请输入root密码进行验证:
             <form method="post" action="admin_add.do">
                 <input type="hidden" name="userId" value="${requestScope.user.userId}"/>
-                root: <input type="password" name="root"/>
+                root: <input type="password" maxlength="1024" name="root"/>
                 <input type="submit"/>
             </form>
         </c:otherwise>
     </c:choose>
     <table border="1" align="center">
         <tr>
-            <th>username</th>
+            <th>用户名</th>
             <td>${requestScope.user.username}</td>
         </tr>
         <tr>
-            <th>sex</th>
+            <th>性别</th>
             <td>${requestScope.user.sex}</td>
         </tr>
         <tr>
-            <th>email</th>
+            <th>邮箱</th>
             <td>${requestScope.user.email}</td>
         </tr>
         <tr>
-            <th>status</th>
+            <th>状态</th>
             <td>${requestScope.user.statusStr}</td>
         </tr>
         <tr>
-            <th>created</th>
+            <th>注册时间</th>
             <td>${requestScope.user.created}</td>
         </tr>
     </table>

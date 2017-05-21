@@ -90,7 +90,7 @@ public class TopicService {
      * @return true合法, false不合法
      */
     public boolean isValidId(String topicId) {
-        return CheckUtil.isValidId(topicId, MAX_ID_LENGTH);
+        return CheckUtil.isValidInteger(CheckUtil.NUMBER_POSITIVE, topicId, MAX_ID_LENGTH);
     }
 
     /**

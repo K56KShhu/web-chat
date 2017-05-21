@@ -21,8 +21,10 @@
 </jsp:include>
 
 <form method="post" action="group_add.do">
-    小组名:<input type="text" name="name" value="${requestScope.name}"/><br/>
-    描述:<textarea name="description" rows="4" cols="25" maxlength="100">${requestScope.description}</textarea><br/>
+    小组名:<input type="text" maxlength="16" size="25" name="name" placeholder="请输入小组名, 创建后不可修改"
+               value="${requestScope.name}"/><br/>
+    描述:<textarea name="description" rows="4" cols="25" maxlength="100"
+                 placeholder="(可选)">${requestScope.description}</textarea><br/>
     <input type="submit"/>
 </form>
 

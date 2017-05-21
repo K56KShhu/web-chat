@@ -64,6 +64,7 @@
         <c:url value="group_detail.do" var="groupDetailUrl">
             <c:param name="groupId" value="${group.groupId}"/>
         </c:url>
+        <%--从讨论区移除小组URL--%>
         <c:url value="topic_remove_group.do" var="removeGroupUrl">
             <c:param name="groupId" value="${group.groupId}"/>
             <c:param name="topicId" value="${requestScope.topic.topicId}"/>

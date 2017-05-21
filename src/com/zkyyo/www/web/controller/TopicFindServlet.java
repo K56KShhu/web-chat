@@ -3,6 +3,7 @@ package com.zkyyo.www.web.controller;
 import com.zkyyo.www.bean.PageBean;
 import com.zkyyo.www.bean.po.TopicPo;
 import com.zkyyo.www.service.TopicService;
+import com.zkyyo.www.util.CheckUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -31,7 +32,7 @@ public class TopicFindServlet extends HttpServlet {
 
         //处理页数
         int currentPage = 1;
-        if (page != null) {
+        if (CheckUtil.isValidInteger(CheckUtil.NUMBER_POSITIVE, page, 10)) {
             currentPage = Integer.valueOf(page);
         }
         //判断排序依据

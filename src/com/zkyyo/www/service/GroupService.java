@@ -53,7 +53,7 @@ public class GroupService {
      * @return true合法, false不合法
      */
     public boolean isValidId(String groupId) {
-        return CheckUtil.isValidId(groupId, MAX_ID_LENGTH);
+        return CheckUtil.isValidInteger(CheckUtil.NUMBER_POSITIVE, groupId, MAX_ID_LENGTH);
     }
 
     /**

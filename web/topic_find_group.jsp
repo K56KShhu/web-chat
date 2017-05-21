@@ -18,7 +18,7 @@
 
 <form method="get" action="topic_find_group.do">
     <input type="hidden" name="topicId" value="${param.topicId}"/>
-    搜索小组: <input type="text" name="search" value="${requestScope.search}"/>
+    搜索小组: <input type="text" maxlength="1024" name="search" value="${requestScope.search}"/>
     <input type="submit"/>
 </form>
 
@@ -34,6 +34,7 @@
             <c:url value="group_detail.do" var="groupDetailUrl">
                 <c:param name="groupId" value="${group.groupId}"/>
             </c:url>
+            <%--讨论区授权小组URL--%>
             <c:url value="topic_add_group.do" var="addGroupUrl">
                 <c:param name="topicId" value="${param.topicId}"/>
                 <c:param name="groupId" value="${group.groupId}"/>

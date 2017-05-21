@@ -43,7 +43,7 @@
 
 <%--输入文本内容--%>
 <form method="post" action="reply_text_add.do">
-    text:<textarea name="content" rows="5" cols="60">${requestScope.content}</textarea>
+    text:<textarea name="content" rows="5" cols="60" maxlength="255">${requestScope.content}</textarea>
     <input type="hidden" name="topicId" value="${requestScope.topic.topicId}"/>
     <input type="submit" value="send"/>
 </form>

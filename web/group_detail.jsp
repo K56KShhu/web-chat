@@ -53,6 +53,7 @@
                     <th>created</th>
                 </tr>
                 <c:forEach var="user" items="${requestScope.users}">
+                    <%--移除小组成员URL--%>
                     <c:url value="group_remove_user.do" var="removeUserUrl">
                         <c:param name="groupId" value="${requestScope.group.groupId}"/>
                         <c:param name="userId" value="${user.userId}"/>
@@ -82,6 +83,7 @@
         <th>创建时间</th>
     </tr>
     <c:forEach var="topic" items="${requestScope.topics}">
+        <%--从小组移除讨论区URL--%>
         <c:url value="group_remove_topic.do" var="removeTopicUrl">
             <c:param name="groupId" value="${requestScope.group.groupId}"/>
             <c:param name="topicId" value="${topic.topicId}"/>

@@ -8,6 +8,7 @@ import com.zkyyo.www.service.TopicService;
 import com.zkyyo.www.service.UserService;
 import com.zkyyo.www.util.BeanUtil;
 import com.zkyyo.www.bean.vo.FileVo;
+import com.zkyyo.www.util.CheckUtil;
 import com.zkyyo.www.web.Access;
 
 import javax.servlet.ServletException;
@@ -55,9 +56,8 @@ public class FileListServlet extends HttpServlet {
             return;
         }
 
-
         int currentPage = 1;
-        if (page != null) {
+        if (CheckUtil.isValidInteger(CheckUtil.NUMBER_POSITIVE, page, 10)) {
             currentPage = Integer.valueOf(page);
         }
         int shareType;

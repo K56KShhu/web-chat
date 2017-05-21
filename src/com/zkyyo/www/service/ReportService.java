@@ -61,7 +61,7 @@ public class ReportService {
      * @return true合法, false不合法
      */
     public boolean isValidId(String reportId) {
-        return CheckUtil.isValidId(reportId, MAX_ID_LENGTH);
+        return CheckUtil.isValidInteger(CheckUtil.NUMBER_POSITIVE, reportId, MAX_ID_LENGTH);
     }
 
     /**

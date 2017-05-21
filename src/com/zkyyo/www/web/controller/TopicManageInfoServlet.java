@@ -5,6 +5,7 @@ import com.zkyyo.www.bean.po.TopicPo;
 import com.zkyyo.www.bean.vo.TopicVo;
 import com.zkyyo.www.service.TopicService;
 import com.zkyyo.www.util.BeanUtil;
+import com.zkyyo.www.util.CheckUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -36,7 +37,7 @@ public class TopicManageInfoServlet extends HttpServlet {
 
         //处理页数
         int currentPage = 1;
-        if (page != null) {
+        if (CheckUtil.isValidInteger(CheckUtil.NUMBER_POSITIVE, page, 10)) {
             currentPage = Integer.valueOf(page);
         }
         //判断讨论区类型

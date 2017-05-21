@@ -5,6 +5,7 @@ import com.zkyyo.www.bean.po.UserPo;
 import com.zkyyo.www.bean.vo.UserVo;
 import com.zkyyo.www.service.UserService;
 import com.zkyyo.www.util.BeanUtil;
+import com.zkyyo.www.util.CheckUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -36,7 +37,7 @@ public class UserManageInfoServlet extends HttpServlet {
 
         //处理分页
         int currentPage = 1;
-        if (page != null) {
+        if (CheckUtil.isValidInteger(CheckUtil.NUMBER_POSITIVE, page, 10)) {
             currentPage = Integer.valueOf(page);
         }
         //判断排序依据
@@ -84,7 +85,6 @@ public class UserManageInfoServlet extends HttpServlet {
         }
         //重构分页对象
         PageBean<UserVo> pageBeanVo = BeanUtil.pageBeanListTranslate(pageBeanPo, userVos);
-
 
         request.setAttribute("statusSearch", statusStr);
         request.setAttribute("search", search);

@@ -27,6 +27,7 @@
         <th>最后回复时间</th>
     </tr>
     <c:forEach var="topic" items="${requestScope.topics}">
+        <%--进入讨论区聊天室URL--%>
         <c:url value="topic_chat_info.do" var="topicUrl">
             <c:param name="topicId" value="${topic.topicId}"/>
         </c:url>

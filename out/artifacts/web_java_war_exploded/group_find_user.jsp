@@ -18,7 +18,7 @@
 
 <form method="get" action="group_find_user.do">
     <input type="hidden" name="groupId" value="${param.groupId}"/>
-    搜索用户: <input type="text" name="search" value="${requestScope.search}"/>
+    搜索用户: <input type="text" name="search" maxlength="1024" value="${requestScope.search}"/>
     <input type="submit"/>
 </form>
 
@@ -30,6 +30,7 @@
             <th>注册时间</th>
         </tr>
         <c:forEach var="user" items="${requestScope.pageBean.list}">
+            <%--添加小组成员URL--%>
             <c:url value="group_add_user.do" var="addUserUrl">
                 <c:param name="groupId" value="${requestScope.groupId}"/>
                 <c:param name="userId" value="${user.userId}"/>

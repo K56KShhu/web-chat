@@ -37,6 +37,7 @@
             <td>${user.username}</td>
             <td>${user.sex}</td>
             <td>${user.statusStr}</td>
+            <%--[root]撤销管理员--%>
             <c:if test="${sessionScope.access.isUserInRole('root') && sessionScope.access.userId != user.userId}">
                 <c:url value="admin_delete.do" var="deleteAdminUrl">
                     <c:param name="userId" value="${user.userId}"/>

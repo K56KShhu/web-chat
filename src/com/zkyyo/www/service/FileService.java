@@ -54,7 +54,7 @@ public class FileService {
      * @return true合法 false不合法
      */
     public boolean isValidId(String fileId) {
-        return CheckUtil.isValidId(fileId, MAX_ID_LENGTH);
+        return CheckUtil.isValidInteger(CheckUtil.NUMBER_POSITIVE, fileId, MAX_ID_LENGTH);
     }
 
     /**

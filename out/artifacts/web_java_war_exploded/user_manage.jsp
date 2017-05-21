@@ -32,7 +32,7 @@
         <option value="notApproved" ${requestScope.statusSearch == 'notApproved' ? 'selected' : ''}>审核不通过</option>
     </select>
     搜索用户:
-    <input type="text" name="search" value="${requestScope.search}"/>
+    <input type="text" maxlength="1024" name="search" value="${requestScope.search}"/>
     <input type="submit"/>
 </form>
 
@@ -61,6 +61,7 @@
         <th><a href="${createdOrderUrl}">注册时间</a></th>
     </tr>
     <c:forEach var="user" items="${requestScope.pageBean.list}">
+        <%--修改状态为正常--%>
         <c:url value="user_manage.do" var="userNormalUrl">
             <c:param name="userId" value="${user.userId}"/>
             <c:param name="status" value="1"/>
@@ -70,6 +71,7 @@
             <c:param name="isReverse" value="${requestScope.isReverse}"/>
             <c:param name="statusSearch" value="${requestScope.statusSearch}"/>
         </c:url>
+        <%--修改状态为未通过审核--%>
         <c:url value="user_manage.do" var="userNotApprovedUrl">
             <c:param name="userId" value="${user.userId}"/>
             <c:param name="status" value="-1"/>
@@ -79,6 +81,7 @@
             <c:param name="isReverse" value="${requestScope.isReverse}"/>
             <c:param name="statusSearch" value="${requestScope.statusSearch}"/>
         </c:url>
+        <%--修改状态为被封印--%>
         <c:url value="user_manage.do" var="userForbiddenUrl">
             <c:param name="userId" value="${user.userId}"/>
             <c:param name="status" value="-2"/>

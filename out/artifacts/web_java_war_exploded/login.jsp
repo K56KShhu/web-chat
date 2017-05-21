@@ -24,14 +24,9 @@
     <jsp:param name="faile" value="登录失败, 原因如下:"/>
 </jsp:include>
 
-<%--<form method="post" action="login.do">--%>
-<%--username: <input type="text" name="username"/><br/>--%>
-<%--password: <input type="password" name="password"/><br/>--%>
-<%--<input type="submit"/>--%>
-<%--</form>--%>
 <form method="post" action="login.do">
-    username:<input type="text" name="username"/><br/>
-    password:<input type="password" name="password"/><br/>
+    username:<input type="text" maxlength="1024" name="username"/><br/>
+    password:<input type="password" maxlength="1024" name="password"/><br/>
     <input type="checkbox" name="remember" value="true">自动登录
     <input type="submit"/>
 </form>

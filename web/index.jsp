@@ -29,18 +29,23 @@
     <c:redirect url="topic_find.do"/>
 </c:if>
 
+<%--根据回复数量排序URL--%>
 <c:url value="topic_find.do" var="replyAccountOderUrl">
     <c:param name="order" value="replyAccount"/>
     <c:param name="isReverse" value="${requestScope.isReverse == true ? 'false' : 'true'}"/>
 </c:url>
+<%--根据最后回复时间排序URL--%>
 <c:url value="topic_find.do" var="lastTimeOrderUrl">
     <c:param name="order" value="lastTime"/>
     <c:param name="isReverse" value="${requestScope.isReverse == true ? 'false' : 'true'}"/>
 </c:url>
+<%--根据创建时间排序URL--%>
+<%--
 <c:url value="topic_find.do" var="createdOrderUrl">
     <c:param name="order" value="created"/>
     <c:param name="isReverse" value="${requestScope.isReverse == true ? 'false' : 'true'}"/>
 </c:url>
+--%>
 
 <table border="1" align="center">
     <tr>

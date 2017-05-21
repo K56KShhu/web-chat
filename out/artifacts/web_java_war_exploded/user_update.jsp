@@ -22,12 +22,12 @@
 </jsp:include>
 
 <form method="post" action="user_update.do">
-    密码: <input type="password" name="password"/><br/>
-    重复密码: <input type="password" name="confirmedPsw"/><br/>
+    密码: <input type="password" maxlength="16" name="password"/><br/>
+    重复密码: <input type="password" maxlength="16" name="confirmedPsw"/><br/>
     性别: <input type="radio" name="sex" value="male" ${requestScope.user.sex == "male" ? "checked" : ""}/>male
     <input type="radio" name="sex" value="female" ${requestScope.user.sex == "female" ? "checked" : ""}/>female
     <input type="radio" name="sex" value="secret" ${requestScope.user.sex == "secret" ? "checked" : ""}/>secret<br/>
-    邮箱: <input type="text" name="email"
+    邮箱: <input type="text" maxlength="255" name="email"
                   value="${requestScope.user.email != null ? requestScope.user.email : ""}"/><br/><br/>
     <input type="submit" value="submit"/>
 </form>

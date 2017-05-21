@@ -119,7 +119,7 @@ public class UserService {
      * @return true合法, false不合法
      */
     public boolean isValidUserId(String userId) {
-        return CheckUtil.isValidId(userId, MAX_ID_LENGTH);
+        return CheckUtil.isValidInteger(CheckUtil.NUMBER_POSITIVE, userId, MAX_ID_LENGTH);
     }
 
     /**

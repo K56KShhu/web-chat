@@ -35,14 +35,17 @@
         <th>处理结果</th>
     </tr>
     <c:forEach var="report" items="${requestScope.pageBean.list}">
+        <%--小组档案URL--%>
         <c:url value="report_detail.do" var="detailReportUrl">
             <c:param name="contentId" value="${report.contentId}"/>
             <c:param name="contentType" value="${report.contentType}"/>
         </c:url>
+        <%--删除对应内容URL--%>
         <c:url value="report_content_delete.do" var="manageReportUrl">
             <c:param name="contentId" value="${report.contentId}"/>
             <c:param name="contentType" value="${report.contentType}"/>
         </c:url>
+        <%--删除举报URL--%>
         <c:url value="report_delete.do" var="deleteReportUrl">
             <c:param name="reportId" value="${report.reportId}"/>
             <c:param name="order" value="${requestScope.order}"/>

@@ -7,6 +7,7 @@ import com.zkyyo.www.service.ReportService;
 import com.zkyyo.www.service.UserService;
 import com.zkyyo.www.util.BeanUtil;
 import com.zkyyo.www.bean.vo.ReportVo;
+import com.zkyyo.www.util.CheckUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -34,7 +35,7 @@ public class ReportManageInfoServlet extends HttpServlet {
         boolean isReverse = "true".equals(request.getParameter("isReverse")); //是否降序 true降序, false升序
 
         int currentPage = 1;
-        if (page != null) {
+        if (CheckUtil.isValidInteger(CheckUtil.NUMBER_POSITIVE, page, 10)) {
             currentPage = Integer.valueOf(page);
         }
         //判断排序依据

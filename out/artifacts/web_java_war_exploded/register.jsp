@@ -20,13 +20,13 @@
 </jsp:include>
 
 <form method="post" action="register.do">
-    用户名: <input type="text" name="username" value="${requestScope.username != null ? requestScope.username : ""}"/><br/>
-    密码: <input type="password" name="password"/><br/>
-    重复密码: <input type="password" name="confirmedPsw"/><br/>
+    用户名: <input type="text" maxlength="16" name="username" placeholder="请设置用户名" value="${requestScope.username != null ? requestScope.username : ""}"/><br/>
+    密码: <input type="password" maxlength="16" name="password" placeholder="不少于3位"/><br/>
+    重复密码: <input type="password" maxlength="16" name="confirmedPsw" placeholder="请重复输入密码"/><br/>
     性别: <input type="radio" name="sex" value="male" ${requestScope.sex == "male" ? "checked" : ""}/>male
     <input type="radio" name="sex" value="female" ${requestScope.sex == "female" ? "checked" : ""}/>female
     <input type="radio" name="sex" value="secret" ${requestScope.sex == "secret" ? "checked" : ""}/>secret<br/>
-    邮箱: <input type="text" name="email" value="${requestScope.email != null ? requestScope.email : ""}"/><br/>
+    邮箱: <input type="text" name="email" maxlength="255" placeholder="请设置邮箱" value="${requestScope.email != null ? requestScope.email : ""}"/><br/>
     <input type="checkbox" name="isAgreed" value="true" checked/>阅读并接受<a href="rule.jsp">《咱部落用户协议》</a><br/>
     <input type="submit" value="submit"/>
 </form>

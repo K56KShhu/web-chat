@@ -60,7 +60,7 @@ public class ReplyService {
      * @return true合法, false非法
      */
     public boolean isValidId(String id) {
-        return CheckUtil.isValidId(id, MAX_ID_LENGTH);
+        return CheckUtil.isValidInteger(CheckUtil.NUMBER_POSITIVE, id, MAX_ID_LENGTH);
     }
 
     /**

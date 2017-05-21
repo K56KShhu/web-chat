@@ -69,39 +69,26 @@ public class FileDaoJdbcImpl implements FileDao {
     }
 
     /**
-     * 获取数据库中一个讨论区中指定文件类型的多个文件信息, 同时进行分页和排序
+     * 删除数据库中的文件信息
      *
-     * @param startIndex  起始下标
-     * @param rowsOnePage 获取的文件数量
-     * @param order       排序依据
-     * @param isReverse   是否降序
-     * @param topicId     讨论区ID
-     * @param apply       文件类型
-     * @return 返回一个关于文件的列表, 不包含任何认为则为size为0的空列表
+     * @param fileId 待删除的文件ID
      */
     @Override
-    public List<FilePo> selectFilesByTopicId(int startIndex, int rowsOnePage, int order, boolean isReverse, int topicId, int apply) {
+    public void deleteFile(int fileId) {
         Connection conn = null;
         PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        List<FilePo> files = new ArrayList<>();
 
         try {
             conn = dataSource.getConnection();
-            String sql = makeQuerySql(startIndex, rowsOnePage, order, isReverse);
+            String sql = "DELETE FROM upload_file WHERE upload_file_id=?";
             pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, topicId);
-            pstmt.setInt(2, apply);
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                files.add(getFile(rs));
-            }
+            pstmt.setInt(1, fileId);
+            pstmt.execute();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            DbClose.close(conn, pstmt, rs);
+            DbClose.close(conn, pstmt);
         }
-        return files;
     }
 
     /**
@@ -134,26 +121,40 @@ public class FileDaoJdbcImpl implements FileDao {
     }
 
     /**
-     * 删除数据库中的文件信息
+     * 获取数据库中一个讨论区中指定文件类型的多个文件信息, 同时进行分页和排序
      *
-     * @param fileId 待删除的文件ID
+     * @param startIndex  起始下标
+     * @param rowsOnePage 获取的文件数量
+     * @param order       排序依据
+     * @param isReverse   是否降序
+     * @param topicId     讨论区ID
+     * @param apply       文件类型
+     * @return 返回一个关于文件的列表, 不包含任何认为则为size为0的空列表
      */
     @Override
-    public void deleteFile(int fileId) {
+    public List<FilePo> selectFilesByTopicId(int startIndex, int rowsOnePage, int order,
+                                             boolean isReverse, int topicId, int apply) {
         Connection conn = null;
         PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        List<FilePo> files = new ArrayList<>();
 
         try {
             conn = dataSource.getConnection();
-            String sql = "DELETE FROM upload_file WHERE upload_file_id=?";
+            String sql = makeQuerySql(startIndex, rowsOnePage, order, isReverse);
             pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, fileId);
-            pstmt.execute();
+            pstmt.setInt(1, topicId);
+            pstmt.setInt(2, apply);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                files.add(getFile(rs));
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            DbClose.close(conn, pstmt);
+            DbClose.close(conn, pstmt, rs);
         }
+        return files;
     }
 
     /**
@@ -189,24 +190,6 @@ public class FileDaoJdbcImpl implements FileDao {
     }
 
     /**
-     * 封装通过ResultSet构建文件对象的方法
-     *
-     * @param rs 当前位置的数据光标
-     * @return 文件对象
-     * @throws SQLException 数据库发生错误则抛出异常
-     */
-    private FilePo getFile(ResultSet rs) throws SQLException {
-        FilePo file = new FilePo();
-        file.setFileId(rs.getInt(("upload_file_id")));
-        file.setUserId(rs.getInt("user_id"));
-        file.setApply(rs.getInt("apply"));
-        file.setTopicId(rs.getInt("topic_id"));
-        file.setPath(rs.getString("relative_path"));
-        file.setCreated(rs.getTimestamp("created"));
-        return file;
-    }
-
-    /**
      * 构建数据库检索语句
      *
      * @param startIndex  起始下标
@@ -228,5 +211,23 @@ public class FileDaoJdbcImpl implements FileDao {
             sql += " DESC";
         }
         return sql + " LIMIT " + startIndex + "," + rowsOnePage;
+    }
+
+    /**
+     * 封装通过ResultSet构建文件对象的方法
+     *
+     * @param rs 当前位置的数据光标
+     * @return 文件对象
+     * @throws SQLException 数据库发生错误则抛出异常
+     */
+    private FilePo getFile(ResultSet rs) throws SQLException {
+        FilePo file = new FilePo();
+        file.setFileId(rs.getInt(("upload_file_id")));
+        file.setUserId(rs.getInt("user_id"));
+        file.setApply(rs.getInt("apply"));
+        file.setTopicId(rs.getInt("topic_id"));
+        file.setPath(rs.getString("relative_path"));
+        file.setCreated(rs.getTimestamp("created"));
+        return file;
     }
 }

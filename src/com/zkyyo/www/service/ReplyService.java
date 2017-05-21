@@ -119,7 +119,9 @@ public class ReplyService {
      * @return 封装的分页对象
      */
     public PageBean<ReplyPo> findReplys(int topicId, int currentPage) {
+        //设置分页对象
         PageBean<ReplyPo> pageBean = new PageBean<>(currentPage, replyDao.getTotalRow(topicId), ROWS_ONE_PAGE);
+        //计算起始下标
         int startIndex = (pageBean.getCurrentPage() - 1) * ROWS_ONE_PAGE;
 
         List<ReplyPo> replys = replyDao.selectReplysByTopicId(startIndex, ROWS_ONE_PAGE, topicId);

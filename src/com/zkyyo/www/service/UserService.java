@@ -98,11 +98,14 @@ public class UserService {
      * @return true检查通过, false检查不通过
      */
     public boolean checkLogin(UserPo checkUser) {
+        //检查用户是否有进行输入
         if (checkUser.getUsername() != null && checkUser.getPassword() != null) {
             UserPo user = findUser(checkUser.getUsername());
+            //检查用户是否存在
             if (user != null) {
                 String correctPwd = user.getPassword();
                 try {
+                    //验证密码
                     return Pbkdf2Util.validatePassword(checkUser.getPassword(), correctPwd);
                 } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
                     e.printStackTrace();
@@ -213,6 +216,40 @@ public class UserService {
     }
 
     /**
+     * 校验用户是否拥有指定角色
+     *
+     * @param userId 用户ID
+     * @param role   指定角色
+     * @return true拥有, false不拥有
+     */
+    public boolean isUserInRole(int userId, String role) {
+        Set<String> roles = getRoles(userId);
+        for (String r : roles) {
+            if (role.equals(r)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 校验用户是否位于指定小组中
+     *
+     * @param userId  用户ID
+     * @param groupId 指定小组ID
+     * @return true位于, false不位于
+     */
+    public boolean isUserInGroup(int userId, int groupId) {
+        Set<Integer> groups = getGroups(userId);
+        for (int group : groups) {
+            if (groupId == group) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * 添加用户信息
      *
      * @param userPo 待添加的用户对象
@@ -226,38 +263,6 @@ public class UserService {
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * 校验root密码后可提升用户为管理员
-     *
-     * @param rootId  root用户ID
-     * @param rootPwd root密码
-     * @param userId  待提升的用户ID
-     * @return true提升成功, false密码错误
-     */
-    public boolean addAdmin(int rootId, String rootPwd, int userId) {
-        UserPo root = findUser(rootId);
-        try {
-            boolean isRoot = Pbkdf2Util.validatePassword(rootPwd, root.getPassword());
-            if (isRoot) {
-                userDao.addRole(userId, UserDaoJdbcImpl.ROLE_ADMIN);
-                return true;
-            }
-        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    /**
-     * 移除用户指定角色
-     *
-     * @param userId 用户ID
-     * @param role   待移除的角色
-     */
-    public void removeRoleInUser(int userId, String role) {
-        userDao.deleteRoleInUser(userId, role);
     }
 
     /**
@@ -290,6 +295,7 @@ public class UserService {
      */
     public PageBean<UserPo> queryUsers(int status, int currentPage, String username) {
         int statusType;
+        //判断查询状态
         if (STATUS_ALL == status) {
             statusType = UserDaoJdbcImpl.STATUS_ALL;
         } else if (STATUS_NORMAL == status) {
@@ -304,11 +310,12 @@ public class UserService {
             return null;
         }
 
+        //设置分页对象
         PageBean<UserPo> pageBean = new PageBean<>(currentPage, userDao.getTotalRow(statusType, username), ROWS_ONE_PAGE);
+        //计算起始下标
         int startIndex = (pageBean.getCurrentPage() - 1) * ROWS_ONE_PAGE;
         List<UserPo> users = userDao.selectUsersByUsername(statusType, startIndex, ROWS_ONE_PAGE, username);
         pageBean.setList(users);
-        System.out.println("[UserService] pageBean<UserPo>: " + pageBean);
         return pageBean;
     }
 
@@ -323,6 +330,7 @@ public class UserService {
      */
     public PageBean<UserPo> queryUsers(int status, int currentPage, int order, boolean isReverse) {
         int statusType;
+        //判断查询状态
         if (STATUS_ALL == status) {
             statusType = UserDaoJdbcImpl.STATUS_ALL;
         } else if (STATUS_NORMAL == status) {
@@ -337,6 +345,7 @@ public class UserService {
             return null;
         }
         int orderType;
+        //判断排序依据
         if (ORDER_BY_SEX == order) {
             orderType = UserDaoJdbcImpl.ORDER_BY_SEX;
         } else if (ORDER_BY_CREATED == order) {
@@ -346,7 +355,10 @@ public class UserService {
         } else {
             return null;
         }
-        PageBean<UserPo> pageBean = new PageBean<>(currentPage, userDao.getTotalRowByStatus(statusType), ROWS_ONE_PAGE);
+
+        //设置分页对象
+        PageBean<UserPo> pageBean = new PageBean<>(currentPage, userDao.getTotalRow(statusType), ROWS_ONE_PAGE);
+        //计算起始下标
         int startIndex = (pageBean.getCurrentPage() - 1) * ROWS_ONE_PAGE;
         List<UserPo> users = userDao.selectUsersByOrder(statusType, startIndex, ROWS_ONE_PAGE, orderType, isReverse);
         pageBean.setList(users);
@@ -374,37 +386,95 @@ public class UserService {
     }
 
     /**
-     * 校验用户是否拥有指定角色
+     * 更新用户信息
+     *
+     * @param userPo 包含最新信息的用户对象
+     */
+    public void update(UserPo userPo) {
+        try {
+            UserPo initialUser = userDao.selectUserByUserId(userPo.getUserId());
+            List<Integer> updatedTypes = new ArrayList<>();
+
+            //判断需要修改的类型
+            if (userPo.getSex() != null && !userPo.getSex().equals(initialUser.getSex())) {
+                //修改性别
+                updatedTypes.add(UserDaoJdbcImpl.UPDATE_SEX);
+            }
+            if (userPo.getEmail() != null && !userPo.getEmail().equals(initialUser.getEmail())) {
+                //修改邮箱
+                updatedTypes.add(UserDaoJdbcImpl.UPDATE_EMAIL);
+            }
+            if (userPo.getPassword() != null) {
+                //修改密码
+                //加密
+                String hashPwd = Pbkdf2Util.createHash(userPo.getPassword());
+                userPo.setPassword(hashPwd);
+                updatedTypes.add(UserDaoJdbcImpl.UPDATE_PASSWORD);
+            }
+            userDao.update(userPo, updatedTypes);
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 更新用户状态
      *
      * @param userId 用户ID
-     * @param role   指定角色
-     * @return true拥有, false不拥有
+     * @param status 最新状态标识符
      */
-    public boolean isUserInRole(int userId, String role) {
-        Set<String> roles = getRoles(userId);
-        for (String r : roles) {
-            if (role.equals(r)) {
+    public void updateStatus(int userId, int status) {
+        UserPo user = new UserPo();
+        user.setUserId(userId);
+
+        //判断修改状态
+        if (STATUS_NORMAL == status) {
+            user.setStatus(UserDaoJdbcImpl.STATUS_NORMAL);
+        } else if (STATUS_AUDIT == status) {
+            user.setStatus(UserDaoJdbcImpl.STATUS_AUDIT);
+        } else if (STATUS_NOT_APPROVED == status) {
+            user.setStatus(UserDaoJdbcImpl.STATUS_NOT_APPROVED);
+        } else if (STATUS_FORBIDDEN == status) {
+            user.setStatus(UserDaoJdbcImpl.STATUS_FORBIDDEN);
+        } else {
+            return;
+        }
+        List<Integer> updateTypes = new ArrayList<>();
+        updateTypes.add(UserDaoJdbcImpl.UPDATE_STATUS);
+        userDao.update(user, updateTypes);
+    }
+
+    /**
+     * 校验root密码后可提升用户为管理员
+     *
+     * @param rootId  root用户ID
+     * @param rootPwd root密码
+     * @param userId  待提升的用户ID
+     * @return true提升成功, false密码错误
+     */
+    public boolean addAdmin(int rootId, String rootPwd, int userId) {
+        UserPo root = findUser(rootId);
+        try {
+            //验证root密码
+            boolean isRoot = Pbkdf2Util.validatePassword(rootPwd, root.getPassword());
+            if (isRoot) {
+                userDao.addRoleInUser(userId, UserDaoJdbcImpl.ROLE_ADMIN);
                 return true;
             }
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            e.printStackTrace();
         }
         return false;
     }
 
     /**
-     * 校验用户是否位于指定小组中
+     * 移除用户指定角色
      *
-     * @param userId  用户ID
-     * @param groupId 指定小组ID
-     * @return true位于, false不位于
+     * @param userId 用户ID
+     * @param role   待移除的角色
      */
-    public boolean isUserInGroup(int userId, int groupId) {
-        Set<Integer> groups = getGroups(userId);
-        for (int group : groups) {
-            if (groupId == group) {
-                return true;
-            }
-        }
-        return false;
+    public void removeRoleInUser(int userId, String role) {
+        userDao.deleteRoleInUser(userId, role);
     }
 
     /**
@@ -471,59 +541,6 @@ public class UserService {
         Set<String> roles = getRoles(username);
         Set<Integer> groups = getGroups(username);
         return new Access(user.getUserId(), username, user.getStatus(), roles, groups);
-    }
-
-    /**
-     * 更新用户信息
-     *
-     * @param userPo 包含最新信息的用户对象
-     */
-    public void update(UserPo userPo) {
-        try {
-            UserPo initialUser = userDao.selectUserByUserId(userPo.getUserId());
-            List<Integer> updatedTypes = new ArrayList<>();
-
-            if (userPo.getSex() != null && !userPo.getSex().equals(initialUser.getSex())) {
-                updatedTypes.add(UserDaoJdbcImpl.UPDATE_SEX);
-            }
-            if (userPo.getEmail() != null && !userPo.getEmail().equals(initialUser.getEmail())) {
-                updatedTypes.add(UserDaoJdbcImpl.UPDATE_EMAIL);
-            }
-            if (userPo.getPassword() != null) {
-                String hashPwd = Pbkdf2Util.createHash(userPo.getPassword());
-                userPo.setPassword(hashPwd);
-                updatedTypes.add(UserDaoJdbcImpl.UPDATE_PASSWORD);
-            }
-            userDao.update(userPo, updatedTypes);
-        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * 更新用户状态
-     *
-     * @param userId 用户ID
-     * @param status 最新状态标识符
-     */
-    public void updateStatus(int userId, int status) {
-        UserPo user = new UserPo();
-        user.setUserId(userId);
-
-        if (STATUS_NORMAL == status) {
-            user.setStatus(UserDaoJdbcImpl.STATUS_NORMAL);
-        } else if (STATUS_AUDIT == status) {
-            user.setStatus(UserDaoJdbcImpl.STATUS_AUDIT);
-        } else if (STATUS_NOT_APPROVED == status) {
-            user.setStatus(UserDaoJdbcImpl.STATUS_NOT_APPROVED);
-        } else if (STATUS_FORBIDDEN == status) {
-            user.setStatus(UserDaoJdbcImpl.STATUS_FORBIDDEN);
-        } else {
-            return;
-        }
-        List<Integer> updateTypes = new ArrayList<>();
-        updateTypes.add(UserDaoJdbcImpl.UPDATE_STATUS);
-        userDao.update(user, updateTypes);
     }
 }
 

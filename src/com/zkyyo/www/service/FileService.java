@@ -107,12 +107,14 @@ public class FileService {
      */
     public PageBean<FilePo> queryFiles(int currentPage, int order, boolean isReverse, int topicId, int apply) {
         int orderType;
+        //判断排序依据
         if (ORDER_BY_CREATED == order) {
             orderType = FileDaoJdbcImpl.ORDER_BY_CREATED;
         } else {
             return null;
         }
         int applyType;
+        //判断分享类型
         if (APPLY_IMAGE == apply) {
             applyType = FileDaoJdbcImpl.APPLY_IMAGE;
         } else if (APPLY_FILE == apply) {
@@ -121,7 +123,9 @@ public class FileService {
             return null;
         }
 
+        //设置分页对象
         PageBean<FilePo> pageBean = new PageBean<>(currentPage, fileDao.getTotalRow(topicId, applyType), ROWS_ONE_PAGE);
+        //计算起始下标
         int startIndex = (pageBean.getCurrentPage() - 1) * ROWS_ONE_PAGE;
         List<FilePo> files = fileDao.selectFilesByTopicId(startIndex, ROWS_ONE_PAGE, orderType, isReverse, topicId, applyType);
         pageBean.setList(files);

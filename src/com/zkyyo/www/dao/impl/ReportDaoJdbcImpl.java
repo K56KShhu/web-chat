@@ -50,6 +50,55 @@ public class ReportDaoJdbcImpl implements ReportDao {
     }
 
     /**
+     * 向数据库中插入举报信息
+     *
+     * @param reportPo 待插入的举报对象
+     */
+    @Override
+    public void addReport(ReportPo reportPo) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            conn = dataSource.getConnection();
+            String sql = "INSERT INTO report (user_id, content_id, content_type, reason) VALUES (?, ?, ?, ?)";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, reportPo.getUserId());
+            pstmt.setInt(2, reportPo.getContentId());
+            pstmt.setInt(3, reportPo.getContentType());
+            pstmt.setString(4, reportPo.getReason());
+            pstmt.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, pstmt);
+        }
+    }
+
+    /**
+     * 删除数据库中指定举报ID的举报信息
+     *
+     * @param reportId 待删除的举报ID
+     */
+    @Override
+    public void deleteReport(int reportId) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            conn = dataSource.getConnection();
+            String sql = "DELETE FROM report WHERE report_id=?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, reportId);
+            pstmt.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, pstmt);
+        }
+    }
+
+    /**
      * 获取数据库中指定举报ID的举报信息
      *
      * @param reportId 待获取的举报ID
@@ -76,32 +125,6 @@ public class ReportDaoJdbcImpl implements ReportDao {
             DbClose.close(conn, pstmt, rs);
         }
         return null;
-    }
-
-    /**
-     * 向数据库中插入举报信息
-     *
-     * @param reportPo 待插入的举报对象
-     */
-    @Override
-    public void addReport(ReportPo reportPo) {
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-
-        try {
-            conn = dataSource.getConnection();
-            String sql = "INSERT INTO report (user_id, content_id, content_type, reason) VALUES (?, ?, ?, ?)";
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, reportPo.getUserId());
-            pstmt.setInt(2, reportPo.getContentId());
-            pstmt.setInt(3, reportPo.getContentType());
-            pstmt.setString(4, reportPo.getReason());
-            pstmt.execute();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            DbClose.close(conn, pstmt);
-        }
     }
 
     /**
@@ -137,29 +160,6 @@ public class ReportDaoJdbcImpl implements ReportDao {
     }
 
     /**
-     * 删除数据库中指定举报ID的举报信息
-     *
-     * @param reportId 待删除的举报ID
-     */
-    @Override
-    public void deleteReport(int reportId) {
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-
-        try {
-            conn = dataSource.getConnection();
-            String sql = "DELETE FROM report WHERE report_id=?";
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, reportId);
-            pstmt.execute();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            DbClose.close(conn, pstmt);
-        }
-    }
-
-    /**
      * 获取数据库中的所有举报信息的总行数
      *
      * @return 所有举报信息的总行数
@@ -188,24 +188,6 @@ public class ReportDaoJdbcImpl implements ReportDao {
     }
 
     /**
-     * 封装通过ResultSet构建举报对象的方法
-     *
-     * @param rs 当前位置的数据光标
-     * @return 文件对象
-     * @throws SQLException 数据库发生错误则抛出异常
-     */
-    private ReportPo getReport(ResultSet rs) throws SQLException {
-        ReportPo report = new ReportPo();
-        report.setReportId(rs.getInt("report_id"));
-        report.setUserId(rs.getInt("user_id"));
-        report.setContentId(rs.getInt("content_id"));
-        report.setContentType(rs.getInt("content_type"));
-        report.setReason(rs.getString("reason"));
-        report.setCreated(rs.getTimestamp("created"));
-        return report;
-    }
-
-    /**
      * 构建数据库检索语句
      * @param startIndex 起始下标
      * @param rowsOnePage 获取的举报总数
@@ -226,5 +208,23 @@ public class ReportDaoJdbcImpl implements ReportDao {
             sql += " DESC";
         }
         return sql + " LIMIT " + startIndex + "," + rowsOnePage;
+    }
+
+    /**
+     * 封装通过ResultSet构建举报对象的方法
+     *
+     * @param rs 当前位置的数据光标
+     * @return 文件对象
+     * @throws SQLException 数据库发生错误则抛出异常
+     */
+    private ReportPo getReport(ResultSet rs) throws SQLException {
+        ReportPo report = new ReportPo();
+        report.setReportId(rs.getInt("report_id"));
+        report.setUserId(rs.getInt("user_id"));
+        report.setContentId(rs.getInt("content_id"));
+        report.setContentType(rs.getInt("content_type"));
+        report.setReason(rs.getString("reason"));
+        report.setCreated(rs.getTimestamp("created"));
+        return report;
     }
 }

@@ -46,6 +46,7 @@ public class BeanUtil {
         } else {
             return null;
         }
+
         ReplyVo replyVo = new ReplyVo();
         replyVo.setReplyId(replyId);
         replyVo.setTopicId(topicId);
@@ -81,6 +82,7 @@ public class BeanUtil {
         } else {
             return null;
         }
+
         FileVo fileVo = new FileVo();
         fileVo.setFileId(fileId);
         fileVo.setApply(apply);
@@ -118,6 +120,7 @@ public class BeanUtil {
         } else {
             return null;
         }
+
         ReportVo reportVo = new ReportVo();
         reportVo.setReportId(reportId);
         reportVo.setUserId(userId);
@@ -157,6 +160,7 @@ public class BeanUtil {
         } else {
             return null;
         }
+
         TopicVo topicVo = new TopicVo();
         topicVo.setTopicId(topicId);
         topicVo.setTitle(title);
@@ -194,6 +198,7 @@ public class BeanUtil {
         } else {
             return null;
         }
+
         TopicVo topicVo = new TopicVo();
         topicVo.setTopicId(topicId);
         topicVo.setTitle(title);
@@ -239,6 +244,7 @@ public class BeanUtil {
         } else {
             return null;
         }
+
         UserVo userVo = new UserVo();
         userVo.setUserId(userId);
         userVo.setUsername(username);

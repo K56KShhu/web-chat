@@ -79,19 +79,19 @@ public interface TopicDao {
     List<Integer> selectTopicsBeforeDaysAboutLastReply(int accessType, int days);
 
     /**
+     * 更新数据库中讨论区信息
+     *
+     * @param topicPo 包含最新信息的讨论区对象
+     */
+    void updateTopic(TopicPo topicPo);
+
+    /**
      * 获取数据库中与指定讨论区有关的所有小组ID
      *
      * @param topicId 指定讨论区的ID
      * @return 包含所有小组ID的集合, 不包含任何小组ID则返回size为0的集合
      */
     Set<Integer> selectGroupsByTopicId(int topicId);
-
-    /**
-     * 更新数据库中讨论区信息
-     *
-     * @param topicPo 包含最新信息的讨论区对象
-     */
-    void updateTopic(TopicPo topicPo);
 
     /**
      * 获取数据库中指定讨论区类型的所有讨论区数量
@@ -108,5 +108,5 @@ public interface TopicDao {
      * @param keys       关于标题的关键词集合
      * @return 总数量
      */
-    int getTotalRowByTitle(int accessType, Set<String> keys);
+    int getTotalRow(int accessType, Set<String> keys);
 }

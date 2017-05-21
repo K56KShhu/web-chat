@@ -96,52 +96,12 @@ public class GroupService {
     }
 
     /**
-     * 向小组中添加中成员
-     *
-     * @param groupId 小组ID
-     * @param userId  待添加的用户ID
-     */
-    public void addUser(int groupId, int userId) {
-        groupDao.addUserInGroup(groupId, userId);
-    }
-
-    /**
-     * 讨论区中授权小组
-     *
-     * @param groupId 小组ID
-     * @param topicId 讨论区ID
-     */
-    public void addTopic(int groupId, int topicId) {
-        groupDao.addGroupInTopic(groupId, topicId);
-    }
-
-    /**
      * 删除指定小组
      *
      * @param groupId 待删除的小组ID
      */
     public void deleteGroup(int groupId) {
         groupDao.deleteGroup(groupId);
-    }
-
-    /**
-     * 删除小组中的指定成员
-     *
-     * @param groupId 小组ID
-     * @param userId  待添加的用户ID
-     */
-    public void removeUser(int groupId, int userId) {
-        groupDao.removeUserInGroup(groupId, userId);
-    }
-
-    /**
-     * 取消讨论区对小组的授权
-     *
-     * @param groupId 小组ID
-     * @param userId  讨论区ID
-     */
-    public void removeTopic(int groupId, int userId) {
-        groupDao.removeGroupInTopic(groupId, userId);
     }
 
     /**
@@ -152,15 +112,6 @@ public class GroupService {
      */
     public GroupPo findGroup(int groupId) {
         return groupDao.selectGroup(groupId);
-    }
-
-    /**
-     * 获得所有小组信息
-     *
-     * @return 包含所有小组对象的列表
-     */
-    public List<GroupPo> queryGroups() {
-        return groupDao.selectGroups();
     }
 
     /**
@@ -181,5 +132,54 @@ public class GroupService {
      */
     public List<GroupPo> queryGroupsByTopic(int topicId) {
         return groupDao.selectGroupsByTopic(topicId);
+    }
+
+    /**
+     * 获得所有小组信息
+     *
+     * @return 包含所有小组对象的列表
+     */
+    public List<GroupPo> queryGroups() {
+        return groupDao.selectGroups();
+    }
+
+    /**
+     * 向小组中添加中成员
+     *
+     * @param groupId 小组ID
+     * @param userId  待添加的用户ID
+     */
+    public void addUser(int groupId, int userId) {
+        groupDao.addUserInGroup(groupId, userId);
+    }
+
+    /**
+     * 删除小组中的指定成员
+     *
+     * @param groupId 小组ID
+     * @param userId  待添加的用户ID
+     */
+    public void removeUser(int groupId, int userId) {
+        groupDao.removeUserInGroup(groupId, userId);
+    }
+
+    /**
+     * 讨论区中授权小组
+     *
+     * @param groupId 小组ID
+     * @param topicId 讨论区ID
+     */
+    public void addTopic(int groupId, int topicId) {
+        groupDao.addGroupInTopic(groupId, topicId);
+    }
+
+    /**
+     * 取消讨论区对小组的授权
+     *
+     * @param groupId 小组ID
+     * @param userId  讨论区ID
+     */
+    public void removeTopic(int groupId, int userId) {
+        groupDao.removeGroupInTopic(groupId, userId);
     }
 }

@@ -32,11 +32,15 @@ public class CheckUtil {
             return false;
         }
         String regex;
+        //判断验证类型
         if (NUMBER_ALL == sign) {
+            //验证有理数
             regex = String.format("^-?\\d{1,%d}$", maxLength);
         } else if (NUMBER_POSITIVE == sign) {
+            //验证正数
             regex = String.format("^\\d{1,%d}$", maxLength);
         } else if (NUMBER_NEGATIVE == sign) {
+            //验证负数
             regex = String.format("^-\\d{1,%d}$", maxLength);
         } else {
             return false;

@@ -31,13 +31,6 @@ public interface GroupDao {
     GroupPo selectGroup(int groupId);
 
     /**
-     * 获取数据库中的所有小组
-     *
-     * @return 包含所有小组的列表, 不包含任何小组则返回size为0的列表
-     */
-    List<GroupPo> selectGroups();
-
-    /**
      * 获取数据库中指定小组名的所有小组
      *
      * @param name 待获取的小组名
@@ -52,6 +45,13 @@ public interface GroupDao {
      * @return 包含指定小组的列表, 不包含任何小组则返回size为0的列表
      */
     List<GroupPo> selectGroupsByTopic(int topicId);
+
+    /**
+     * 获取数据库中的所有小组
+     *
+     * @return 包含所有小组的列表, 不包含任何小组则返回size为0的列表
+     */
+    List<GroupPo> selectGroups();
 
     /**
      * 向数据库中插入用户与小组的关联

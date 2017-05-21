@@ -111,10 +111,8 @@ public class ReportService {
      * @return 封装的分页对象, 信息输入不合法时返回null
      */
     public PageBean<ReportPo> queryReports(int currentPage, int order, boolean isReverse) {
-        PageBean<ReportPo> pageBean = new PageBean<>(currentPage, reportDao.getTotalRow(), ROWS_ONE_PAGE);
-        int startIndex = (pageBean.getCurrentPage() - 1) * ROWS_ONE_PAGE;
-
         int orderType;
+        //判断排序依据
         if (ORDER_BY_CONTENT_TYPE == order) {
             orderType = ReportDaoJdbcImpl.ORDER_BY_CONTENT_TYPE;
         } else if (ORDER_BY_CREATED == order) {
@@ -123,6 +121,10 @@ public class ReportService {
             return null;
         }
 
+        //设置分页对象
+        PageBean<ReportPo> pageBean = new PageBean<>(currentPage, reportDao.getTotalRow(), ROWS_ONE_PAGE);
+        //计算起始下标
+        int startIndex = (pageBean.getCurrentPage() - 1) * ROWS_ONE_PAGE;
         List<ReportPo> reports = reportDao.selectReportsByOrder(startIndex, ROWS_ONE_PAGE, orderType, isReverse);
         pageBean.setList(reports);
         return pageBean;

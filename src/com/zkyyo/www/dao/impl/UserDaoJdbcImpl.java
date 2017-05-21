@@ -94,6 +94,51 @@ public class UserDaoJdbcImpl implements UserDao {
     }
 
     /**
+     * 向数据库中插入用户信息
+     *
+     * @param userPo 待插入的用户对象
+     */
+    @Override
+    public void addUser(UserPo userPo) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs;
+
+        try {
+            conn = dataSource.getConnection();
+            conn.setAutoCommit(false);
+            //添加用户信息
+            String userSql = "INSERT INTO user (username, password, sex, email) VALUES (?, ?, ?, ?)";
+            pstmt = conn.prepareStatement(userSql);
+            pstmt.setString(1, userPo.getUsername());
+            pstmt.setString(2, userPo.getPassword());
+            pstmt.setString(3, userPo.getSex());
+            pstmt.setString(4, userPo.getEmail());
+            pstmt.execute();
+            //获取user_id
+            String idSql = "SELECT user_id FROM user WHERE username=?";
+            pstmt = conn.prepareStatement(idSql);
+            pstmt.setString(1, userPo.getUsername());
+            rs = pstmt.executeQuery();
+            int user_id;
+            if (rs.next()) {
+                user_id = rs.getInt("user_id");
+                //设置角色
+                String roleSql = "INSERT INTO user_role (user_id, role) VALUES (?, ?)";
+                pstmt = conn.prepareStatement(roleSql);
+                pstmt.setInt(1, user_id);
+                pstmt.setString(2, ROLE_USER); //默认为user
+                pstmt.execute();
+            }
+            conn.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, pstmt);
+        }
+    }
+
+    /**
      * 获取数据库中指定用户ID的用户信息
      *
      * @param id 待获取的用户ID
@@ -281,6 +326,113 @@ public class UserDaoJdbcImpl implements UserDao {
     }
 
     /**
+     * 更新数据库中的部分用户信息
+     *
+     * @param userPo       包含最新信息的用户对象
+     * @param updatedTypes 待更新部分的标识符列表
+     */
+    @Override
+    public void update(UserPo userPo, List<Integer> updatedTypes) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            conn = dataSource.getConnection();
+            conn.setAutoCommit(false);
+            String sql;
+            for (int updatedType : updatedTypes) {
+                switch (updatedType) {
+                    case UPDATE_SEX:
+                        sql = "UPDATE user SET sex=? WHERE user_id=?";
+                        pstmt = conn.prepareStatement(sql);
+                        pstmt.setString(1, userPo.getSex());
+                        pstmt.setInt(2, userPo.getUserId());
+                        pstmt.execute();
+                        break;
+                    case UPDATE_EMAIL:
+                        sql = "UPDATE user SET email=? WHERE user_id=?";
+                        pstmt = conn.prepareStatement(sql);
+                        pstmt.setString(1, userPo.getEmail());
+                        pstmt.setInt(2, userPo.getUserId());
+                        pstmt.execute();
+                        break;
+                    case UPDATE_PASSWORD:
+                        sql = "UPDATE user SET password=? WHERE user_id=?";
+                        pstmt = conn.prepareStatement(sql);
+                        pstmt.setString(1, userPo.getPassword());
+                        pstmt.setInt(2, userPo.getUserId());
+                        pstmt.execute();
+                        break;
+                    case UPDATE_STATUS:
+                        sql = "UPDATE user SET status=? WHERE user_id=?";
+                        pstmt = conn.prepareStatement(sql);
+                        pstmt.setInt(1, userPo.getStatus());
+                        pstmt.setInt(2, userPo.getUserId());
+                        pstmt.execute();
+                        break;
+                    default:
+                        break;
+                }
+            }
+            conn.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, pstmt);
+        }
+    }
+
+    /**
+     * 向数据库中插入用户与角色的关联
+     *
+     * @param userId 待关联的用户ID
+     * @param role   待关联的角色
+     */
+    @Override
+    public void addRoleInUser(int userId, String role) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            conn = dataSource.getConnection();
+            String sql = "INSERT INTO user_role (user_id, role) VALUES (?, ?)";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, userId);
+            pstmt.setString(2, role);
+            pstmt.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, pstmt);
+        }
+    }
+
+    /**
+     * 移除数据库中用户与角色的关联
+     *
+     * @param userId 待移除的用户ID
+     * @param role   待移除的角色
+     */
+    @Override
+    public void deleteRoleInUser(int userId, String role) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            conn = dataSource.getConnection();
+            String sql = "DELETE FROM user_role WHERE user_id=? AND role=?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, userId);
+            pstmt.setString(2, role);
+            pstmt.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, pstmt);
+        }
+    }
+
+    /**
      * 获取数据库中指定用户ID的角色
      *
      * @param id 指定用户ID
@@ -343,7 +495,7 @@ public class UserDaoJdbcImpl implements UserDao {
     /**
      * 获取数据库中与指定用户关联的多个小组信息
      *
-     * @param id 指定用户ID
+     * @param userId 指定用户ID
      * @return 包含多个小组ID的集合, 不包含任何小组则返回size为0的集合
      */
     @Override
@@ -401,31 +553,29 @@ public class UserDaoJdbcImpl implements UserDao {
     }
 
     /**
-     * 获取数据库中与指定用户名相关的用户总数
+     * 获取数据库中所有用户的总数
      *
-     * @param username 指定用户名
-     * @return 相关的用户总数
+     * @return 所有用户总数
      */
     @Override
-    public int getTotalRow(String username) {
+    public int getTotalRow() {
         Connection conn = null;
-        PreparedStatement pstmt = null;
+        Statement stmt = null;
         ResultSet rs = null;
         int rows = 0;
 
         try {
             conn = dataSource.getConnection();
-            String sql = "SELECT COUNT(*) FROM user WHERE username LIKE ?";
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, "%" + username + "%");
-            rs = pstmt.executeQuery();
+            String sql = "SELECT COUNT(*) FROM user";
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
             if (rs.next()) {
                 rows = rs.getInt(1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            DbClose.close(conn, pstmt, rs);
+            DbClose.close(conn, stmt, rs);
         }
         return rows;
     }
@@ -437,7 +587,7 @@ public class UserDaoJdbcImpl implements UserDao {
      * @return 相关的用户总数
      */
     @Override
-    public int getTotalRowByStatus(int status) {
+    public int getTotalRow(int status) {
         Connection conn = null;
         Statement stmt = null;
         ResultSet rs = null;
@@ -473,29 +623,31 @@ public class UserDaoJdbcImpl implements UserDao {
     }
 
     /**
-     * 获取数据库中所有用户的总数
+     * 获取数据库中与指定用户名相关的用户总数
      *
-     * @return 所有用户总数
+     * @param username 指定用户名
+     * @return 相关的用户总数
      */
     @Override
-    public int getTotalRow() {
+    public int getTotalRow(String username) {
         Connection conn = null;
-        Statement stmt = null;
+        PreparedStatement pstmt = null;
         ResultSet rs = null;
         int rows = 0;
 
         try {
             conn = dataSource.getConnection();
-            String sql = "SELECT COUNT(*) FROM user";
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery(sql);
+            String sql = "SELECT COUNT(*) FROM user WHERE username LIKE ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, "%" + username + "%");
+            rs = pstmt.executeQuery();
             if (rs.next()) {
                 rows = rs.getInt(1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            DbClose.close(conn, stmt, rs);
+            DbClose.close(conn, pstmt, rs);
         }
         return rows;
     }
@@ -542,158 +694,6 @@ public class UserDaoJdbcImpl implements UserDao {
             DbClose.close(conn, pstmt, rs);
         }
         return rows;
-    }
-
-    /**
-     * 向数据库中插入用户与角色的关联
-     *
-     * @param userId 待关联的用户ID
-     * @param role   待关联的角色
-     */
-    @Override
-    public void addRole(int userId, String role) {
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-
-        try {
-            conn = dataSource.getConnection();
-            String sql = "INSERT INTO user_role (user_id, role) VALUES (?, ?)";
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, userId);
-            pstmt.setString(2, role);
-            pstmt.execute();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            DbClose.close(conn, pstmt);
-        }
-    }
-
-    /**
-     * 向数据库中插入用户信息
-     *
-     * @param userPo 待插入的用户对象
-     */
-    @Override
-    public void addUser(UserPo userPo) {
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs;
-
-        try {
-            conn = dataSource.getConnection();
-            conn.setAutoCommit(false);
-            //添加用户信息
-            String userSql = "INSERT INTO user (username, password, sex, email) VALUES (?, ?, ?, ?)";
-            pstmt = conn.prepareStatement(userSql);
-            pstmt.setString(1, userPo.getUsername());
-            pstmt.setString(2, userPo.getPassword());
-            pstmt.setString(3, userPo.getSex());
-            pstmt.setString(4, userPo.getEmail());
-            pstmt.execute();
-            //获取user_id
-            String idSql = "SELECT user_id FROM user WHERE username=?";
-            pstmt = conn.prepareStatement(idSql);
-            pstmt.setString(1, userPo.getUsername());
-            rs = pstmt.executeQuery();
-            int user_id;
-            if (rs.next()) {
-                user_id = rs.getInt("user_id");
-                //设置角色
-                String roleSql = "INSERT INTO user_role (user_id, role) VALUES (?, ?)";
-                pstmt = conn.prepareStatement(roleSql);
-                pstmt.setInt(1, user_id);
-                pstmt.setString(2, ROLE_USER); //默认为user
-                pstmt.execute();
-            }
-            conn.commit();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            DbClose.close(conn, pstmt);
-        }
-    }
-
-    /**
-     * 移除数据库中用户与角色的关联
-     *
-     * @param userId 待移除的用户ID
-     * @param role   待移除的角色
-     */
-    @Override
-    public void deleteRoleInUser(int userId, String role) {
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-
-        try {
-            conn = dataSource.getConnection();
-            String sql = "DELETE FROM user_role WHERE user_id=? AND role=?";
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, userId);
-            pstmt.setString(2, role);
-            pstmt.execute();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            DbClose.close(conn, pstmt);
-        }
-    }
-
-    /**
-     * 更新数据库中的部分用户信息
-     *
-     * @param userPo       包含最新信息的用户对象
-     * @param updatedTypes 待更新部分的标识符列表
-     */
-    @Override
-    public void update(UserPo userPo, List<Integer> updatedTypes) {
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-
-        try {
-            conn = dataSource.getConnection();
-            conn.setAutoCommit(false);
-            String sql;
-            for (int updatedType : updatedTypes) {
-                switch (updatedType) {
-                    case UPDATE_SEX:
-                        sql = "UPDATE user SET sex=? WHERE user_id=?";
-                        pstmt = conn.prepareStatement(sql);
-                        pstmt.setString(1, userPo.getSex());
-                        pstmt.setInt(2, userPo.getUserId());
-                        pstmt.execute();
-                        break;
-                    case UPDATE_EMAIL:
-                        sql = "UPDATE user SET email=? WHERE user_id=?";
-                        pstmt = conn.prepareStatement(sql);
-                        pstmt.setString(1, userPo.getEmail());
-                        pstmt.setInt(2, userPo.getUserId());
-                        pstmt.execute();
-                        break;
-                    case UPDATE_PASSWORD:
-                        sql = "UPDATE user SET password=? WHERE user_id=?";
-                        pstmt = conn.prepareStatement(sql);
-                        pstmt.setString(1, userPo.getPassword());
-                        pstmt.setInt(2, userPo.getUserId());
-                        pstmt.execute();
-                        break;
-                    case UPDATE_STATUS:
-                        sql = "UPDATE user SET status=? WHERE user_id=?";
-                        pstmt = conn.prepareStatement(sql);
-                        pstmt.setInt(1, userPo.getStatus());
-                        pstmt.setInt(2, userPo.getUserId());
-                        pstmt.execute();
-                        break;
-                    default:
-                        break;
-                }
-            }
-            conn.commit();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            DbClose.close(conn, pstmt);
-        }
     }
 
     /**

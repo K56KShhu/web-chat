@@ -74,37 +74,35 @@ public class ReplyDaoJdbcImpl implements ReplyDao {
     }
 
     /**
-     * 获取数据库中指定讨论区ID的所有回复信息, 同时进行分页操作
+     * 删除数据库中指定回复ID的回复信息
      *
-     * @param startIndex  起始下标
-     * @param rowsOnePage 获取的文件总数
-     * @param topicId     指定讨论区的ID
-     * @return 包含回复信息的列表, 不包含任何回复信息则返回一个size为0的列表
+     * @param replyId 待删除的回复ID
      */
     @Override
-    public List<ReplyPo> selectReplysByTopicId(int startIndex, int rowsOnePage, int topicId) {
+    public void deleteReply(int replyId) {
         Connection conn = null;
         PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        List<ReplyPo> replys = new ArrayList<>();
 
         try {
             conn = dataSource.getConnection();
-            String sql = "SELECT * FROM reply WHERE topic_id=? ORDER BY created DESC LIMIT ?, ?";
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, topicId);
-            pstmt.setInt(2, startIndex);
-            pstmt.setInt(3, rowsOnePage);
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                replys.add(getReply(rs));
-            }
+            conn.setAutoCommit(false);
+            //讨论区回复数量-1
+            String topicSql = "UPDATE topic SET reply_account = reply_account - 1" +
+                    " WHERE topic_id = (SELECT topic_id FROM reply WHERE reply_id=?)";
+            pstmt = conn.prepareStatement(topicSql);
+            pstmt.setInt(1, replyId);
+            pstmt.execute();
+            //删除回复
+            String replySql = "DELETE FROM reply WHERE reply_id=?";
+            pstmt = conn.prepareStatement(replySql);
+            pstmt.setInt(1, replyId);
+            pstmt.execute();
+            conn.commit();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            DbClose.close(conn, pstmt, rs);
+            DbClose.close(conn, pstmt);
         }
-        return replys;
     }
 
     /**
@@ -137,34 +135,37 @@ public class ReplyDaoJdbcImpl implements ReplyDao {
     }
 
     /**
-     * 删除数据库中指定回复ID的回复信息
+     * 获取数据库中指定讨论区ID的所有回复信息, 同时进行分页操作
      *
-     * @param replyId 待删除的回复ID
+     * @param startIndex  起始下标
+     * @param rowsOnePage 获取的文件总数
+     * @param topicId     指定讨论区的ID
+     * @return 包含回复信息的列表, 不包含任何回复信息则返回一个size为0的列表
      */
     @Override
-    public void deleteReply(int replyId) {
+    public List<ReplyPo> selectReplysByTopicId(int startIndex, int rowsOnePage, int topicId) {
         Connection conn = null;
         PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        List<ReplyPo> replys = new ArrayList<>();
 
         try {
             conn = dataSource.getConnection();
-            conn.setAutoCommit(false);
-            //讨论区回复数量-1
-            String topicSql = "UPDATE topic SET reply_account = reply_account - 1 WHERE topic_id = (SELECT topic_id FROM reply WHERE reply_id=?)";
-            pstmt = conn.prepareStatement(topicSql);
-            pstmt.setInt(1, replyId);
-            pstmt.execute();
-            //删除回复
-            String replySql = "DELETE FROM reply WHERE reply_id=?";
-            pstmt = conn.prepareStatement(replySql);
-            pstmt.setInt(1, replyId);
-            pstmt.execute();
-            conn.commit();
+            String sql = "SELECT * FROM reply WHERE topic_id=? ORDER BY created DESC LIMIT ?, ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, topicId);
+            pstmt.setInt(2, startIndex);
+            pstmt.setInt(3, rowsOnePage);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                replys.add(getReply(rs));
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            DbClose.close(conn, pstmt);
+            DbClose.close(conn, pstmt, rs);
         }
+        return replys;
     }
 
     /**

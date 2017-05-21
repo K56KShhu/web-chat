@@ -28,35 +28,6 @@ public class RememberDaoJdbcImpl implements RememberDao {
     }
 
     /**
-     * 获取数据库中指定Cookie Value的用户名
-     *
-     * @param uuid 指定的Cookie Value
-     * @return 存在则返回用户名, 否则返回null;
-     */
-    @Override
-    public String selectUsername(String uuid) {
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-
-        try {
-            conn = dataSource.getConnection();
-            String sql = "SELECT username FROM remember WHERE remember_id=?";
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, uuid);
-            rs = pstmt.executeQuery();
-            if (rs.next()) {
-                return rs.getString("username");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            DbClose.close(conn, pstmt, rs);
-        }
-        return null;
-    }
-
-    /**
      * 向数据库中插入Cookie信息
      *
      * @param uuid     待插入的Cookie Value
@@ -102,5 +73,34 @@ public class RememberDaoJdbcImpl implements RememberDao {
         } finally {
             DbClose.close(conn, pstmt);
         }
+    }
+
+    /**
+     * 获取数据库中指定Cookie Value的用户名
+     *
+     * @param uuid 指定的Cookie Value
+     * @return 存在则返回用户名, 否则返回null;
+     */
+    @Override
+    public String selectUsername(String uuid) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = dataSource.getConnection();
+            String sql = "SELECT username FROM remember WHERE remember_id=?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, uuid);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString("username");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DbClose.close(conn, pstmt, rs);
+        }
+        return null;
     }
 }

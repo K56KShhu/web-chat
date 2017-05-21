@@ -94,16 +94,6 @@ public class TopicService {
     }
 
     /**
-     * 校验讨论区是否存在
-     *
-     * @param topicId 待校验的讨论区ID
-     * @return true存在, false不存在
-     */
-    public boolean isExisted(int topicId) {
-        return findTopic(topicId) != null;
-    }
-
-    /**
      * 校验标题是否合法
      *
      * @param title 待校验的标题
@@ -121,6 +111,44 @@ public class TopicService {
      */
     public boolean isValidDescription(String desc) {
         return CheckUtil.isValidString(desc, MIN_DESCRIPTION_LENGTH, MAX_DESCRIPTION_LENGTH);
+    }
+
+    /**
+     * 校验讨论区是否存在
+     *
+     * @param topicId 待校验的讨论区ID
+     * @return true存在, false不存在
+     */
+    public boolean isExisted(int topicId) {
+        return findTopic(topicId) != null;
+    }
+
+    /**
+     * 校验讨论区是否为授权类型
+     *
+     * @param topicId 待校验的讨论区ID
+     * @return true为授权类型, false为公开类型
+     */
+    public boolean isPrivate(int topicId) {
+        TopicPo topic = findTopic(topicId);
+        return topic.getIsPrivate() == TopicDaoJdbcImpl.ACCESS_PRIVATE;
+    }
+
+    /**
+     * 校验指定讨论区是否授权某一小组
+     *
+     * @param groupId 指定的讨论区ID
+     * @param topicId 小组ID
+     * @return true授权, false未授权
+     */
+    public boolean isTopicHasGroup(int groupId, int topicId) {
+        Set<Integer> groups = getGroups(topicId);
+        for (int group : groups) {
+            if (groupId == group) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -176,8 +204,9 @@ public class TopicService {
         Set<String> keySet = new HashSet<>();
         Collections.addAll(keySet, keys.trim().split(regex));
 
-        //分页系统
-        PageBean<TopicPo> pageBean = new PageBean<>(currentPage, topicDao.getTotalRowByTitle(type, keySet), ROWS_ONE_PAGE);
+        //设置分页对象
+        PageBean<TopicPo> pageBean = new PageBean<>(currentPage, topicDao.getTotalRow(type, keySet), ROWS_ONE_PAGE);
+        //计算起始下标
         int startIndex = (pageBean.getCurrentPage() - 1) * ROWS_ONE_PAGE;
         Set<TopicPo> topicSet = topicDao.selectTopicsByTitle(type, keySet, startIndex, ROWS_ONE_PAGE);
         List<TopicPo> topicList = new ArrayList<>(topicSet);
@@ -275,17 +304,6 @@ public class TopicService {
     }
 
     /**
-     * 校验讨论区是否为授权类型
-     *
-     * @param topicId 待校验的讨论区ID
-     * @return true为授权类型, false为公开类型
-     */
-    public boolean isPrivate(int topicId) {
-        TopicPo topic = findTopic(topicId);
-        return topic.getIsPrivate() == TopicDaoJdbcImpl.ACCESS_PRIVATE;
-    }
-
-    /**
      * 获得指定讨论区授权的所有小组ID集合
      *
      * @param topicId 指定讨论区ID
@@ -293,22 +311,5 @@ public class TopicService {
      */
     public Set<Integer> getGroups(int topicId) {
         return topicDao.selectGroupsByTopicId(topicId);
-    }
-
-    /**
-     * 校验指定讨论区是否授权某一小组
-     *
-     * @param groupId 指定的讨论区ID
-     * @param topicId 小组ID
-     * @return true授权, false未授权
-     */
-    public boolean isTopicHasGroup(int groupId, int topicId) {
-        Set<Integer> groups = getGroups(topicId);
-        for (int group : groups) {
-            if (groupId == group) {
-                return true;
-            }
-        }
-        return false;
     }
 }

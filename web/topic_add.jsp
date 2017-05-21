@@ -21,7 +21,7 @@
 </jsp:include>
 
 <form method="post" action="topic_add.do">
-    标题: <input type="text" maxlength="60" name="title" placeholder="请输入标题" value="${requestScope.title}"/><br/>
+    标题: <input type="text" maxlength="60" size="80" name="title" placeholder="请输入标题" value="${requestScope.title}"/><br/>
     描述: <textarea name="description" rows="15" cols="80" maxlength="255"
                   placeholder="(可选)">${requestScope.description}</textarea><br/>
     <input type="radio" name="type" value="public" ${requestScope.type == "public" ? "checked" : ""}>公开

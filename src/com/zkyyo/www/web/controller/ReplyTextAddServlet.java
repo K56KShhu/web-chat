@@ -50,7 +50,7 @@ public class ReplyTextAddServlet extends HttpServlet {
 
         //检查回复文本是否合法
         if (!replyService.isValidContent(content)) {
-            errors.add("bad content");
+            errors.add("请输入内容");
         }
         //判断输入是否有误
         if (errors.isEmpty()) {

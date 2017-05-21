@@ -30,16 +30,21 @@ public class UserUpdateServlet extends HttpServlet {
         UserService userService = (UserService) getServletContext().getAttribute("userService");
         List<String> errors = new ArrayList<>();
         UserPo updatedUser = new UserPo();
-        //判断是否更改
+        //判断是否更改密码
         if (password != null && password.length() > 0) {
-            //判断密码是否合法, 且二次密码是否相同
-            if (!userService.isValidPassword(password, confirmedPsw)) {
-                errors.add("密码不合法");
+            //判断密码是否合法
+            if (!userService.isValidPassword(password)) {
+                errors.add("密码长度不正确");
             } else {
-                updatedUser.setPassword(password);
+                //判断两次密码是否一致
+                if (!userService.isSamePassword(password, confirmedPsw)) {
+                    errors.add("两次输入的密码不一致");
+                } else {
+                    updatedUser.setPassword(password);
+                }
             }
         }
-        //判断是否更改
+        //判断是否更改性别
         if (sex != null && sex.length() > 0) {
             //判断性别是否合法
             if (!userService.isValidSex(sex)) {
@@ -48,7 +53,7 @@ public class UserUpdateServlet extends HttpServlet {
                 updatedUser.setSex(sex);
             }
         }
-        //判断是否更改
+        //判断是否更改邮箱
         if (email != null && email.length() > 0) {
             //判断邮箱是否合法
             if (!userService.isValidEmail(email)) {

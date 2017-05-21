@@ -37,11 +37,11 @@ public class TopicUpdateServlet extends HttpServlet {
             if (topicService.isExisted(tId)) {
                 //判断标题是否合法
                 if (!topicService.isValidTitle(title)) {
-                    errors.add("bad title");
+                    errors.add("标题长度有误");
                 }
                 //判断描述是否合法
                 if (!topicService.isValidDescription(desc)) {
-                    errors.add("bad desc");
+                    errors.add("描述过长");
                 }
                 //判断输入是否有误
                 if (errors.isEmpty()) {

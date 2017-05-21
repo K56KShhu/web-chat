@@ -42,11 +42,11 @@ public class TopicAddServlet extends HttpServlet {
         }
         //判断讨论区标题是否合法
         if (!topicService.isValidTitle(title)) {
-            errors.add("bad title");
+            errors.add("标题长度有误");
         }
         //判断讨论区描述是否合法
         if (!topicService.isValidDescription(description)) {
-            errors.add("bad description");
+            errors.add("描述过长");
         }
 
         //判断输入是否合法

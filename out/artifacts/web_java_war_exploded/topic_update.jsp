@@ -22,7 +22,7 @@
 </jsp:include>
 
 <form method="post" action="topic_update.do">
-    标题: <input type="text" maxlength="60" name="title" value="${requestScope.topic.title}"/><br/>
+    标题: <input type="text" maxlength="60" size="80" name="title" value="${requestScope.topic.title}"/><br/>
     描述: <textarea name="desc" rows="15" cols="80" maxlength="255">${requestScope.topic.description}</textarea><br/>
     <input type="hidden" name="topicId" value="${requestScope.topic.topicId}"/>
     <input type="submit" value="提交修改"/>

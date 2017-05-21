@@ -75,7 +75,7 @@ public class ReportAddServlet extends HttpServlet {
         List<String> errors = new ArrayList<>();
         //判断举报原因是否合法
         if (!reportService.isValidReason(reason)) {
-            errors.add("bad reason");
+            errors.add("原因过长");
         }
         //判断输入是否有误
         if (errors.isEmpty()) {

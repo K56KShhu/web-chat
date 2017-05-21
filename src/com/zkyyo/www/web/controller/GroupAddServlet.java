@@ -28,11 +28,11 @@ public class GroupAddServlet extends HttpServlet {
         List<String> errors = new ArrayList<>();
         //判断小组名是否合法
         if (!groupService.isValidName(name)) {
-            errors.add("bad name");
+            errors.add("小组名长度有误");
         }
         //判断小组描述是否合法
         if (!groupService.isValidDesc(description)) {
-            errors.add("bad description");
+            errors.add("描述过长");
         }
         //判断输入是否有误
         if (errors.isEmpty()) {

@@ -39,9 +39,14 @@ public class RegisterServlet extends HttpServlet {
                 errors.add("用户名已被注册");
             }
         }
-        //判断密码是否合法且二次密码是否相同
-        if (!userService.isValidPassword(password, confirmedPsw)) {
-            errors.add("密码不符合格式");
+        //判断密码是否合法
+        if (!userService.isValidPassword(password)) {
+            errors.add("密码长度不正确");
+        } else {
+            //判断两次密码是否一致
+            if (!userService.isSamePassword(password, confirmedPsw)) {
+                errors.add("两次输入的密码不一致");
+            }
         }
         //判断性别是否合法
         if (!userService.isValidSex(sex)) {

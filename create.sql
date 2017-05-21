@@ -1,6 +1,6 @@
-DROP DATABASE IF EXISTS temp;
-CREATE DATABASE temp;
-USE temp;
+DROP DATABASE IF EXISTS temp2648i;
+CREATE DATABASE temp2648i;
+USE temp2648i;
 
 DROP TABLE IF EXISTS user;
 CREATE TABLE user
@@ -95,45 +95,23 @@ CREATE TABLE report
     created timestamp not null default current_timestamp
 );
 
-INSERT INTO user (username, password, sex, email, status) VALUES ('101', 'abc', 'male', 'zkyyo@outlook.com', 1);
-INSERT INTO user (username, password, sex, email, status) VALUES ('102', 'abc', 'male', 'bingo@outlook.com', 1);
+DROP TABLE IF EXISTS remember;
+CREATE TABLE remember
+(
+    remember_id varchar(100) not null primary key,
+    username varchar(50) not null,
+    created timestamp not null default current_timestamp
+);
 
-INSERT INTO user_role (user_id, role) VALUES ('1', 'user');
-INSERT INTO user_role (user_id, role) VALUES ('2', 'admin');
+INSERT INTO user (username, password, sex, email, status) VALUES ('root', '10000:0479eb458ffb8583e409bc11b72205aa5da8b861b40b2fe2:14ccb638c48cc04f3da6b218a5c10f5faf0a2eecb368d393', 'male', 'zkyyo@outlook.com', 1);
+INSERT INTO user_role (user_id, role) VALUES (1, 'user');
+INSERT INTO user_role (user_id, role) VALUES (1, 'admin');
+INSERT INTO user_role (user_id, role) VALUES (1, 'root');
 
-INSERT INTO usergroup (name, description, population) VALUES ('male', 'all man', 2);
-INSERT INTO usergroup (name, description) VALUES ('foo', 'bar');
-INSERT INTO usergroup (name, description) VALUES ('foo', 'bar');
-INSERT INTO usergroup (name, description) VALUES ('foo', 'bar');
-INSERT INTO usergroup (name, description) VALUES ('foo', 'bar');
-INSERT INTO usergroup (name, description) VALUES ('foo', 'bar');
-INSERT INTO usergroup (name, description) VALUES ('foo', 'bar');
-INSERT INTO usergroup (name, description) VALUES ('foo', 'bar');
-INSERT INTO usergroup (name, description) VALUES ('foo', 'bar');
-INSERT INTO usergroup (name, description) VALUES ('foo', 'bar');
-INSERT INTO usergroup (name, description) VALUES ('foo', 'bar');
-INSERT INTO usergroup (name, description) VALUES ('foo', 'bar');
-INSERT INTO usergroup (name, description) VALUES ('foo', 'bar');
-INSERT INTO usergroup (name, description) VALUES ('foo', 'bar');
-INSERT INTO usergroup (name, description) VALUES ('foo', 'bar');
-INSERT INTO usergroup (name, description) VALUES ('foo', 'bar');
-INSERT INTO usergroup (name, description) VALUES ('foo', 'bar');
-INSERT INTO usergroup (name, description) VALUES ('foo', 'bar');
-INSERT INTO usergroup (name, description) VALUES ('foo', 'bar');
-INSERT INTO usergroup (name, description) VALUES ('foo', 'bar');
-INSERT INTO usergroup (name, description) VALUES ('foo', 'bar');
-INSERT INTO usergroup (name, description) VALUES ('foo', 'bar');
-INSERT INTO usergroup (name, description) VALUES ('foo', 'bar');
-INSERT INTO usergroup (name, description) VALUES ('foo', 'bar');
-INSERT INTO usergroup (name, description) VALUES ('foo', 'bar');
-INSERT INTO usergroup (name, description) VALUES ('foo', 'bar');
-INSERT INTO usergroup (name, description) VALUES ('foo', 'bar');
-INSERT INTO usergroup (name, description) VALUES ('foo', 'bar');
-INSERT INTO usergroup (name, description) VALUES ('foo', 'bar');
-INSERT INTO usergroup (name, description) VALUES ('foo', 'bar');
+INSERT INTO user (username, password, sex, email, status) VALUES ('admin', '10000:089fe438a7132cacaf9457951f42bf4ccac6b2f725469242:4adce36a484d6e09b196e16bd18ca3bb2a6f20ad5e7bfe12', 'male', 'admin@admin.com', 1);
+INSERT INTO user_role (user_id, role) VALUES (2, 'user');
+INSERT INTO user_role (user_id, role) VALUES (2, 'admin');
 
-INSERT INTO user_usergroup (user_id, usergroup_id) VALUES (1, 1);
-INSERT INTO user_usergroup (user_id, usergroup_id) VALUES (2, 1);
+INSERT INTO user (username, password, sex, email, status) VALUES ('user', '10000:80c0c46774ce2371f65251ce1aa260b625a7d2dbe1b6a836:d1affff4111120a5a913be7cf772a612005de3bb778b7174', 'male', 'user@user.com', 1);
+INSERT INTO user_role (user_id, role) VALUES (3, 'user');
 
-INSERT INTO topic (title, description, creator_id, last_modify_id) VALUES ('请问打码是一种怎样的体验?', '听说现在很多人都在学习编程,大家认为变成是一种怎样的体验', '2', '2');
-INSERT INTO topic (title, description, creator_id, last_modify_id) VALUES ('是的?', '听', '2', '2');

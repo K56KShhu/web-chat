@@ -136,22 +136,24 @@ public class UserService {
     }
 
     /**
-     * 校验输入的密码是否合法, 同时校验二次输入密码是否相同
+     * 校验密码是否合法
+     *
+     * @param pwd 待校验的密码
+     * @return true合法, false不合法
+     */
+    public boolean isValidPassword(String pwd) {
+        return CheckUtil.isValidString(pwd, MIN_PASSWORD_LENGTH, MAX_PASSWORD_LENGTH);
+    }
+
+    /**
+     * 校验两次输入的密码是否相同
      *
      * @param pwd  第一次输入的密码
      * @param cpwd 第二次输入的密码
-     * @return true合法且相同, 否则为false
+     * @return true相同, false不相同
      */
-    public boolean isValidPassword(String pwd, String cpwd) {
-        if (pwd == null || cpwd == null) {
-            return false;
-        }
-        if (CheckUtil.isValidString(pwd, MIN_PASSWORD_LENGTH, MAX_PASSWORD_LENGTH)) {
-            if (pwd.equals(cpwd)) {
-                return true;
-            }
-        }
-        return false;
+    public boolean isSamePassword(String pwd, String cpwd) {
+        return isValidPassword(pwd) && pwd.equals(cpwd);
     }
 
     /**

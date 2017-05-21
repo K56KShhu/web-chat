@@ -18,7 +18,7 @@
     <a href="topic_find.do">进入公共讨论区</a>&nbsp;
 </div>
 
-<h1>授权讨论区</h1>
+<h1>我的授权讨论区</h1>
 
 <table border="1" align="center">
     <tr>

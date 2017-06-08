@@ -23,14 +23,14 @@ public class ReplyDaoJdbcImpl implements ReplyDao {
     public static final int CONTENT_TYPE_IMAGE = 1;
 
     /**
-     * 数据库连接池
+     * 数据库连接
      */
     private DataSource dataSource;
 
     /**
      * 构建对象
      *
-     * @param dataSource 传入的数据库连接池
+     * @param dataSource 传入的数据库连接
      */
     public ReplyDaoJdbcImpl(DataSource dataSource) {
         this.dataSource = dataSource;

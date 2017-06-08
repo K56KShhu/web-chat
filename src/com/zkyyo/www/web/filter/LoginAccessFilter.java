@@ -19,12 +19,12 @@ import java.io.IOException;
         filterName = "LoginAccessFilter",
         urlPatterns = {"/*"},
         initParams = {
-                @WebInitParam(name = "PATH_ROLE", value = "/temp/rule.jsp"),
-                @WebInitParam(name = "PATH_LOGIN_FORM", value = "/temp/login.jsp"),
-                @WebInitParam(name = "PATH_LOGIN_PROCESS", value = "/temp/login.do"),
-                @WebInitParam(name = "PATH_REGISTER_FORM", value = "/temp/register.jsp"),
-                @WebInitParam(name = "PATH_REGISTER_PROCESS", value = "/temp/register.do"),
-                @WebInitParam(name = "PATH_IMAGE_SHOW_WEBSITE", value = "/temp/image_show_website.do")
+                @WebInitParam(name = "PATH_ROLE", value = "/rule.jsp"),
+                @WebInitParam(name = "PATH_LOGIN_FORM", value = "/login.jsp"),
+                @WebInitParam(name = "PATH_LOGIN_PROCESS", value = "/login.do"),
+                @WebInitParam(name = "PATH_REGISTER_FORM", value = "/register.jsp"),
+                @WebInitParam(name = "PATH_REGISTER_PROCESS", value = "/register.do"),
+                @WebInitParam(name = "PATH_IMAGE_SHOW_WEBSITE", value = "/image_show_website.do")
         }
 )
 public class LoginAccessFilter extends GeneralAccessFilter {
@@ -36,7 +36,8 @@ public class LoginAccessFilter extends GeneralAccessFilter {
     private String pathImageShowWebsite;
 
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
-        String path = ((HttpServletRequest) req).getRequestURI();
+//        String path = ((HttpServletRequest) req).getRequestURI();
+        String path = ((HttpServletRequest) req).getServletPath();
         if (path.startsWith(pathRole)
                 || path.startsWith(pathLoginForm)
                 || path.startsWith(pathLoginProcess)

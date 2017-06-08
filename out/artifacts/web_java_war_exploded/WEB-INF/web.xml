@@ -15,7 +15,7 @@
         <param-value>login</param-value>
     </context-param>
     <context-param>
-        <description>stay logged in a week</description>
+        <description>stay logged in a week (7 * 24 * 60 * 60)s</description>
         <param-name>STAY_LOGGED_TIME</param-name>
         <param-value>604800</param-value>
     </context-param>

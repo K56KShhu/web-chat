@@ -29,14 +29,14 @@ public class FileDaoJdbcImpl implements FileDao {
      */
     public static final int ORDER_BY_CREATED = 0;
     /**
-     * 数据池
+     * 数据库连接
      */
     private DataSource dataSource;
 
     /**
-     * 构建对象, 同时传入数据池
+     * 构建对象, 同时传入数据库连接
      *
-     * @param dataSource 待传入的连接池
+     * @param dataSource 待传入的数据库连接
      */
     public FileDaoJdbcImpl(DataSource dataSource) {
         this.dataSource = dataSource;

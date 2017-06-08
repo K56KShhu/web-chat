@@ -14,14 +14,14 @@ import java.sql.SQLException;
  */
 public class RememberDaoJdbcImpl implements RememberDao {
     /**
-     * 数据库连接池
+     * 数据库连接
      */
     private DataSource dataSource;
 
     /**
      * 构建对象
      *
-     * @param dataSource 待传入的数据库连接池
+     * @param dataSource 待传入的数据库连接
      */
     public RememberDaoJdbcImpl(DataSource dataSource) {
         this.dataSource = dataSource;

@@ -36,14 +36,14 @@ public class ReportDaoJdbcImpl implements ReportDao {
     public static final int ORDER_BY_CREATED = 1;
 
     /**
-     * 数据库连接池
+     * 数据库连接
      */
     private DataSource dataSource;
 
     /**
      * 构建对象
      *
-     * @param dataSource 传入的数据库连接池
+     * @param dataSource 传入的数据库连接
      */
     public ReportDaoJdbcImpl(DataSource dataSource) {
         this.dataSource = dataSource;

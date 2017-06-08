@@ -80,14 +80,14 @@ public class UserDaoJdbcImpl implements UserDao {
     public static final String ROLE_ADMIN = "admin";
 
     /**
-     * 数据库连接池
+     * 数据库连接
      */
     private DataSource dataSource;
 
     /**
      * 构建对象
      *
-     * @param dataSource 传入的数据库连接池
+     * @param dataSource 传入的数据库连接
      */
     public UserDaoJdbcImpl(DataSource dataSource) {
         this.dataSource = dataSource;

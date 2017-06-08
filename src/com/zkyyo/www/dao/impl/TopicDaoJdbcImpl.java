@@ -50,14 +50,14 @@ public class TopicDaoJdbcImpl implements TopicDao {
     public static final int ACCESS_ALL = 2;
 
     /**
-     * 数据库连接池
+     * 数据库连接
      */
     private DataSource dataSource;
 
     /**
      * 构建对象
      *
-     * @param dataSource 传入的数据库连接池
+     * @param dataSource 传入的数据库连接
      */
     public TopicDaoJdbcImpl(DataSource dataSource) {
         this.dataSource = dataSource;

@@ -18,14 +18,14 @@ import java.util.List;
  */
 public class GroupDaoJdbcImpl implements GroupDao {
     /**
-     * 数据库连接池
+     * 数据库连接
      */
     private DataSource dataSource;
 
     /**
      * 构建对象
      *
-     * @param dataSource 数据库连接池
+     * @param dataSource 数据库连接
      */
     public GroupDaoJdbcImpl(DataSource dataSource) {
         this.dataSource = dataSource;

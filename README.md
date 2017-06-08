@@ -37,9 +37,13 @@
  - META-INF目录下context.xml中, Resource标签下的name和url都修改为本项目数据库, 设置本数据库账号及其密码
 3. 配置Tomcat, 导入依赖包
 4. 运行, 这里提供三种权限的账号和密码
- - root权限:  账号(root)  密码(root)
- - admin权限: 账号(admin) 密码(admin)
- - 普通用户:  账号(user)  密码(user)
+
+权限 | 账号 | 密码 
+----- | ----- | -----
+root | root | root
+admin | admin | admin
+普通用户 | user | user
+
 5. 其他的项目相关的配置都可以在web.xml中进行设置, 可以参考描述说明更改默认配置
 
 ## 开发环境

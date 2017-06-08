@@ -1,12 +1,13 @@
 # 咱部落
 
 ## 介绍
-![login]()
-![index]()
-![chat]()
+![login](https://github.com/zkyyo/web-chat/blob/master/image/login.png?raw=true)
+![index](https://github.com/zkyyo/web-chat/blob/master/image/index.png?raw=true)
+![chat](https://github.com/zkyyo/web-chat/blob/master/image/chat1.png?raw=true)
 这是一个基于部落格的网站，我将其命名为“咱部落”。用户登陆后可以加入感兴趣的公开讨论区并自由发表言论，同时还可以在相应的讨论区中分享图片和文件。用户加入小组后，可以加入特定的授权讨论区，并使用与公开讨论区相同的功能。
 
 ## 功能实现
+
 ### 普通用户：
 - 搜索讨论区并加入讨论区，窥屏别人聊天。新的聊天信息可以通过手动刷新来显示。
 - 在讨论区中可以自由发表言论，也可以在发言中附带图片
